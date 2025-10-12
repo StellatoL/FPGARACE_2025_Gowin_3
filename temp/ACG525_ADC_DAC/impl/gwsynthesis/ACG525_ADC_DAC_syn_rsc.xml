@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module name="ACG525_TOP" T_Register="339(0)" T_Alu="72(0)" T_Lut="502(0)" T_Bsram="39(0)">
+ <SubModule name="Gowin_PLL" T_Register="101(0)" T_Alu="18(0)" T_Lut="161(0)" T_Bsram="1(0)">
+  <SubModule name="u_pll"/>
+  <SubModule name="u_pll_init" Register="101" Alu="18" Lut="161" Bsram="1" T_Register="101(101)" T_Alu="18(18)" T_Lut="161(161)" T_Bsram="1(1)"/>
+ </SubModule>
+ <SubModule name="ACM108_ADC" Register="36" Lut="42" T_Register="207(36)" T_Alu="32(0)" T_Lut="339(42)" T_Bsram="33(0)">
+  <SubModule name="fifo_top" Register="77" Alu="32" Lut="94" Bsram="1" T_Register="77(77)" T_Alu="32(32)" T_Lut="94(94)" T_Bsram="1(1)"/>
+  <SubModule name="Gowin_SDPB" Register="2" Lut="24" Bsram="32" T_Register="2(2)" T_Lut="24(24)" T_Bsram="32(32)"/>
+  <SubModule name="usart_send" Register="92" Lut="179" T_Register="92(92)" T_Lut="179(179)"/>
+ </SubModule>
+ <SubModule name="ACM108_DAC" T_Register="31(0)" T_Alu="22(0)" T_Lut="2(0)" T_Bsram="5(0)">
+  <SubModule name="DDS" Register="31" Alu="22" Lut="2" T_Register="31(31)" T_Alu="22(22)" T_Lut="2(2)" T_Bsram="5(0)">
+   <SubModule name="wave_ram" Bsram="1" T_Bsram="1(1)"/>
+   <SubModule name="sine_rom" Bsram="1" T_Bsram="1(1)"/>
+   <SubModule name="square_rom" Bsram="1" T_Bsram="1(1)"/>
+   <SubModule name="triangular_rom" Bsram="1" T_Bsram="1(1)"/>
+   <SubModule name="sawtooth_rom" Bsram="1" T_Bsram="1(1)"/>
+  </SubModule>
+ </SubModule>
+</Module>

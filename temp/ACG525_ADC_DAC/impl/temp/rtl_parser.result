@@ -1,0 +1,142 @@
+[
+ {
+  "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/ACG525_TOP.v",
+  "InstLine" : 1,
+  "InstName" : "ACG525_TOP",
+  "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/ACG525_TOP.v",
+  "ModuleLine" : 1,
+  "ModuleName" : "ACG525_TOP",
+  "SubInsts" : [
+   {
+    "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/ACG525_TOP.v",
+    "InstLine" : 24,
+    "InstName" : "Gowin_PLL",
+    "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/gowin_pll/gowin_pll.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "Gowin_PLL",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/gowin_pll/gowin_pll.v",
+      "InstLine" : 28,
+      "InstName" : "u_pll",
+      "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/gowin_pll/gowin_pll_mod.v",
+      "ModuleLine" : 10,
+      "ModuleName" : "Gowin_PLL_MOD"
+     },
+     {
+      "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/gowin_pll/gowin_pll.v",
+      "InstLine" : 43,
+      "InstName" : "u_pll_init",
+      "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/pll_init.v",
+      "ModuleLine" : 4,
+      "ModuleName" : "PLL_INIT"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/ACG525_TOP.v",
+    "InstLine" : 38,
+    "InstName" : "ACM108_ADC",
+    "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/acm108_adc.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "ACM108_ADC",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/acm108_adc.v",
+      "InstLine" : 28,
+      "InstName" : "fifo_top",
+      "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/fifo_top/fifo_top.v",
+      "ModuleLine" : 745,
+      "ModuleName" : "fifo_top",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/fifo_top/fifo_top.v",
+        "InstLine" : 776,
+        "InstName" : "fifo_inst",
+        "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/fifo_top/fifo_top.v",
+        "ModuleLine" : 13,
+        "ModuleName" : "~fifo.fifo_top"
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/acm108_adc.v",
+      "InstLine" : 66,
+      "InstName" : "Gowin_SDPB",
+      "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/gowin_sdpb/gowin_sdpb.v",
+      "ModuleLine" : 10,
+      "ModuleName" : "Gowin_SDPB"
+     },
+     {
+      "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/acm108_adc.v",
+      "InstLine" : 157,
+      "InstName" : "usart_send",
+      "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/usart_send.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "usart_send"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/ACG525_TOP.v",
+    "InstLine" : 58,
+    "InstName" : "ACM108_DAC",
+    "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/acm108_dac.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "ACM108_DAC",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/acm108_dac.v",
+      "InstLine" : 24,
+      "InstName" : "DDS",
+      "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/DDS.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "DDS",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/DDS.v",
+        "InstLine" : 43,
+        "InstName" : "wave_ram",
+        "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/wave_ram/wave_ram.v",
+        "ModuleLine" : 10,
+        "ModuleName" : "wave_ram"
+       },
+       {
+        "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/DDS.v",
+        "InstLine" : 56,
+        "InstName" : "sine_rom",
+        "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/sine/sine.v",
+        "ModuleLine" : 10,
+        "ModuleName" : "sine"
+       },
+       {
+        "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/DDS.v",
+        "InstLine" : 65,
+        "InstName" : "square_rom",
+        "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/square/square.v",
+        "ModuleLine" : 10,
+        "ModuleName" : "square"
+       },
+       {
+        "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/DDS.v",
+        "InstLine" : 74,
+        "InstName" : "triangular_rom",
+        "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/triangular/triangular.v",
+        "ModuleLine" : 10,
+        "ModuleName" : "triangular"
+       },
+       {
+        "InstFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/DDS.v",
+        "InstLine" : 83,
+        "InstName" : "sawtooth_rom",
+        "ModuleFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/sawtooth/sawtooth.v",
+        "ModuleLine" : 10,
+        "ModuleName" : "sawtooth"
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+]

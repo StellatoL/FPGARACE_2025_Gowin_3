@@ -1,0 +1,18 @@
+-series GW5A
+-device GW5A-25
+-device_version A
+-package UBGA324
+-part_number GW5A-LV25UG324C2/I1
+
+
+-mod_name sine
+-file_name sine
+-path C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/sine/
+-type RAM_ROM
+-file_type vlg
+-pROM true
+-depth 256
+-width 8
+-read_mode bypass
+-reset_mode sync
+-init_file C:\Users\WangSX\Desktop\UART_ADC_DAC\UART_ADC_DAC\src\sine.mi

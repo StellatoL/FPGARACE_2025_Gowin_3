@@ -1,0 +1,86 @@
+GowinSynthesis start
+Running parser ...
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\ACG525_TOP.v'
+WARN  (EX3136) : Invalid size of integer constant literal("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\ACG525_TOP.v":35)
+Undeclared symbol 'ADC_data_0', assumed default net type 'wire'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\ACG525_TOP.v":44)
+WARN  (EX3786) : Assignment to input 'ADC_data'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\ACG525_TOP.v":35)
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\DDS.v'
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v'
+WARN  (EX3628) : Redeclaration of ANSI port 'clk_35M' is not allowed("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":14)
+WARN  (EX3628) : Redeclaration of ANSI port 'clk_200M' is not allowed("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":15)
+Undeclared symbol 'ADC_clk', assumed default net type 'wire'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":17)
+Undeclared symbol 'wr_en', assumed default net type 'wire'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":34)
+WARN  (EX3638) : 'wr_en' is already implicitly declared on line 34("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":62)
+Undeclared symbol 'uart_buffer_sel', assumed default net type 'wire'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":76)
+Undeclared symbol 'uart_addr', assumed default net type 'wire'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":76)
+WARN  (EX3638) : 'uart_addr' is already implicitly declared on line 76("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":153)
+WARN  (EX3638) : 'uart_buffer_sel' is already implicitly declared on line 76("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":155)
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_dac.v'
+Undeclared symbol 'Reset_n', assumed default net type 'wire'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_dac.v":20)
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\fifo_top\fifo_top.v'
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\gowin_pll\gowin_pll.v'
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\gowin_pll\gowin_pll_mod.v'
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\gowin_sdpb\gowin_sdpb.v'
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\pll_init.v'
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\sawtooth\sawtooth.v'
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\sine\sine.v'
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\square\square.v'
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\triangular\triangular.v'
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\usart_send.v'
+Analyzing Verilog file 'C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\wave_ram\wave_ram.v'
+Compiling module 'ACG525_TOP'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\ACG525_TOP.v":1)
+Compiling module 'Gowin_PLL'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\gowin_pll\gowin_pll.v":1)
+Compiling module 'Gowin_PLL_MOD'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\gowin_pll\gowin_pll_mod.v":10)
+Compiling module 'PLL_INIT(MULTI_FAC=35)'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\pll_init.v":4)
+Driving port 'ADC_data[7]' is declared here("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\ACG525_TOP.v":5)
+Compiling module 'ACM108_ADC'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":1)
+Compiling module 'fifo_top'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\fifo_top\fifo_top.v":745)
+Compiling module '**'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\fifo_top\fifo_top.v":744)
+Compiling module 'Gowin_SDPB'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\gowin_sdpb\gowin_sdpb.v":10)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'ceb'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":71)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'oce'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":72)
+WARN  (EX3791) : Expression size 16 truncated to fit in target size 15("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":108)
+WARN  (EX3791) : Expression size 16 truncated to fit in target size 15("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":121)
+WARN  (EX3791) : Expression size 17 truncated to fit in target size 16("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_adc.v":148)
+Compiling module 'usart_send'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\usart_send.v":1)
+WARN  (EX3791) : Expression size 13 truncated to fit in target size 12("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\usart_send.v":88)
+WARN  (EX3791) : Expression size 4 truncated to fit in target size 3("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\usart_send.v":99)
+WARN  (EX3791) : Expression size 13 truncated to fit in target size 12("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\usart_send.v":103)
+WARN  (EX3791) : Expression size 13 truncated to fit in target size 12("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\usart_send.v":112)
+WARN  (EX3791) : Expression size 16 truncated to fit in target size 15("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\usart_send.v":124)
+WARN  (EX3791) : Expression size 16 truncated to fit in target size 15("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\usart_send.v":125)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 8 for port 'ADC_data'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\ACG525_TOP.v":44)
+Compiling module 'ACM108_DAC'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\acm108_dac.v":1)
+Compiling module 'DDS'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\DDS.v":1)
+Compiling module 'wave_ram'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\wave_ram\wave_ram.v":10)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'ceb'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\DDS.v":48)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'oce'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\DDS.v":49)
+Compiling module 'sine'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\sine\sine.v":10)
+Compiling module 'square'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\square\square.v":10)
+Compiling module 'triangular'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\triangular\triangular.v":10)
+Compiling module 'sawtooth'("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\sawtooth\sawtooth.v":10)
+Port is declared here("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\ACG525_TOP.v":5)
+WARN  (EX1998) : Net 'w_ad[7]' does not have a driver("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\ACG525_TOP.v":53)
+WARN  (EX1998) : Net 'w_data[7]' does not have a driver("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\ACG525_TOP.v":54)
+WARN  (EX1998) : Net 'ADC_data_0' does not have a driver("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\ACG525_TOP.v":44)
+NOTE  (EX0101) : Current top module is "ACG525_TOP"
+[5%] Running netlist conversion ...
+WARN  (CV0016) : Input ADC_data is unused("C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\src\ACG525_TOP.v":35)
+Running device independent optimization ...
+[10%] Optimizing Phase 0 completed
+[15%] Optimizing Phase 1 completed
+[25%] Optimizing Phase 2 completed
+Running inference ...
+[30%] Inferring Phase 0 completed
+[40%] Inferring Phase 1 completed
+[50%] Inferring Phase 2 completed
+[55%] Inferring Phase 3 completed
+Running technical mapping ...
+[60%] Tech-Mapping Phase 0 completed
+[65%] Tech-Mapping Phase 1 completed
+[75%] Tech-Mapping Phase 2 completed
+[80%] Tech-Mapping Phase 3 completed
+[90%] Tech-Mapping Phase 4 completed
+[95%] Generate netlist file "C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\impl\gwsynthesis\ACG525_ADC_DAC.vg" completed
+[100%] Generate report file "C:\Users\WangSX\Desktop\ACG525_ADC_DAC\ACG525_ADC_DAC\impl\gwsynthesis\ACG525_ADC_DAC_syn.rpt.html" completed
+GowinSynthesis finish

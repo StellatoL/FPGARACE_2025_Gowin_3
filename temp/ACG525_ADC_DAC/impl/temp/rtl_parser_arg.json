@@ -1,0 +1,73 @@
+{
+ "Device" : "GW5A-25A",
+ "Files" : [
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/ACG525_TOP.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/DDS.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/acm108_adc.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/acm108_dac.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/fifo_top/fifo_top.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/gowin_pll/gowin_pll.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/gowin_pll/gowin_pll_mod.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/gowin_sdpb/gowin_sdpb.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/pll_init.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/sawtooth/sawtooth.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/sine/sine.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/square/square.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/triangular/triangular.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/usart_send.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/src/wave_ram/wave_ram.v",
+   "Type" : "verilog"
+  }
+ ],
+ "IncludePath" : [
+
+ ],
+ "LoopLimit" : 2000,
+ "ResultFile" : "C:/Users/WangSX/Desktop/ACG525_ADC_DAC/impl/temp/rtl_parser.result",
+ "Top" : "ACG525_TOP",
+ "VerilogStd" : "verilog_2001",
+ "VhdlStd" : "vhdl_93"
+}
