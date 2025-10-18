@@ -1,0 +1,46 @@
+[
+ {
+  "InstFile" : "C:/Users/32875/Desktop/FPGA/example/digital_measure/src/top.v",
+  "InstLine" : 1,
+  "InstName" : "top",
+  "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/digital_measure/src/top.v",
+  "ModuleLine" : 1,
+  "ModuleName" : "top",
+  "SubInsts" : [
+   {
+    "InstFile" : "C:/Users/32875/Desktop/FPGA/example/digital_measure/src/top.v",
+    "InstLine" : 32,
+    "InstName" : "uart_data_tx_inst",
+    "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/digital_measure/src/uart_data_tx.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "uart_data_tx",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/FPGA/example/digital_measure/src/uart_data_tx.v",
+      "InstLine" : 30,
+      "InstName" : "u_uart_byte_tx",
+      "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/digital_measure/src/uart_byte_tx.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "uart_byte_tx"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/FPGA/example/digital_measure/src/top.v",
+    "InstLine" : 53,
+    "InstName" : "cymometer_equal_inst",
+    "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/digital_measure/src/digital_measure.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "cymometer_equal"
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/FPGA/example/digital_measure/src/top.v",
+    "InstLine" : 68,
+    "InstName" : "Gowin_rPLL_inst",
+    "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/digital_measure/src/gowin_rpll/gowin_rpll.v",
+    "ModuleLine" : 10,
+    "ModuleName" : "Gowin_rPLL"
+   }
+  ]
+ }
+]
