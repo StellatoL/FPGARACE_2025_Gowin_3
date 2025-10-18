@@ -1,0 +1,3 @@
+*.Tcl linguist-detectable=false
+# Example of a `.gitattributes` file which reclassifies `.rb` files as Java:
+*.xdc linguist-language=SystemVerilog
