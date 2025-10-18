@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module name="top" Lut="1">
+    <SubModule name="uart_data_tx_inst" Register="83" Lut="90">
+        <SubModule name="u_uart_byte_tx" Register="32" Lut="48"/>
+    </SubModule>
+    <SubModule name="cymometer_equal_inst" Register="187" Alu="1761" Lut="5580" MULT36X36="1"/>
+    <SubModule name="Gowin_rPLL_inst"/>
+</Module>

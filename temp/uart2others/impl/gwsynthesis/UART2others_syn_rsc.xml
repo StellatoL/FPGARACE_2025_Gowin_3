@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module name="uart" Register="332" Lut="1740">
+    <SubModule name="uart_packet_rx_inst" Register="212" Lut="230">
+        <SubModule name="uart_byte_rx_inst" Register="34" Lut="47"/>
+    </SubModule>
+    <SubModule name="uart_rx_packet_trans_inst" Register="3" Lut="45"/>
+    <SubModule name="uart_data_tx_inst" Register="209" Alu="6" Lut="942">
+        <SubModule name="u_uart_byte_tx" Register="32" Lut="47"/>
+    </SubModule>
+    <SubModule name="packet2IIC_inst" Register="171" Alu="8" Lut="1242">
+        <SubModule name="I2C_drive_inst" Register="447" Alu="7" Lut="339"/>
+    </SubModule>
+    <SubModule name="spi_top_inst" Register="278" Lut="179">
+        <SubModule name="spi_modu_inst" Register="56" Lut="58"/>
+    </SubModule>
+    <SubModule name="packet2PWM_inst" Register="167" Lut="7">
+        <SubModule name="pwm_drive_inst_ch0" Register="33" Alu="48" Lut="55" PADD18="1" MULT18X18="1"/>
+        <SubModule name="pwm_drive_inst_ch1" Register="33" Alu="48" Lut="55" PADD18="1" MULT18X18="1"/>
+        <SubModule name="pwm_drive_inst_ch2" Register="33" Alu="48" Lut="55" PADD18="1" MULT18X18="1"/>
+        <SubModule name="pwm_drive_inst_ch3" Register="33" Alu="48" Lut="55" PADD18="1" MULT18X18="1"/>
+    </SubModule>
+</Module>
