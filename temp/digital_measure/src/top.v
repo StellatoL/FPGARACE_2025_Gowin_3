@@ -47,17 +47,16 @@ wire [31:0] extern_low_cycles;
 wire [15:0] extern_duty;
 
 wire extern_done;
-
-cymometer_equal #(
+digital_measure #(
     .CLK_FS(200_000_000)
-) cymometer_equal_inst(
+) digital_freq_measure_inst(
     .clk_fs(PLL_200M),
     .rst_n(rst_n),
     .clk_fx(extern_clk),
-    .GATE_TIME(75),
-    .frequence(extern_freq),
-    // .high_cycles(extern_high_cycles),
-    // .low_cycles(extern_low_cycles),
+    .GATE_TIME(200),
+    .frequency(extern_freq),
+    .high_cycles(extern_high_cycles),
+    .low_cycles(extern_low_cycles),
     .duty_permille(extern_duty),
     .measure_done(extern_done)
 );
