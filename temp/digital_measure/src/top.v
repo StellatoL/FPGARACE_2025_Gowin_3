@@ -9,12 +9,12 @@ module top #(
     output uart_txd
 );
 
-assign uart_tx_data_size = 16;
-assign uart_tx_data = {extern_freq,extern_high_cycles,extern_low_cycles,extern_duty, 16'h0d0a};
+assign uart_tx_data_size = 10;
+assign uart_tx_data = {extern_freq,8'h0,6'b0,extern_duty, 16'h0d0a};
 assign uart_send_en = extern_done;
 
 // ===================串口发送模块=====================
-parameter UART_BAUD     = 115200;
+parameter UART_BAUD     = 1152000;
 parameter MAX_TX_DATA_WIDTH = 8*16;
 
 wire uart_send_en;
@@ -44,21 +44,20 @@ uart_data_tx_inst(
 wire [31:0] extern_freq;
 wire [31:0] extern_high_cycles;
 wire [31:0] extern_low_cycles;
-wire [15:0] extern_duty;
+wire [9:0] extern_duty;
 
 wire extern_done;
-digital_measure #(
+digital_measure_top #(
+//    .CLK_FREQ(CLK_FREQ),
     .CLK_FS(200_000_000)
-) digital_freq_measure_inst(
+) digital_measure_top_inst(
     .clk_fs(PLL_200M),
     .rst_n(rst_n),
     .clk_fx(extern_clk),
-    .GATE_TIME(200),
-    .frequency(extern_freq),
-    .high_cycles(extern_high_cycles),
-    .low_cycles(extern_low_cycles),
-    .duty_permille(extern_duty),
-    .measure_done(extern_done)
+    .digital_frequency(extern_freq),
+
+    .digital_duty(extern_duty),
+    .digital_done(extern_done)
 );
 
 // ==================锁相环模块=========================

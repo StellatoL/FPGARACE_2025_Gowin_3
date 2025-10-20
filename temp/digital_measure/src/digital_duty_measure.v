@@ -1,11 +1,10 @@
-
-module digital_measure#(
+module digital_duty_measure#(
     parameter    CLK_FS = 26'd50_000_000 // 基准时钟频率值 (Hz)
 ) (
     input  wire        clk_fs,    // 基准时钟（参考时钟）
     input  wire        rst_n,     // 低有效复位
     input  wire        clk_fx,    // 被测时钟信号
-    input       [11:0] GATE_TIME, // 门控时间（被测时钟周期数）
+    input       [9:0] GATE_TIME, // 门控时间（被测时钟周期数）
     output reg  [9:0] duty_permille, // 占空比千分比（0-1000）
     output reg         measure_done // 测量完成标志（单周期脉冲）
 );
@@ -13,7 +12,7 @@ module digital_measure#(
 // ====================== 内部信号声明 ======================
 // 门控信号相关寄存器
 reg gate;                // 被测时钟域生成的门控信号
-reg [11:0] gate_cnt;     // 门控时间计数器（clk_fx域
+reg  [ 9:0] gate_cnt;    // 门控时间计数器（clk_fx域）
 
 reg  [31:0] high_cycles; // 门控期间高电平计数（基准时钟周期数）
 reg  [31:0] low_cycles;  // 门控期间低电平计数（基准时钟周期数）
