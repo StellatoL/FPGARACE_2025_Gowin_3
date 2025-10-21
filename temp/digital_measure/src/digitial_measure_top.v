@@ -32,7 +32,7 @@ localparam MEDIUM_FREQ_GATE_TIME   = 200;
 localparam HIGH_FREQ_GATE_TIME     = 500;
 localparam VERY_HIGH_FREQ_ATE_TIME = 1000;
 localparam LOW_DUTY_GATE_TIME      = 35;    // 占空比门控时间
-localparam MEDIUM_FREQ_GATE_TIME   = 60;
+localparam MEDIUM_DUTY_GATE_TIME   = 60;
 localparam HIGH_DUTY_GATE_TIME     = 100;
 
 // 频率阈值 (Hz)

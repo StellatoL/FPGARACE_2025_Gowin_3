@@ -2,13 +2,13 @@
 module digital_freq_measure #(
     parameter	CLK_FS    = 200_000_000
 )(   
-        input                 clk_fs ,    
-        input                 rst_n  ,            
-        input                 clk_fx , 
-        input    [9:0]       GATE_TIME,    //门控时间，越大误差越小，但测量时间也会变长  
-		
-        output   reg [31:0]   frequency,
-        output   reg          measure_done
+    input                 clk_fs ,    
+    input                 rst_n  ,            
+    input                 clk_fx , 
+    input    [9:0]       GATE_TIME,    //门控时间，越大误差越小，但测量时间也会变长  
+	
+    output   reg [31:0]   frequency,
+    output   reg          measure_done
 );
 
 //reg define
@@ -19,7 +19,7 @@ reg                	gate_fs_d0  ;           //用于采集基准时钟下gate下
 reg                	gate_fs_d1  ;           //用于采集基准时钟下gate下降沿
 reg                	gate_fx_d0  ;          	//用于采集被测时钟下gate下降沿
 reg                	gate_fx_d1  ;           //用于采集被测时钟下gate下降沿
-reg    [9:0]   	gate_cnt    ;          	//门控计数
+reg    [9:0]   	    gate_cnt    ;          	//门控计数
 reg    [31:0]   	fs_cnt      ;           //门控时间内基准时钟的计数值
 reg    [31:0]   	fs_cnt_temp ;           //fs_cnt 临时值
 reg    [31:0]   	fx_cnt      ;           //门控时间内被测时钟的计数值
