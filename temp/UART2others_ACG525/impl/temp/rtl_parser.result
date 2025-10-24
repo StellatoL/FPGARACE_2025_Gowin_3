@@ -1,0 +1,224 @@
+[
+ {
+  "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/ACG525_top.v",
+  "InstLine" : 1,
+  "InstName" : "ACG525_top",
+  "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/ACG525_top.v",
+  "ModuleLine" : 1,
+  "ModuleName" : "ACG525_top",
+  "SubInsts" : [
+   {
+    "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/ACG525_top.v",
+    "InstLine" : 80,
+    "InstName" : "uart_data_tx_inst2",
+    "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_data_tx.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "uart_data_tx",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_data_tx.v",
+      "InstLine" : 30,
+      "InstName" : "u_uart_byte_tx",
+      "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_byte_tx.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "uart_byte_tx"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/ACG525_top.v",
+    "InstLine" : 107,
+    "InstName" : "uart_inst",
+    "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "uart",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart.v",
+      "InstLine" : 41,
+      "InstName" : "uart_packet_rx_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_packet_rx.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "uart_packet_rx",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_packet_rx.v",
+        "InstLine" : 27,
+        "InstName" : "uart_byte_rx_inst",
+        "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_byte_rx.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "uart_byte_rx"
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart.v",
+      "InstLine" : 57,
+      "InstName" : "uart_rx_packet_trans_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_rx_packet_trans.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "uart_rx_packet_trans"
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart.v",
+      "InstLine" : 155,
+      "InstName" : "uart_data_tx_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_data_tx.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "uart_data_tx",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_data_tx.v",
+        "InstLine" : 30,
+        "InstName" : "u_uart_byte_tx",
+        "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_byte_tx.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "uart_byte_tx"
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart.v",
+      "InstLine" : 183,
+      "InstName" : "packet2IIC_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/packet2IIC.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "packet2IIC",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/packet2IIC.v",
+        "InstLine" : 132,
+        "InstName" : "I2C_drive_inst",
+        "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/I2C_drive.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "I2C_drive"
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart.v",
+      "InstLine" : 221,
+      "InstName" : "spi_top_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/spi_top.v",
+      "ModuleLine" : 2,
+      "ModuleName" : "spi_top",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/spi_top.v",
+        "InstLine" : 148,
+        "InstName" : "spi_modu_inst",
+        "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/spi_master.v",
+        "ModuleLine" : 16,
+        "ModuleName" : "spi_modu"
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart.v",
+      "InstLine" : 244,
+      "InstName" : "packet2PWM_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/packet2PWM.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "packet2PWM",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/packet2PWM.v",
+        "InstLine" : 140,
+        "InstName" : "pwm_drive_inst_ch0",
+        "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/PWM_drive.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "pwm_drive"
+       },
+       {
+        "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/packet2PWM.v",
+        "InstLine" : 152,
+        "InstName" : "pwm_drive_inst_ch1",
+        "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/PWM_drive.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "pwm_drive"
+       },
+       {
+        "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/packet2PWM.v",
+        "InstLine" : 164,
+        "InstName" : "pwm_drive_inst_ch2",
+        "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/PWM_drive.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "pwm_drive"
+       },
+       {
+        "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/packet2PWM.v",
+        "InstLine" : 176,
+        "InstName" : "pwm_drive_inst_ch3",
+        "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/PWM_drive.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "pwm_drive"
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart.v",
+      "InstLine" : 285,
+      "InstName" : "can_top_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/can_top.v",
+      "ModuleLine" : 11,
+      "ModuleName" : "can_top",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/can_top.v",
+        "InstLine" : 139,
+        "InstName" : "u_can_level_packet",
+        "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/can_packet.v",
+        "ModuleLine" : 10,
+        "ModuleName" : "can_level_packet",
+        "SubInsts" : [
+         {
+          "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/can_packet.v",
+          "InstLine" : 63,
+          "InstName" : "u_can_level_bit",
+          "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/can_bit.v",
+          "ModuleLine" : 10,
+          "ModuleName" : "can_level_bit"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/ACG525_top.v",
+    "InstLine" : 143,
+    "InstName" : "digital_measure_top_inst",
+    "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/digital_measure.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "digital_measure",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/digital_measure.v",
+      "InstLine" : 45,
+      "InstName" : "digital_freq_measure_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/digital_freq_measure.v",
+      "ModuleLine" : 2,
+      "ModuleName" : "digital_freq_measure"
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/digital_measure.v",
+      "InstLine" : 57,
+      "InstName" : "digital_duty_measure_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/digital_duty_measure.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "digital_duty_measure"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/ACG525_top.v",
+    "InstLine" : 157,
+    "InstName" : "Gowin_PLL_inst",
+    "ModuleFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/gowin_pll/gowin_pll.v",
+    "ModuleLine" : 10,
+    "ModuleName" : "Gowin_PLL"
+   }
+  ]
+ }
+]

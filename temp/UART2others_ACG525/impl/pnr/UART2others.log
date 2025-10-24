@@ -1,0 +1,28 @@
+Reading netlist file: "C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\impl\gwsynthesis\UART2others.vg"
+Parsing netlist file "C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\impl\gwsynthesis\UART2others.vg" completed
+Processing netlist completed
+Reading constraint file: "C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\UART2others.cst"
+Physical Constraint parsed completed
+Running placement......
+[10%] Placement Phase 0 completed
+[20%] Placement Phase 1 completed
+[30%] Placement Phase 2 completed
+[50%] Placement Phase 3 completed
+Running routing......
+[60%] Routing Phase 0 completed
+[70%] Routing Phase 1 completed
+[80%] Routing Phase 2 completed
+WARN  (PR1014) : Generic routing resource will be used to clock signal 'extern_clk_d' by the specified constraint. And then it may lead to the excessive delay or skew
+[90%] Routing Phase 3 completed
+Running timing analysis......
+NOTE  (TA1125) : More than 16 critical paths are ignored because having large logic level.
+[95%] Timing analysis completed
+Placement and routing completed
+Bitstream generation in progress......
+Bitstream generation completed
+Generate file "C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\impl\pnr\UART2others.pin.html" completed
+Generate file "C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\impl\pnr\UART2others.rpt.html" completed
+Generate file "C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\impl\pnr\UART2others.rpt.txt" completed
+Generate file "C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\impl\pnr\UART2others.tr.html" completed
+Fri Oct 24 16:41:31 2025
+

@@ -1,0 +1,93 @@
+{
+ "Device" : "GW5A-25A",
+ "Files" : [
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/ACG525_top.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/I2C_drive.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/PWM_drive.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/can_bit.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/can_packet.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/can_top.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/digital_duty_measure.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/digital_freq_measure.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/digital_measure.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/gowin_pll/gowin_pll.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/packet2IIC.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/packet2PWM.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/spi_master.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/spi_top.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_byte_rx.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_byte_tx.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_data_tx.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_packet_rx.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/src/uart_rx_packet_trans.v",
+   "Type" : "verilog"
+  }
+ ],
+ "IncludePath" : [
+
+ ],
+ "LoopLimit" : 2000,
+ "ResultFile" : "C:/Users/32875/Desktop/FPGA/example/UART2others_ACG525/impl/temp/rtl_parser.result",
+ "Top" : "",
+ "VerilogStd" : "verilog_2001",
+ "VhdlStd" : "vhdl_93"
+}

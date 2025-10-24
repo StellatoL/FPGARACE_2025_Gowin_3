@@ -1,0 +1,101 @@
+GowinSynthesis start
+Running parser ...
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\ACG525_top.v'
+Undeclared symbol 'uart_tx_data_size', assumed default net type 'wire'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\ACG525_top.v":62)
+Undeclared symbol 'uart_tx_data', assumed default net type 'wire'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\ACG525_top.v":63)
+Undeclared symbol 'uart_send_en', assumed default net type 'wire'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\ACG525_top.v":64)
+WARN  (EX3638) : 'uart_send_en' is already implicitly declared on line 64("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\ACG525_top.v":69)
+WARN  (EX3638) : 'uart_tx_data' is already implicitly declared on line 63("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\ACG525_top.v":70)
+WARN  (EX3638) : 'uart_tx_data_size' is already implicitly declared on line 62("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\ACG525_top.v":71)
+WARN  (EX3801) : Parameter 'MAX_TX_DATA_WIDTH2' becomes localparam in 'ACG525_top' with formal parameter declaration list("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\ACG525_top.v":68)
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\I2C_drive.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\PWM_drive.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\can_bit.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\can_packet.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\can_top.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\digital_duty_measure.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\digital_freq_measure.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\digital_measure.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\packet2IIC.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\packet2PWM.v'
+WARN  (EX3261) : Loop variable declaration is not allowed in this mode of Verilog("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\packet2PWM.v":120)
+WARN  (EX3261) : Loop variable declaration is not allowed in this mode of Verilog("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\packet2PWM.v":127)
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\spi_master.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\spi_top.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_byte_rx.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_byte_tx.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_data_tx.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_packet_rx.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_rx_packet_trans.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\gowin_pll\gowin_pll.v'
+Compiling module 'ACG525_top'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\ACG525_top.v":1)
+Compiling module 'uart_data_tx(MAX_DATA_WIDTH=192,MSB_FIRST=1'b1)'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_data_tx.v":1)
+Compiling module 'uart_byte_tx'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_byte_tx.v":1)
+WARN  (EX3073) : Port 'spi_done' remains unconnected for this instance("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart.v":234)
+Compiling module 'uart'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart.v":1)
+Compiling module 'uart_packet_rx'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_packet_rx.v":1)
+Compiling module 'uart_byte_rx'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_byte_rx.v":1)
+WARN  (EX3791) : Expression size 6 truncated to fit in target size 5("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_packet_rx.v":74)
+WARN  (EX3791) : Expression size 6 truncated to fit in target size 5("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_packet_rx.v":93)
+WARN  (EX3791) : Expression size 6 truncated to fit in target size 5("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_packet_rx.v":98)
+WARN  (EX3670) : Actual bit length 8 differs from formal bit length 5 for port 'rx_data_size'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart.v":47)
+Compiling module 'uart_rx_packet_trans'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart_rx_packet_trans.v":1)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 8("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart.v":74)
+WARN  (EX3791) : Expression size 200 truncated to fit in target size 128("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart.v":90)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 8("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\uart.v":99)
+Compiling module 'packet2IIC'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\packet2IIC.v":1)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 8("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\packet2IIC.v":43)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 8("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\packet2IIC.v":44)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 8("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\packet2IIC.v":45)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 8("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\packet2IIC.v":46)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 8("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\packet2IIC.v":99)
+WARN  (EX3791) : Expression size 200 truncated to fit in target size 128("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\packet2IIC.v":105)
+Compiling module 'I2C_drive(CLK_FREQ=50000000,I2C_FREQ=100000,DATA_BYTE_NUM=16)'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\I2C_drive.v":1)
+WARN  (EX3791) : Expression size 10 truncated to fit in target size 9("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\I2C_drive.v":227)
+WARN  (EX3791) : Expression size 5 truncated to fit in target size 4("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\I2C_drive.v":264)
+WARN  (EX3791) : Expression size 5 truncated to fit in target size 4("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\I2C_drive.v":298)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 4("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\I2C_drive.v":321)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 4("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\I2C_drive.v":324)
+Compiling module 'spi_top(CPOL=0,CPHA=0)'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\spi_top.v":2)
+WARN  (EX3791) : Expression size 9 truncated to fit in target size 8("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\spi_top.v":123)
+Compiling module 'spi_modu(CLK_FREQ=50000000,SPI_FREQ=400000,BIT_NUM=8,CPOL=0,CPHA=0)'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\spi_master.v":16)
+WARN  (EX3791) : Expression size 3 truncated to fit in target size 2("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\spi_master.v":139)
+WARN  (EX3791) : Expression size 4 truncated to fit in target size 3("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\spi_master.v":140)
+WARN  (EX3791) : Expression size 5 truncated to fit in target size 4("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\spi_master.v":143)
+WARN  (EX3791) : Expression size 5 truncated to fit in target size 4("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\spi_master.v":155)
+Compiling module 'packet2PWM(MAX_RX_DATA_SIZE=25)'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\packet2PWM.v":1)
+Compiling module 'pwm_drive'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\PWM_drive.v":1)
+WARN  (EX3791) : Expression size 17 truncated to fit in target size 16("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\PWM_drive.v":27)
+Compiling module 'can_top(RX_ID_SHORT_FILTER=11'b00100100011,RX_ID_SHORT_MASK=11'b11111111111,RX_ID_LONG_FILTER=29'b10010001101000101011001111000,RX_ID_LONG_MASK=29'b11111111111111111111111111111,default_c_PTS=16'b0000000000100010,default_c_PBS1=16'b0000000000000101,default_c_PBS2=16'b0000000000001010)'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\can_top.v":11)
+Extracting RAM for identifier 'buffer'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\can_top.v":85)
+Compiling module 'can_level_packet(default_c_PTS=16'b0000000000100010,default_c_PBS1=16'b0000000000000101,default_c_PBS2=16'b0000000000001010)'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\can_packet.v":10)
+Compiling module 'can_level_bit(default_c_PTS=16'b0000000000100010,default_c_PBS1=16'b0000000000000101,default_c_PBS2=16'b0000000000001010)'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\can_bit.v":10)
+Compiling module 'digital_measure(CLK_FS=50000000)'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\digital_measure.v":1)
+Compiling module 'digital_freq_measure(CLK_FS=50000000)'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\digital_freq_measure.v":2)
+WARN  (EX3791) : Expression size 36 truncated to fit in target size 32("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\digital_freq_measure.v":125)
+Compiling module 'digital_duty_measure(CLK_FS=50000000)'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\digital_duty_measure.v":1)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 10("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\digital_duty_measure.v":127)
+Compiling module 'Gowin_PLL'("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\gowin_pll\gowin_pll.v":10)
+NOTE  (EX0101) : Current top module is "ACG525_top"
+[5%] Running netlist conversion ...
+Running device independent optimization ...
+[10%] Optimizing Phase 0 completed
+[15%] Optimizing Phase 1 completed
+[25%] Optimizing Phase 2 completed
+Running inference ...
+[30%] Inferring Phase 0 completed
+[40%] Inferring Phase 1 completed
+[50%] Inferring Phase 2 completed
+[55%] Inferring Phase 3 completed
+Running technical mapping ...
+[60%] Tech-Mapping Phase 0 completed
+[65%] Tech-Mapping Phase 1 completed
+[75%] Tech-Mapping Phase 2 completed
+[80%] Tech-Mapping Phase 3 completed
+[90%] Tech-Mapping Phase 4 completed
+WARN  (NL0002) : The module "Gowin_PLL" instantiated to "Gowin_PLL_inst" is swept in optimizing("C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\ACG525_top.v":161)
+[95%] Generate netlist file "C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\impl\gwsynthesis\UART2others.vg" completed
+NOTE  (TA1125) : More than 16 critical paths are ignored because having large logic level.
+[100%] Generate report file "C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\impl\gwsynthesis\UART2others_syn.rpt.html" completed
+GowinSynthesis finish

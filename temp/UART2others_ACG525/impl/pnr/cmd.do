@@ -1,0 +1,12 @@
+-d C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\impl\gwsynthesis\UART2others.vg
+-p GW5A-25A-UBGA324-2
+-pn GW5A-LV25UG324C2/I1
+-cst C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\src\UART2others.cst
+-cfg C:\Users\32875\Desktop\FPGA\example\UART2others_ACG525\impl\pnr\device.cfg
+-bit
+-tr
+-ph
+-timing
+-cst_error
+-correct_hold 1
+-route_maxfan 23

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module name="ACG525_top">
+    <SubModule name="uart_data_tx_inst2" Register="84" Lut="93">
+        <SubModule name="u_uart_byte_tx" Register="32" Lut="47"/>
+    </SubModule>
+    <SubModule name="uart_inst" Register="408" Lut="1860">
+        <SubModule name="uart_packet_rx_inst" Register="209" Lut="228">
+            <SubModule name="uart_byte_rx_inst" Register="34" Lut="47"/>
+        </SubModule>
+        <SubModule name="uart_rx_packet_trans_inst" Register="3" Lut="45"/>
+        <SubModule name="uart_data_tx_inst" Register="209" Alu="6" Lut="1000">
+            <SubModule name="u_uart_byte_tx" Register="32" Lut="47"/>
+        </SubModule>
+        <SubModule name="packet2IIC_inst" Register="171" Alu="5" Lut="1112">
+            <SubModule name="I2C_drive_inst" Register="447" Alu="8" Lut="339"/>
+        </SubModule>
+        <SubModule name="spi_top_inst" Register="278" Lut="170">
+            <SubModule name="spi_modu_inst" Register="56" Lut="58"/>
+        </SubModule>
+        <SubModule name="packet2PWM_inst" Register="167" Lut="6">
+            <SubModule name="pwm_drive_inst_ch0" Register="33" Alu="63" Lut="57" MULTALU27X18="1"/>
+            <SubModule name="pwm_drive_inst_ch1" Register="33" Alu="63" Lut="55" MULTALU27X18="1"/>
+            <SubModule name="pwm_drive_inst_ch2" Register="33" Alu="63" Lut="56" MULTALU27X18="1"/>
+            <SubModule name="pwm_drive_inst_ch3" Register="33" Alu="63" Lut="56" MULTALU27X18="1"/>
+        </SubModule>
+        <SubModule name="can_top_inst" Register="253" Alu="42" Lut="102" Bsram="4">
+            <SubModule name="u_can_level_packet" Register="243" Lut="421">
+                <SubModule name="u_can_level_bit" Register="45" Alu="16" Lut="111"/>
+            </SubModule>
+        </SubModule>
+    </SubModule>
+    <SubModule name="digital_measure_top_inst" Register="56" Lut="39">
+        <SubModule name="digital_freq_measure_inst" Register="146" Alu="626" Lut="2288" MULT27X36="1"/>
+        <SubModule name="digital_duty_measure_inst" Register="156" Alu="525" Lut="1804" MULT27X36="1"/>
+    </SubModule>
+</Module>
