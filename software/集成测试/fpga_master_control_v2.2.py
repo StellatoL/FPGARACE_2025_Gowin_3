@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-fpga_unified_control_v3.1_fft.py
-
+fpga_unified_control_v3.2_full.py
 功能:
 这是一个集成化的FPGA上位机工具，合并了高性能示波器、波形绘制发送和高级协议调试功能。
 1. [示波器] 通过共享内存从C++ UDP接收器高速读取ADC数据，使用pyqtgraph实时显示时域波形和频域(FFT)频谱。
 2. [波形绘制] 允许用户手绘波形，量化后通过串口发送。
 3. [控制调试] 集成了DAC函数发生器和支持多种协议(4路PWM/I2C/SPI等)的高级协议调试器。
-
+4. [协议解析] 添加了完整的协议帧接收和解析功能，支持UART、I2C、SPI、PWM和CAN协议
 依赖库:
 pip install PyQt6 pyqtgraph numpy pyserial scipy matplotlib
 """
@@ -15,7 +14,6 @@ import sys
 import mmap
 import struct
 import traceback
-
 import numpy as np
 import pyqtgraph as pg
 import serial
@@ -33,18 +31,14 @@ from matplotlib.backends.backend_qt5agg import \
 from matplotlib.figure import Figure
 from scipy.interpolate import interp1d
 from scipy.signal import savgol_filter
-
 # --- 配置参数 ---
 SHARED_MEM_NAME = "FPGA_ADC_DATA"
 SHARED_MEM_SIZE = 2048
 SCOPE_UPDATE_INTERVAL_MS = 30  # 调整刷新率以平衡UI响应和FFT计算
-
 CANVAS_WIDTH = 800
 CANVAS_HEIGHT = 400
 NUM_SAMPLES_SEND = 512
-
 DEFAULT_BAUD_RATE = 115200
-
 # 设置Matplotlib中文字体
 try:
     import matplotlib.pyplot as plt
@@ -120,31 +114,35 @@ class MplCanvas(FigureCanvas):
 class FPGAMasterControl(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("FPGA 集成上位机 v3.1 (含FFT)")
+        self.setWindowTitle("FPGA 集成上位机 v3.2 (含协议解析)")
         self.setGeometry(100, 100, 1200, 900)
-
         self.shared_memory = None
         self.serial_connection_control = None
+        self.serial_connection_scope = None  # 新增：示波器串口连接
         self.scope_data = np.array([])
-
         self.tabs = QTabWidget()
         self.setCentralWidget(self.tabs)
-
         self.scope_tab = QWidget()
         self.waveform_sender_tab = QWidget()
         self.control_tab = QWidget()
-
         self.tabs.addTab(self.scope_tab, "高速数字示波器")
         self.tabs.addTab(self.waveform_sender_tab, "波形绘制与发送")
         self.tabs.addTab(self.control_tab, "控制与高级调试")
-
+        
+        # 新增：串口接收缓冲区
+        self.control_serial_buffer = bytearray()
+        
         self.init_scope_tab()
         self.init_waveform_sender_tab()
         self.init_control_tab()
-
         self.scope_timer = QTimer(self)
         self.scope_timer.setInterval(SCOPE_UPDATE_INTERVAL_MS)
         self.scope_timer.timeout.connect(self.update_scope_plot)
+        
+        # 新增：串口数据检查定时器
+        self.serial_check_timer = QTimer(self)
+        self.serial_check_timer.setInterval(50)  # 50ms检查一次串口数据
+        self.serial_check_timer.timeout.connect(self.check_control_serial_data)
         
         self.connect_shared_memory()
 
@@ -157,11 +155,18 @@ class FPGAMasterControl(QMainWindow):
         self.disconnect_serial_control()
         if self.shared_memory:
             self.shared_memory.close()
+        # 断开示波器串口
+        if hasattr(self, 'serial_connection_scope') and self.serial_connection_scope and self.serial_connection_scope.is_open:
+            self.serial_connection_scope.close()
+        
+        # 停止串口检查定时器
+        self.serial_check_timer.stop()
+        
         event.accept()
 
     def refresh_all_ports(self):
         ports = serial.tools.list_ports.comports()
-        combo_boxes = [self.ports_combo_wf, self.ports_combo_control]
+        combo_boxes = [self.ports_combo_wf, self.ports_combo_control, self.scope_serial_combo]  # 修改：添加示波器串口
         for combo in combo_boxes:
             current_data = combo.currentData()
             combo.clear()
@@ -178,7 +183,7 @@ class FPGAMasterControl(QMainWindow):
         self.statusBar().showMessage("串口列表已刷新", 2000)
 
     # =============================================================================
-    # 选项卡 1: 高速数字示波器 (已修改，增加FFT)
+    # 选项卡 1: 高速数字示波器 (已修改，增加FFT和数据源选择)
     # =============================================================================
     def init_scope_tab(self):
         layout = QHBoxLayout(self.scope_tab)
@@ -198,14 +203,39 @@ class FPGAMasterControl(QMainWindow):
         self.fft_checkbox.setChecked(True)
         controls_layout.addWidget(self.fft_checkbox, 2, 0, 1, 2)
         
+        # 新增：数据源选择
+        controls_layout.addWidget(QLabel("数据源:"), 3, 0) 
+        self.data_source_combo = QComboBox() 
+        self.data_source_combo.addItems(["共享内存 (UDP)", "串口"])
+        controls_layout.addWidget(self.data_source_combo, 3, 1)
+        
+        # 新增：示波器串口配置
+        self.serial_group_scope = QGroupBox("串口配置")
+        serial_layout_scope = QGridLayout(self.serial_group_scope)
+        serial_layout_scope.addWidget(QLabel("端口:"), 0, 0)
+        self.scope_serial_combo = QComboBox()
+        serial_layout_scope.addWidget(self.scope_serial_combo, 0, 1)
+        serial_layout_scope.addWidget(QLabel("波特率:"), 1, 0)
+        self.scope_baud_combo = QComboBox()
+        self.scope_baud_combo.addItems(["9600", "57600", "115200", "1000000"])
+        self.scope_baud_combo.setCurrentText("1000000")
+        serial_layout_scope.addWidget(self.scope_baud_combo, 1, 1)
+        self.connect_serial_button_scope = QPushButton("连接")
+        self.disconnect_serial_button_scope = QPushButton("断开")
+        self.disconnect_serial_button_scope.setEnabled(False)
+        serial_layout_scope.addWidget(self.connect_serial_button_scope, 2, 0)
+        serial_layout_scope.addWidget(self.disconnect_serial_button_scope, 2, 1)
+        controls_layout.addWidget(self.serial_group_scope, 4, 0, 1, 2)
+        self.serial_group_scope.setVisible(False)  # 初始隐藏
+        
         self.start_button = QPushButton("开始采样"); self.stop_button = QPushButton("停止采样")
         self.save_button = QPushButton("保存数据"); self.stop_button.setEnabled(False)
-        controls_layout.addWidget(self.start_button, 3, 0, 1, 2)
-        controls_layout.addWidget(self.stop_button, 4, 0, 1, 2)
-        controls_layout.addWidget(self.save_button, 5, 0, 1, 2)
+        controls_layout.addWidget(self.start_button, 5, 0, 1, 2)
+        controls_layout.addWidget(self.stop_button, 6, 0, 1, 2)
+        controls_layout.addWidget(self.save_button, 7, 0, 1, 2)
         self.status_label = QLabel("状态: 已停止")
-        controls_layout.addWidget(self.status_label, 6, 0, 1, 2)
-        controls_layout.setRowStretch(7, 1)
+        controls_layout.addWidget(self.status_label, 8, 0, 1, 2)
+        controls_layout.setRowStretch(9, 1)
         
         # --- 右侧绘图区域 (时域 + 频域) ---
         plot_area_layout = QVBoxLayout()
@@ -224,7 +254,6 @@ class FPGAMasterControl(QMainWindow):
         self.curve_freq = self.plot_widget_freq.plot(pen=pg.mkPen(color='#FFD700', width=2))
         self.setup_plot_style(self.plot_widget_freq, "Frequency Spectrum (FFT)", "Frequency (Hz)", "Magnitude |Y(f)|")
         self.plot_widget_freq.setLogMode(x=True, y=False) # X轴使用对数坐标
-
         plot_area_layout.addWidget(time_plot_group)
         plot_area_layout.addWidget(freq_plot_group)
         layout.addWidget(controls_group)
@@ -235,6 +264,10 @@ class FPGAMasterControl(QMainWindow):
         self.stop_button.clicked.connect(self.stop_scope)
         self.save_button.clicked.connect(self.save_scope_data)
         self.fft_checkbox.stateChanged.connect(lambda: self.plot_widget_freq.setVisible(self.fft_checkbox.isChecked()))
+        # 新增：数据源改变信号
+        self.data_source_combo.currentTextChanged.connect(self.toggle_serial_config)
+        self.connect_serial_button_scope.clicked.connect(self.connect_serial_scope)
+        self.disconnect_serial_button_scope.clicked.connect(self.disconnect_serial_scope)
 
     def setup_plot_style(self, plot_widget, title, xlabel, ylabel, yrange=None):
         plot_widget.setBackground('k')
@@ -246,6 +279,13 @@ class FPGAMasterControl(QMainWindow):
         plot_widget.getAxis('left').setPen(pg.mkPen(color='w'))
         if yrange: plot_widget.setYRange(*yrange)
 
+    def toggle_serial_config(self, source_text):
+        """根据选择的数据源显示或隐藏串口配置"""
+        if source_text == "串口":
+            self.serial_group_scope.setVisible(True)
+        else:
+            self.serial_group_scope.setVisible(False)
+
     def connect_shared_memory(self):
         try:
             self.shared_memory = mmap.mmap(-1, SHARED_MEM_SIZE, tagname=SHARED_MEM_NAME)
@@ -254,10 +294,41 @@ class FPGAMasterControl(QMainWindow):
             self.show_error(f"未找到共享内存 '{SHARED_MEM_NAME}'。\n请确保 C++ 接收程序已运行！")
         except Exception as e: self.show_error(f"访问共享内存时出错: {e}")
 
+    def connect_serial_scope(self):
+        """连接示波器串口"""
+        port = self.scope_serial_combo.currentData()
+        if not port: 
+            self.show_error("请选择串口！")
+            return
+        baud = int(self.scope_baud_combo.currentText())
+        try:
+            self.serial_connection_scope = serial.Serial(port, baud, timeout=0.1)
+            self.connect_serial_button_scope.setEnabled(False)
+            self.disconnect_serial_button_scope.setEnabled(True)
+            self.statusBar().showMessage(f"示波器串口已连接: {port}", 5000)
+        except serial.SerialException as e: 
+            self.show_error(f"无法打开串口: {e}")
+
+    def disconnect_serial_scope(self):
+        """断开示波器串口"""
+        if hasattr(self, 'serial_connection_scope') and self.serial_connection_scope and self.serial_connection_scope.is_open:
+            self.serial_connection_scope.close()
+        self.serial_connection_scope = None
+        self.connect_serial_button_scope.setEnabled(True)
+        self.disconnect_serial_button_scope.setEnabled(False)
+        self.statusBar().showMessage("示波器串口已断开", 2000)
+
     def start_scope(self):
-        if not self.shared_memory:
-            self.connect_shared_memory()
-            if not self.shared_memory: return
+        source = self.data_source_combo.currentText()
+        if source == "共享内存 (UDP)":
+            if not self.shared_memory:
+                self.connect_shared_memory()
+                if not self.shared_memory: return
+        elif source == "串口":
+            if not self.serial_connection_scope or not self.serial_connection_scope.is_open:
+                self.connect_serial_scope()
+                if not hasattr(self, 'serial_connection_scope') or not self.serial_connection_scope: return
+        
         self.scope_timer.start()
         self.start_button.setEnabled(False); self.stop_button.setEnabled(True)
         self.status_label.setText("状态: 正在采样...")
@@ -278,27 +349,43 @@ class FPGAMasterControl(QMainWindow):
 
     def update_scope_plot(self):
         """核心函数：读取数据，更新时域图，并计算和更新频域图"""
-        if not self.shared_memory: return
-        try:
-            self.shared_memory.seek(0)
-            count_bytes = self.shared_memory.read(2)
-            if len(count_bytes) < 2: return
-            sample_count = struct.unpack('>H', count_bytes)[0]
+        source = self.data_source_combo.currentText()
+        
+        # 根据数据源读取数据
+        if source == "共享内存 (UDP)":
+            if not self.shared_memory: return
+            try:
+                self.shared_memory.seek(0)
+                count_bytes = self.shared_memory.read(2)
+                if len(count_bytes) < 2: return
+                sample_count = struct.unpack('>H', count_bytes)[0]
+                
+                if 0 < sample_count <= (SHARED_MEM_SIZE - 2):
+                    adc_data_bytes = self.shared_memory.read(sample_count)
+                    self.scope_data = np.frombuffer(adc_data_bytes, dtype=np.uint8)
+            except Exception as e:
+                print(f"读取共享内存出错: {e}"); self.stop_scope()
+                
+        elif source == "串口":
+            if not hasattr(self, 'serial_connection_scope') or not self.serial_connection_scope or not self.serial_connection_scope.is_open:
+                return
+            try:
+                # 读取串口数据（假设数据格式：每个字节一个ADC值）
+                data_bytes = self.serial_connection_scope.read(self.serial_connection_scope.in_waiting or 1)
+                if data_bytes:
+                    self.scope_data = np.frombuffer(data_bytes, dtype=np.uint8)
+            except Exception as e:
+                print(f"读取串口数据出错: {e}"); self.stop_scope()
+        
+        # 如果有数据，更新显示
+        if self.scope_data.size > 0:
+            # 1. 更新时域图
+            self.curve_time.setData(self.scope_data)
+            self.data_points_input.setText(str(self.scope_data.size))
             
-            if 0 < sample_count <= (SHARED_MEM_SIZE - 2):
-                adc_data_bytes = self.shared_memory.read(sample_count)
-                self.scope_data = np.frombuffer(adc_data_bytes, dtype=np.uint8)
-                
-                # 1. 更新时域图
-                self.curve_time.setData(self.scope_data)
-                self.data_points_input.setText(str(self.scope_data.size))
-                
-                # 2. 如果启用，则计算并更新频域图
-                if self.fft_checkbox.isChecked() and self.scope_data.size > 1:
-                    self.update_fft_plot()
-                
-        except Exception as e:
-            print(f"读取或更新绘图时出错: {e}"); self.stop_scope()
+            # 2. 如果启用，则计算并更新频域图
+            if self.fft_checkbox.isChecked() and self.scope_data.size > 1:
+                self.update_fft_plot()
 
     def update_fft_plot(self):
         try:
@@ -321,7 +408,6 @@ class FPGAMasterControl(QMainWindow):
         y_magnitude = 2.0/N * np.abs(yf[0:N//2])
         
         self.curve_freq.setData(x=xf, y=y_magnitude)
-
 
     # =============================================================================
     # 选项卡 2: 波形绘制与发送 - 无变化
@@ -389,50 +475,97 @@ class FPGAMasterControl(QMainWindow):
         self.plot_canvas_sender.draw()
 
     # =============================================================================
-    # 选项卡 3: 控制与高级调试 (已修改，4路PWM)
+    # 选项卡 3: 控制与高级调试 (已修改，4路PWM独立启停) + 协议解析
     # =============================================================================
     def init_control_tab(self):
         main_layout = QVBoxLayout(self.control_tab)
         # 串口配置
-        serial_group = QGroupBox("串口配置"); serial_layout = QHBoxLayout(serial_group)
-        serial_layout.addWidget(QLabel("端口:")); self.ports_combo_control = QComboBox(); serial_layout.addWidget(self.ports_combo_control, 1)
-        self.baud_combo_control = QComboBox(); self.baud_combo_control.addItems(["9600", "57600", "115200"]); self.baud_combo_control.setCurrentText(str(DEFAULT_BAUD_RATE))
-        serial_layout.addWidget(QLabel("波特率:")); serial_layout.addWidget(self.baud_combo_control)
-        self.refresh_button_control = QPushButton("刷新"); serial_layout.addWidget(self.refresh_button_control)
-        self.connect_serial_button = QPushButton("打开"); self.disconnect_serial_button = QPushButton("关闭"); self.disconnect_serial_button.setEnabled(False)
-        serial_layout.addWidget(self.connect_serial_button); serial_layout.addWidget(self.disconnect_serial_button)
+        serial_group = QGroupBox("串口配置")
+        serial_layout = QHBoxLayout(serial_group)
+        serial_layout.addWidget(QLabel("端口:"))
+        self.ports_combo_control = QComboBox()
+        serial_layout.addWidget(self.ports_combo_control, 1)
+        self.baud_combo_control = QComboBox()
+        self.baud_combo_control.addItems(["9600", "57600", "115200"])
+        self.baud_combo_control.setCurrentText(str(DEFAULT_BAUD_RATE))
+        serial_layout.addWidget(QLabel("波特率:"))
+        serial_layout.addWidget(self.baud_combo_control)
+        self.refresh_button_control = QPushButton("刷新")
+        serial_layout.addWidget(self.refresh_button_control)
+        self.connect_serial_button = QPushButton("打开")
+        self.disconnect_serial_button = QPushButton("关闭")
+        self.disconnect_serial_button.setEnabled(False)
+        serial_layout.addWidget(self.connect_serial_button)
+        serial_layout.addWidget(self.disconnect_serial_button)
         
         control_panel_layout = QHBoxLayout()
         left_panel = QVBoxLayout()
+        
         # DAC发生器
-        dac_group = QGroupBox("DAC 函数发生器"); dac_layout = QGridLayout(dac_group)
-        dac_layout.addWidget(QLabel("波形:"), 0, 0); self.wave_sine = QRadioButton("正弦"); self.wave_sine.setChecked(True)
-        self.wave_square = QRadioButton("方波"); self.wave_triangle = QRadioButton("三角")
-        dac_layout.addWidget(self.wave_sine, 0, 1); dac_layout.addWidget(self.wave_square, 0, 2); dac_layout.addWidget(self.wave_triangle, 0, 3)
-        dac_layout.addWidget(QLabel("频率(Hz):"), 1, 0); self.freq_input = QLineEdit("1000"); dac_layout.addWidget(self.freq_input, 1, 1, 1, 3)
-        dac_layout.addWidget(QLabel("幅值(V):"), 2, 0); self.amp_input = QLineEdit("2.50"); dac_layout.addWidget(self.amp_input, 2, 1, 1, 3)
-        self.start_dac_button = QPushButton("开始输出"); self.stop_dac_button = QPushButton("停止输出")
-        dac_layout.addWidget(self.start_dac_button, 3, 0, 1, 2); dac_layout.addWidget(self.stop_dac_button, 3, 2, 1, 2)
+        dac_group = QGroupBox("DAC 函数发生器")
+        dac_layout = QGridLayout(dac_group)
+        dac_layout.addWidget(QLabel("波形:"), 0, 0)
+        self.wave_sine = QRadioButton("正弦")
+        self.wave_sine.setChecked(True)
+        self.wave_square = QRadioButton("方波")
+        self.wave_triangle = QRadioButton("三角")
+        dac_layout.addWidget(self.wave_sine, 0, 1)
+        dac_layout.addWidget(self.wave_square, 0, 2)
+        dac_layout.addWidget(self.wave_triangle, 0, 3)
+        dac_layout.addWidget(QLabel("频率(Hz):"), 1, 0)
+        self.freq_input = QLineEdit("1000")
+        dac_layout.addWidget(self.freq_input, 1, 1, 1, 3)
+        dac_layout.addWidget(QLabel("幅值(V):"), 2, 0)
+        self.amp_input = QLineEdit("2.50")
+        dac_layout.addWidget(self.amp_input, 2, 1, 1, 3)
+        self.start_dac_button = QPushButton("开始输出")
+        self.stop_dac_button = QPushButton("停止输出")
+        dac_layout.addWidget(self.start_dac_button, 3, 0, 1, 2)
+        dac_layout.addWidget(self.stop_dac_button, 3, 2, 1, 2)
+        
         # 高级协议调试器
-        protocol_group = QGroupBox("高级协议调试器"); protocol_layout = QVBoxLayout(protocol_group)
-        self.protocol_combo = QComboBox(); self.protocol_combo.addItems(["PWM", "I2C", "SPI", "UART"])
-        protocol_layout.addWidget(self.protocol_combo); self.stacked_widget = QStackedWidget(); self.init_protocol_pages()
-        protocol_layout.addWidget(self.stacked_widget); self.send_protocol_button = QPushButton("构建并发送协议命令")
+        protocol_group = QGroupBox("高级协议调试器")
+        protocol_layout = QVBoxLayout(protocol_group)
+        self.protocol_combo = QComboBox()
+        self.protocol_combo.addItems(["PWM", "I2C", "SPI", "UART", "CAN"])
+        protocol_layout.addWidget(self.protocol_combo)
+        self.stacked_widget = QStackedWidget()
+        self.init_protocol_pages()
+        protocol_layout.addWidget(self.stacked_widget)
+        self.send_protocol_button = QPushButton("构建并发送协议命令")
         protocol_layout.addWidget(self.send_protocol_button)
-        left_panel.addWidget(dac_group); left_panel.addWidget(protocol_group)
+        
+        left_panel.addWidget(dac_group)
+        left_panel.addWidget(protocol_group)
         
         # 数据监视
-        right_panel = QVBoxLayout(); display_group = QGroupBox("数据监视"); display_layout = QVBoxLayout(display_group)
-        display_layout.addWidget(QLabel("发送历史:")); self.sent_data_display = QTextEdit(); self.sent_data_display.setReadOnly(True); self.sent_data_display.setFontFamily("Courier New")
-        display_layout.addWidget(self.sent_data_display); display_layout.addWidget(QLabel("接收历史:"))
-        self.received_data_display = QTextEdit(); self.received_data_display.setReadOnly(True); self.received_data_display.setFontFamily("Courier New")
-        display_layout.addWidget(self.received_data_display); self.clear_logs_button = QPushButton("清空日志")
-        display_layout.addWidget(self.clear_logs_button); right_panel.addWidget(display_group)
+        right_panel = QVBoxLayout()
+        display_group = QGroupBox("数据监视")
+        display_layout = QVBoxLayout(display_group)
+        display_layout.addWidget(QLabel("发送历史:"))
+        self.sent_data_display = QTextEdit()
+        self.sent_data_display.setReadOnly(True)
+        self.sent_data_display.setFontFamily("Courier New")
+        display_layout.addWidget(self.sent_data_display)
+        display_layout.addWidget(QLabel("接收历史:"))
+        self.received_data_display = QTextEdit()
+        self.received_data_display.setReadOnly(True)
+        self.received_data_display.setFontFamily("Courier New")
+        display_layout.addWidget(self.received_data_display)
+        self.clear_logs_button = QPushButton("清空日志")
+        display_layout.addWidget(self.clear_logs_button)
         
-        control_panel_layout.addLayout(left_panel, 2); control_panel_layout.addLayout(right_panel, 1)
-        main_layout.addWidget(serial_group); main_layout.addLayout(control_panel_layout)
+        right_panel.addWidget(display_group)
+        
+        control_panel_layout.addLayout(left_panel, 2)
+        control_panel_layout.addLayout(right_panel, 1)
+        
+        main_layout.addWidget(serial_group)
+        main_layout.addLayout(control_panel_layout)
+        
+        # 刷新串口列表
         self.refresh_all_ports()
-
+        
         # 连接信号
         self.refresh_button_control.clicked.connect(self.refresh_all_ports)
         self.connect_serial_button.clicked.connect(self.connect_serial_control)
@@ -441,17 +574,60 @@ class FPGAMasterControl(QMainWindow):
         self.stop_dac_button.clicked.connect(lambda: self.send_serial_command_control("DAC,STOP\n"))
         self.protocol_combo.currentIndexChanged.connect(self.stacked_widget.setCurrentIndex)
         self.send_protocol_button.clicked.connect(self.construct_and_send_frame)
-        self.clear_logs_button.clicked.connect(lambda: (self.sent_data_display.clear(), self.received_data_display.clear()))
-
+        self.clear_logs_button.clicked.connect(self.clear_logs)
+    
+    def clear_logs(self):
+        """清空发送和接收历史"""
+        self.sent_data_display.clear()
+        self.received_data_display.clear()
     def init_protocol_pages(self):
-        # *** 修改点: 恢复4路PWM ***
-        page_pwm = QWidget(); layout = QFormLayout(page_pwm); self.pwm_inputs = []
-        for i in range(1, 5): # 从 range(1,3) 改为 range(1,5)
-            psc = QLineEdit("1000"); arr = QLineEdit("255"); duty = QLineEdit("128")
-            layout.addRow(f"--- 通道 {i} ---", None)
-            layout.addRow(f"PSC Ch{i} (8-byte):", psc); layout.addRow(f"ARR Ch{i} (8-byte):", arr); layout.addRow(f"Duty Ch{i} (4-byte):", duty)
-            self.pwm_inputs.append({'psc': psc, 'arr': arr, 'duty': duty})
+        # *** 修改点: 4路PWM添加独立启停开关 ***
+        page_pwm = QWidget()
+        main_layout = QVBoxLayout(page_pwm)  # 改为垂直布局
+        pwm_group = QGroupBox("PWM 配置")
+        layout = QGridLayout(pwm_group)
+        
+        # 添加表头
+        layout.addWidget(QLabel("通道"), 0, 0)
+        layout.addWidget(QLabel("启停"), 0, 1)
+        layout.addWidget(QLabel("PSC (2-byte)"), 0, 2)
+        layout.addWidget(QLabel("ARR (2-byte)"), 0, 3)
+        layout.addWidget(QLabel("Duty (1-byte)"), 0, 4)
+        
+        self.pwm_inputs = []
+        for i in range(1, 5):
+            # 通道标签
+            layout.addWidget(QLabel(f"通道 {i}"), i, 0)
+            
+            # 启停开关
+            enable_check = QCheckBox("启用")
+            enable_check.setChecked(True)
+            layout.addWidget(enable_check, i, 1)
+            
+            # 参数输入框
+            psc = QLineEdit("1000")
+            arr = QLineEdit("255")
+            duty = QLineEdit("128")
+            layout.addWidget(psc, i, 2)
+            layout.addWidget(arr, i, 3)
+            layout.addWidget(duty, i, 4)
+            
+            self.pwm_inputs.append({
+                'enable': enable_check,
+                'psc': psc,
+                'arr': arr,
+                'duty': duty
+            })
+        
+        # 添加垂直拉伸因子使内容向上对齐
+        layout.setRowStretch(5, 1)  # 在第5行添加拉伸
+        
+        # 将PWM组添加到主布局并设置对齐方式
+        main_layout.addWidget(pwm_group)
+        main_layout.addStretch(1)  # 添加拉伸使内容向上对齐
+        
         self.stacked_widget.addWidget(page_pwm)
+        
         # 其他页面保持不变
         page_i2c = QWidget(); layout = QFormLayout(page_i2c)
         self.i2c_addr_width = QComboBox(); self.i2c_addr_width.addItems(["8-bit", "16-bit"]); self.i2c_device_addr = QLineEdit("68")
@@ -466,6 +642,14 @@ class FPGAMasterControl(QMainWindow):
         page_uart = QWidget(); layout = QFormLayout(page_uart)
         self.uart_data_to_write = QLineEdit("DE AD BE EF"); layout.addRow("发送数据(Hex):", self.uart_data_to_write)
         self.stacked_widget.addWidget(page_uart)
+        
+        # 添加CAN协议页面
+        page_can = QWidget(); layout = QFormLayout(page_can)
+        self.can_id = QLineEdit("123"); layout.addRow("CAN ID(Hex):", self.can_id)
+        self.can_data = QLineEdit("AA BB CC DD"); layout.addRow("数据(Hex):", self.can_data)
+        self.can_extended = QCheckBox("扩展帧"); layout.addRow(self.can_extended)
+        self.can_remote = QCheckBox("远程帧"); layout.addRow(self.can_remote)
+        self.stacked_widget.addWidget(page_can)
 
     def connect_serial_control(self):
         port = self.ports_combo_control.currentData(); baud = int(self.baud_combo_control.currentText())
@@ -474,6 +658,8 @@ class FPGAMasterControl(QMainWindow):
             self.serial_connection_control = serial.Serial(port, baud, timeout=0.5)
             self.connect_serial_button.setEnabled(False); self.disconnect_serial_button.setEnabled(True)
             self.statusBar().showMessage(f"成功连接到 {port}", 5000)
+            # 启动串口数据检查定时器
+            self.serial_check_timer.start()
         except serial.SerialException as e: self.show_error(f"无法打开串口: {e}")
 
     def disconnect_serial_control(self):
@@ -482,7 +668,9 @@ class FPGAMasterControl(QMainWindow):
         self.serial_connection_control = None
         self.connect_serial_button.setEnabled(True); self.disconnect_serial_button.setEnabled(False)
         self.statusBar().showMessage("控制串口已关闭", 2000)
-
+        # 停止串口数据检查定时器
+        self.serial_check_timer.stop()
+        
     def send_serial_command_control(self, data, is_binary=False):
         if not (self.serial_connection_control and self.serial_connection_control.is_open):
             self.show_error("控制串口未连接！"); return
@@ -490,13 +678,9 @@ class FPGAMasterControl(QMainWindow):
             if is_binary:
                 self.serial_connection_control.write(data)
                 self.sent_data_display.append(f"-> [HEX] {' '.join(f'{b:02X}' for b in data)}")
-                response = self.serial_connection_control.read_until(b'\r\n')
-                if response: self.received_data_display.append(f"<- [HEX] {' '.join(f'{b:02X}' for b in response)}")
             else:
                 self.serial_connection_control.write(data.encode('ascii'))
                 self.sent_data_display.append(f"-> [ASCII] {data.strip()}")
-                response = self.serial_connection_control.readline().decode('ascii', errors='ignore').strip()
-                if response: self.received_data_display.append(f"<- [ASCII] {response}")
         except serial.SerialException as e:
             self.show_error(f"串口通信错误: {e}"); self.disconnect_serial_control()
 
@@ -521,23 +705,211 @@ class FPGAMasterControl(QMainWindow):
         frame = bytearray([0x20, 0x25]); selection_byte = 0; payload = bytearray()
         if protocol == "PWM":
             selection_byte |= 0b011
-            psc_bytes, arr_bytes, duty_bytes = bytearray(), bytearray(), bytearray()
+            psc_bytes, arr_bytes, duty_bytes, enable_bytes = bytearray(), bytearray(), bytearray(), bytearray()
+            
             for i in range(len(self.pwm_inputs)):
-                psc = int(self.pwm_inputs[i]['psc'].text()); arr = int(self.pwm_inputs[i]['arr'].text()); duty = int(self.pwm_inputs[i]['duty'].text())
-                psc_bytes.extend(psc.to_bytes(2, 'big')); arr_bytes.extend(arr.to_bytes(2, 'big')); duty_bytes.extend(duty.to_bytes(1, 'big'))
-            payload.extend(psc_bytes); payload.extend(arr_bytes); payload.extend(duty_bytes)
+                # 获取启停状态 (1=启用, 0=停用)
+                enable = 1 if self.pwm_inputs[i]['enable'].isChecked() else 0
+                enable_bytes.extend(enable.to_bytes(1, 'big'))
+                
+                # 获取参数值（停用时设为0）
+                if enable:
+                    psc_val = int(self.pwm_inputs[i]['psc'].text())
+                    arr_val = int(self.pwm_inputs[i]['arr'].text())
+                    duty_val = int(self.pwm_inputs[i]['duty'].text())
+                else:
+                    psc_val = 0
+                    arr_val = 0
+                    duty_val = 0
+                
+                psc_bytes.extend(psc_val.to_bytes(2, 'big'))
+                arr_bytes.extend(arr_val.to_bytes(2, 'big'))
+                duty_bytes.extend(duty_val.to_bytes(1, 'big'))
+            
+            # 按顺序组合所有数据
+            payload.extend(enable_bytes)
+            payload.extend(psc_bytes)
+            payload.extend(arr_bytes)
+            payload.extend(duty_bytes)
         elif protocol == "I2C":
-            # (... 其他协议构建逻辑保持不变 ...)
             selection_byte |= 0b001
+            # 解析I2C参数
+            addr_width = 0 if self.i2c_addr_width.currentText() == "8-bit" else 1
+            device_addr = int(self.i2c_device_addr.text(), 16)
+            reg_addr = int(self.i2c_reg_addr.text(), 16)
+            write_data = bytes.fromhex(self.i2c_data_to_write.text().replace(' ', ''))
+            read_len = int(self.i2c_read_len.text())
+            
+            # 构建帧
+            payload.append(addr_width)
+            payload.append(device_addr)
+            payload.extend(reg_addr.to_bytes(2 if addr_width else 1, 'big'))
+            payload.append(len(write_data))
+            payload.extend(write_data)
+            payload.extend(read_len.to_bytes(2, 'big'))
         elif protocol == "SPI":
             selection_byte |= 0b010
+            # 解析SPI参数
+            tx_only = 1 if self.spi_tx_only.isChecked() else 0
+            write_data = bytes.fromhex(self.spi_data_to_write.text().replace(' ', ''))
+            read_len = int(self.spi_read_len.text())
+            
+            # 构建帧
+            payload.append(tx_only)
+            payload.append(len(write_data))
+            payload.extend(write_data)
+            payload.extend(read_len.to_bytes(2, 'big'))
         elif protocol == "UART":
             selection_byte |= 0b000
             data_str = self.uart_data_to_write.text().strip()
             if data_str: payload.extend(bytes.fromhex(data_str.replace(' ', '')))
+        elif protocol == "CAN":
+            selection_byte |= 0b100
+            # 解析CAN参数
+            can_id = int(self.can_id.text(), 16)
+            can_data = bytes.fromhex(self.can_data.text().replace(' ', ''))
+            flags = 0
+            if self.can_extended.isChecked(): flags |= 0x01
+            if self.can_remote.isChecked(): flags |= 0x02
+            
+            # 构建帧
+            payload.extend(can_id.to_bytes(4, 'big'))
+            payload.append(flags)
+            payload.append(len(can_data))
+            payload.extend(can_data)
         else: self.show_error(f"协议 {protocol} 未定义！"); return None
         frame.append(selection_byte); frame.extend(payload); frame.extend(b'\r\n')
         return frame
+
+    # =============================================================================
+    # 协议帧解析功能
+    # =============================================================================
+    def parse_received_frame(self, frame_data):
+        """解析接收到的数据帧"""
+        try:
+            # 检查帧头
+            if frame_data[0:2] != b'\x20\x25':
+                return "无效帧头"
+            
+            # 获取协议选择位
+            protocol_byte = frame_data[2]
+            protocol_type = protocol_byte & 0b111
+            extended_flags = (protocol_byte >> 3) & 0b11111
+            
+            # 根据协议类型解析数据
+            if protocol_type == 0b000:   # UART
+                data = frame_data[3:]
+                return f"[UART] 接收数据: {data.hex(' ').upper()}"
+            
+            elif protocol_type == 0b001:  # I2C
+                # 解析地址宽度
+                addr_width = extended_flags & 0b1
+                device_addr = frame_data[3]
+                reg_addr_start = 4
+                reg_addr_end = reg_addr_start + (2 if addr_width else 1)
+                reg_addr = frame_data[reg_addr_start:reg_addr_end]
+                data_len = frame_data[reg_addr_end]
+                data_start = reg_addr_end + 1
+                data_end = data_start + data_len
+                data = frame_data[data_start:data_end] if data_end <= len(frame_data) else b''
+                
+                return (f"[I2C] 设备地址: 0x{device_addr:02X}, "
+                        f"寄存器地址: 0x{int.from_bytes(reg_addr, 'big'):0{4 if addr_width else 2}X}, "
+                        f"数据: {data.hex(' ').upper()}")
+            
+            elif protocol_type == 0b010:  # SPI
+                mode = extended_flags & 0b1
+                data_len = frame_data[3]
+                data = frame_data[4:4+data_len] if data_len > 0 else b''
+                
+                return f"[SPI] 模式: {'TX/RX' if mode else 'TX Only'}, 数据: {data.hex(' ').upper()}"
+            
+            elif protocol_type == 0b011:  # PWM
+                # 解析4个通道的状态
+                status = []
+                data_idx = 3
+                for i in range(4):
+                    if data_idx + 3 > len(frame_data):
+                        break
+                    
+                    # 每个通道状态占3字节: 通道号(1字节), PSC(2字节)
+                    channel = frame_data[data_idx]
+                    psc = int.from_bytes(frame_data[data_idx+1:data_idx+3], 'big')
+                    status.append(f"通道{channel}: PSC={psc}")
+                    data_idx += 3
+                
+                return f"[PWM] 状态: {'; '.join(status)}"
+            
+            elif protocol_type == 0b100:  # CAN
+                # CAN帧格式: ID(4字节) + 标志(1字节) + 数据长度(1字节) + 数据(0-8字节)
+                if len(frame_data) < 7:
+                    return "CAN帧不完整"
+                
+                can_id = int.from_bytes(frame_data[3:7], 'big')
+                flags = frame_data[7]
+                data_len = frame_data[8]
+                data = frame_data[9:9+data_len] if data_len > 0 else b''
+                
+                extended = "是" if flags & 0x01 else "否"
+                remote = "是" if flags & 0x02 else "否"
+                
+                return (f"[CAN] ID: 0x{can_id:08X}, 扩展帧: {extended}, 远程帧: {remote}, "
+                        f"数据长度: {data_len}, 数据: {data.hex(' ').upper()}")
+            
+            else:
+                return f"未知协议: 0x{protocol_type:02X}"
+        
+        except Exception as e:
+            return f"解析错误: {str(e)}"
+
+    def check_control_serial_data(self):
+        """检查控制串口接收的数据并解析帧"""
+        if not (self.serial_connection_control and self.serial_connection_control.is_open):
+            return
+        
+        # 读取所有可用数据
+        data = self.serial_connection_control.read(self.serial_connection_control.in_waiting)
+        if not data:
+            return
+        
+        # 追加到缓冲区
+        self.control_serial_buffer.extend(data)
+        
+        # 尝试查找完整帧 (帧头 + 协议位 + 数据 + 帧尾)
+        while len(self.control_serial_buffer) >= 5:  # 最小帧长度(帧头2+协议1+数据1+帧尾2)
+            # 查找帧头
+            start_idx = -1
+            for i in range(len(self.control_serial_buffer) - 4):
+                if self.control_serial_buffer[i:i+2] == b'\x20\x25':
+                    start_idx = i
+                    break
+            
+            if start_idx == -1:
+                # 没有找到有效帧头，清空缓冲区
+                self.control_serial_buffer.clear()
+                return
+            
+            # 查找帧尾
+            end_idx = -1
+            for i in range(start_idx + 3, len(self.control_serial_buffer) - 1):
+                if self.control_serial_buffer[i:i+2] == b'\x0D\x0A':  # \r\n
+                    end_idx = i
+                    break
+            
+            if end_idx == -1:
+                # 没有找到完整帧，保留剩余数据
+                self.control_serial_buffer = self.control_serial_buffer[start_idx:]
+                return
+            
+            # 提取完整帧
+            frame_data = bytes(self.control_serial_buffer[start_idx:end_idx+2])
+            
+            # 解析帧
+            parsed_info = self.parse_received_frame(frame_data)
+            self.received_data_display.append(parsed_info)
+            
+            # 从缓冲区移除已处理帧
+            self.control_serial_buffer = self.control_serial_buffer[end_idx+2:]
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
