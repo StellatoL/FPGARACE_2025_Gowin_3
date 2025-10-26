@@ -1,5 +1,5 @@
 /**
- * @file udp_receiver_raw.cpp
+ * @file udp_receiver_sm.cpp
  * @brief 一个用于接收FPGA高速ADC原始数据的UDP服务器程序 (Windows平台)
  * 并通过共享内存将数据传递给其他进程。
  *
@@ -12,8 +12,8 @@
  * 6. 打印接收统计信息。
  * 7. 在程序退出时正确清理资源。
  *
- * 编译说明 (使用g++):
- * g++ -o udp_receiver_raw.exe udp_receiver_raw.cpp -lws2_32
+ * 编译说明 (使用 MinGW g++):
+ * g++ -o udp_receiver_sm.exe udp_receiver_sm.cpp -lws2_32
  */
 
 #include <iostream>
@@ -33,7 +33,10 @@ constexpr int RECV_TIMEOUT_MS = 5000;             // 5秒接收超时
 
 // --- 共享内存配置 ---
 constexpr const TCHAR* SHARED_MEM_NAME = TEXT("FPGA_ADC_DATA"); // 共享内存名称
-constexpr int SHARED_MEM_SIZE = 2048;      // 共享内存大小，应大于等于最大ADC数据长度
+constexpr int SHARED_MEM_SIZE = 25 * 1024;      // 共享内存大小，应大于等于最大ADC数据长度
+// --- 新增配置参数 ---
+constexpr int DECIMATION_FACTOR = 1;      // 降采样因子 (1000:1)
+constexpr int AVERAGING_WINDOW = 10;         // 平均降采样的窗口大小
 
 // 获取Winsock错误信息的辅助函数
 std::string get_socket_error() {
@@ -123,26 +126,42 @@ int main() {
             (sockaddr*)&client_addr, &client_addr_len
         );
 
-        if (bytes_received == SOCKET_ERROR) {
-            if (WSAGetLastError() == WSAETIMEDOUT) {
-                std::cout << "Receive timeout, no data from FPGA. Waiting..." << std::endl;
-            } else {
-                std::cerr << "Receive error: " << get_socket_error() << std::endl;
-            }
-            continue;
-        }
-
         if (bytes_received > 0) {
-            // --- 整个负载都是ADC数据 ---
             const uint8_t* adc_samples = buffer.data();
             size_t sample_count = bytes_received;
-
+            
+            // --- 新增: 降采样处理 ---
+            static std::vector<uint8_t> downsampled_data;
+            downsampled_data.clear();
+            
+            // 方法1: 简单抽取 (每N个点取一个)
+            for (size_t i = 0; i < sample_count; i += DECIMATION_FACTOR) {
+                if (i < sample_count) {
+                    downsampled_data.push_back(adc_samples[i]);
+                }
+            }
+            
+            // 方法2: 平均降采样 (更平滑)
+            /*
+            for (size_t i = 0; i < sample_count; i += DECIMATION_FACTOR) {
+                if (i + AVERAGING_WINDOW <= sample_count) {
+                    uint32_t sum = 0;
+                    for (int j = 0; j < AVERAGING_WINDOW; j++) {
+                        sum += adc_samples[i + j];
+                    }
+                    downsampled_data.push_back(sum / AVERAGING_WINDOW);
+                }
+            }
+            */
+            
             // --- 写入共享内存 ---
-            // 结构: 前2个字节存储采样点数，后面跟着ADC数据
-            if (sample_count + 2 <= SHARED_MEM_SIZE) {
-                uint16_t count_net_order = htons(static_cast<uint16_t>(sample_count));
+            // 使用降采样后的数据
+            size_t downsampled_count = downsampled_data.size();
+            if (downsampled_count > 0 && downsampled_count + 2 <= SHARED_MEM_SIZE) {
+                uint16_t count_net_order = htons(static_cast<uint16_t>(downsampled_count));
                 memcpy(pSharedMem, &count_net_order, 2);
-                memcpy(pSharedMem + 2, adc_samples, sample_count);
+                memcpy(pSharedMem + 2, downsampled_data.data(), downsampled_count);
+            
             } else {
                  std::cerr << "Warning: ADC data size (" << sample_count
                            << ") exceeds shared memory capacity." << std::endl;
@@ -170,3 +189,4 @@ int main() {
     WSACleanup();
     return 0;
 }
+//配合v3.x.py版本使用（降采样）
