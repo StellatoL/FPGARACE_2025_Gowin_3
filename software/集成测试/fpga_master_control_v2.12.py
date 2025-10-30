@@ -18,6 +18,7 @@ fpga_unified_control_v3.5_full.py (已修复和优化)
 5. [重构-停止命令] “停止输出”按钮现在会发送一个符合新协议的“直流零电平”命令，以实现一致的控制。
 """
 import sys
+import time
 import mmap
 import struct
 import traceback
@@ -635,7 +636,7 @@ class FPGAMasterControl(QMainWindow):
                     # 静态字节: 0xFF 0xFF
                     frame.extend(b'\xFF\xFF')
 
-                    # 命令+地址最高位: F001或F002 (地址0-255用F001, 256-511用F002)
+                    # 命令+地址最高位: F0或F1 (地址0-255用F0, 256-511用F1)
                     addr_high_bit = (address >> 8) & 0x01
                     command_word = 0xF0 + addr_high_bit
                     frame.extend(command_word.to_bytes(1, 'big'))
@@ -659,6 +660,8 @@ class FPGAMasterControl(QMainWindow):
                     #print(f"发送帧（地址{address}）: {hex_frame}") #test
                     # 通过串口发送当前帧
                     ser.write(frame)
+                    #休眠
+                    time.sleep(0.005)
 
             self.statusBar().showMessage(f"512个波形数据点已通过 {port_name} 发送！")
         except Exception as e:
