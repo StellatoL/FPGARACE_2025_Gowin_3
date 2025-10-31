@@ -887,8 +887,8 @@ class FPGAMasterControl(QMainWindow):
         layout.addRow("数据(Hex):", self.can_data)
         self.can_extended = QCheckBox("扩展帧")
         layout.addRow(self.can_extended)
-        self.can_remote = QCheckBox("远程帧")
-        layout.addRow(self.can_remote)
+        self.can_read = QCheckBox("只读")
+        layout.addRow(self.can_read)
         self.stacked_widget.addWidget(page_can)
     
     def connect_serial_dac(self):
@@ -1136,13 +1136,30 @@ class FPGAMasterControl(QMainWindow):
             can_id = int(self.can_id.text(), 16)
             can_data = bytes.fromhex(self.can_data.text().replace(' ', ''))
             flags = 0
-            if self.can_extended.isChecked(): flags |= 0x01
-            if self.can_remote.isChecked(): flags |= 0x02
+            if self.can_read.isChecked(): 
+                flags |= 0x00
+                combined_byte = (flags << 3) | (selection_byte & 0x07)
+                frame.append(combined_byte)
+                frame.extend(b'\r\n')
+                return frame
+            if self.can_extended.isChecked():
+                flags |= 0x01
+                combined_byte = (flags << 3) | (selection_byte & 0x07)
+                frame.append(combined_byte)
+                can_id &= 0x1FFFFFFF
+                payload.extend(can_id.to_bytes(4, 'big'))
+                payload.extend(b'\x00' * (8-len(can_data)))
+                payload.extend(can_data)
+                frame.extend(payload)
+                frame.extend(b'\r\n')
+                return frame
+            flags |= 0x02
             combined_byte = (flags << 3) | (selection_byte & 0x07)
-            payload.extend(can_id.to_bytes(4, 'big'))
-            payload.append(len(can_data))
-            payload.extend(can_data)
             frame.append(combined_byte)
+            can_id &= 0x7FF
+            payload.extend(can_id.to_bytes(2, 'big'))
+            payload.extend(b'\x00' * (8-len(can_data)))
+            payload.extend(can_data)
             frame.extend(payload)
             frame.extend(b'\r\n')
             return frame
@@ -1196,15 +1213,29 @@ class FPGAMasterControl(QMainWindow):
                     else: 
                         channels.append(f"CH{i+1}: OFF")
                 return f"<- [PWM] | Status: {' | '.join(channels)}"
-            elif protocol_type == 0b100:
-                if len(payload) < 5: return "CAN帧不完整"
-                can_id = int.from_bytes(payload[0:4], 'big')
-                data_len = payload[4]
-                data = payload[5:5+data_len] if data_len > 0 else b''
-                is_extended = "Ext" if extended_flags & 0x01 else "Std"
-                is_remote = "RTR" if extended_flags & 0x02 else "Data"
-                return (f"<- [CAN] | ID: 0x{can_id:08X} [{is_extended}, {is_remote}], "
-                        f"DLC: {data_len}, Data: [{data.hex(' ').upper()}]")
+            elif protocol_type == 0b100:  # CAN协议
+                # 解析帧类型标志位
+                is_extended_frame = extended_flags & 0x01  # 扩展帧标志
+                is_remote_frame = extended_flags & 0x02    # 远程帧标志
+                # 处理远程帧（无数据负载）
+                if is_remote_frame:
+                    return "<- [CAN] | Remote Frame (RTR)"
+                # 处理扩展帧（29位ID）
+                elif is_extended_frame:
+                    if len(payload) < 4: 
+                        return "CAN扩展帧不完整"
+                    can_id = int.from_bytes(payload[0:4], 'big') & 0x1FFFFFFF  # 取29位ID
+                    can_data = payload[4:12]  # 固定8字节数据
+                    return (f"<- [CAN] | ID: 0x{can_id:08X} [Ext, Data], "
+                            f"DLC: 8, Data: [{can_data.hex(' ').upper()}]")
+                # 处理标准帧（11位ID）
+                else:
+                    if len(payload) < 2: 
+                        return "CAN标准帧不完整"
+                    can_id = int.from_bytes(payload[0:2], 'big') & 0x7FF  # 取11位ID
+                    can_data = payload[2:10]  # 固定8字节数据
+                    return (f"<- [CAN] | ID: 0x{can_id:03X} [Std, Data], "
+                            f"DLC: 8, Data: [{can_data.hex(' ').upper()}]")
             else:
                 return f"<- [未知协议] | Type: 0x{protocol_type:02X}, Data: {payload.hex(' ').upper()}"
         except IndexError: 

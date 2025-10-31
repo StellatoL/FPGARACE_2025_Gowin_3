@@ -887,8 +887,8 @@ class FPGAMasterControl(QMainWindow):
         layout.addRow("数据(Hex):", self.can_data)
         self.can_extended = QCheckBox("扩展帧")
         layout.addRow(self.can_extended)
-        self.can_remote = QCheckBox("远程帧")
-        layout.addRow(self.can_remote)
+        self.can_read = QCheckBox("只读")
+        layout.addRow(self.can_read)
         self.stacked_widget.addWidget(page_can)
     
     def connect_serial_dac(self):
@@ -1136,13 +1136,30 @@ class FPGAMasterControl(QMainWindow):
             can_id = int(self.can_id.text(), 16)
             can_data = bytes.fromhex(self.can_data.text().replace(' ', ''))
             flags = 0
-            if self.can_extended.isChecked(): flags |= 0x01
-            if self.can_remote.isChecked(): flags |= 0x02
+            if self.can_read.isChecked(): 
+                flags |= 0x00
+                combined_byte = (flags << 3) | (selection_byte & 0x07)
+                frame.append(combined_byte)
+                frame.extend(b'\r\n')
+                return frame
+            if self.can_extended.isChecked():
+                flags |= 0x01
+                combined_byte = (flags << 3) | (selection_byte & 0x07)
+                frame.append(combined_byte)
+                can_id &= 0x1FFFFFFF
+                payload.extend(can_id.to_bytes(4, 'big'))
+                payload.extend(b'\x00' * (8-len(can_data)))
+                payload.extend(can_data)
+                frame.extend(payload)
+                frame.extend(b'\r\n')
+                return frame
+            flags |= 0x02
             combined_byte = (flags << 3) | (selection_byte & 0x07)
-            payload.extend(can_id.to_bytes(4, 'big'))
-            payload.append(len(can_data))
-            payload.extend(can_data)
             frame.append(combined_byte)
+            can_id &= 0x7FF
+            payload.extend(can_id.to_bytes(2, 'big'))
+            payload.extend(b'\x00' * (8-len(can_data)))
+            payload.extend(can_data)
             frame.extend(payload)
             frame.extend(b'\r\n')
             return frame
@@ -1152,63 +1169,122 @@ class FPGAMasterControl(QMainWindow):
             return None
             
     # =============================================================================
-    # 协议帧解析功能 - (逻辑无变化)
+    # 协议帧解析功能 - (逻辑已修改)
     # =============================================================================
     def parse_received_frame(self, frame_data):
         try:
-            if frame_data[0:2] != b'\x20\x25': 
-                return "无效帧头"
+            if len(frame_data) < 4 or frame_data[0:2] != b'\x20\x25' or frame_data[-2:] != b'\r\n':
+                return "无效或不完整帧"
+            
             protocol_byte = frame_data[2]
             protocol_type = protocol_byte & 0b111
             extended_flags = protocol_byte >> 3
             payload = frame_data[3:-2]
+
             if protocol_type == 0b000:
+                # UART: 有效数据为整个负载
                 return f"<- [UART] | Data: {payload.hex(' ').upper()}"
+            
             elif protocol_type == 0b001:
+                # I2C: 有效数据为寄存器地址、写入数据和请求读回的数据
                 addr_width = extended_flags & 0b1
                 device_addr = payload[0]
                 if addr_width: 
                     reg_addr, data_start = int.from_bytes(payload[1:3], 'big'), 3
+                    reg_addr_str = f"0x{reg_addr:04X}"
                 else: 
                     reg_addr, data_start = payload[1], 2
-                write_data = payload[data_start:-1]
-                read_len = payload[-1]
-                return (f"<- [I2C] | Dev: 0x{device_addr:02X}, Reg: 0x{reg_addr:0{4 if addr_width else 2}X}, "
-                        f"Write: [{write_data.hex(' ').upper()}], ReadLen: {read_len}B")
+                    reg_addr_str = f"0x{reg_addr:02X}"
+                
+                # 读取长度在帧的最后一个有效字节
+                read_len = payload[-1] if len(payload) > 0 else 0
+                
+                # 假设返回帧的有效负载就是I2C读回的数据（如果有的话）
+                # 注意：实际接收的I2C帧结构需要根据FPGA实际实现来确定
+                # 此处假定 payload 就是I2C读回的字节
+                if len(payload) > 0 and read_len > 0:
+                    read_data = payload[:read_len] # 假设读回的数据是负载的前 read_len 字节
+                    return (f"<- [I2C-Rx] | Dev: 0x{device_addr:02X}, Reg: {reg_addr_str}, "
+                            f"Read Data: [{read_data.hex(' ').upper()}]")
+                else:
+                    return (f"<- [I2C-Tx] | Dev: 0x{device_addr:02X}, Reg: {reg_addr_str}, "
+                            f"No read data in response frame.")
+
             elif protocol_type == 0b010:
-                tx_only = extended_flags & 0b1
-                read_len = payload[-1] if payload else 0
-                write_data = payload[:-read_len] if read_len > 0 else payload
-                return (f"<- [SPI] | Mode: {'TX Only' if tx_only else 'TX/RX'}, "
-                        f"Write: [{write_data.hex(' ').upper()}], ReadLen: {read_len}B")
+                # SPI: 有效数据为读回的数据。
+                # 假设发送帧结构中 read_len 是负载的最后一个字节。
+                # 在接收帧中，有效数据应为MISO读回的字节。
+                # 简化处理：假设接收帧的 payload 就是读回的 SPI 数据。
+                if payload:
+                    return f"<- [SPI-Rx] | Data: [{payload.hex(' ').upper()}]"
+                else:
+                    return "<- [SPI-Rx] | No read data received."
+
             elif protocol_type == 0b011:
+                # PWM: 有效数据为各通道的配置参数
                 enable_byte = extended_flags & 0b1111
                 channels = []
                 for i in range(4):
                     offset = i * 5
-                    if offset + 5 > len(payload): break
+                    # 假设返回帧负载包含了4个通道的 (PSC, ARR, Duty) 共20字节
+                    if len(payload) < 20:
+                        channels.append("数据不完整")
+                        break
+                        
                     psc = int.from_bytes(payload[offset:offset+2], 'big')
                     arr = int.from_bytes(payload[offset+2:offset+4], 'big')
                     duty = payload[offset+4]
                     enabled = (enable_byte >> i) & 0b1
-                    if enabled: 
-                        channels.append(f"CH{i+1}: ON (PSC={psc}, ARR={arr}, Duty={duty})")
-                    else: 
-                        channels.append(f"CH{i+1}: OFF")
+                    
+                    status = "ON" if enabled else "OFF"
+                    channels.append(f"CH{i+1}: {status} (PSC={psc}, ARR={arr}, Duty={duty})")
+                    
                 return f"<- [PWM] | Status: {' | '.join(channels)}"
-            elif protocol_type == 0b100:
-                if len(payload) < 5: return "CAN帧不完整"
-                can_id = int.from_bytes(payload[0:4], 'big')
-                data_len = payload[4]
-                data = payload[5:5+data_len] if data_len > 0 else b''
-                is_extended = "Ext" if extended_flags & 0x01 else "Std"
-                is_remote = "RTR" if extended_flags & 0x02 else "Data"
-                return (f"<- [CAN] | ID: 0x{can_id:08X} [{is_extended}, {is_remote}], "
-                        f"DLC: {data_len}, Data: [{data.hex(' ').upper()}]")
+
+            elif protocol_type == 0b100:  # CAN协议
+                # CAN: 有效数据为 CAN ID、帧类型和数据负载
+                is_extended_frame = extended_flags & 0x01
+                is_remote_frame = extended_flags & 0x02
+                
+                if is_remote_frame:
+                    return "<- [CAN] | Remote Frame (RTR)"
+                
+                elif is_extended_frame:
+                    if len(payload) < 4: return "CAN扩展帧不完整"
+                    can_id = int.from_bytes(payload[0:4], 'big') & 0x1FFFFFFF
+                    can_data = payload[4:12] # 8 bytes data
+                    return (f"<- [CAN-Rx] | ID: 0x{can_id:08X} [Ext], "
+                            f"Data: [{can_data.hex(' ').upper()}]")
+                
+                else:
+                    if len(payload) < 2: return "CAN标准帧不完整"
+                    can_id = int.from_bytes(payload[0:2], 'big') & 0x7FF
+                    can_data = payload[2:10] # 8 bytes data
+                    return (f"<- [CAN-Rx] | ID: 0x{can_id:03X} [Std], "
+                            f"Data: [{can_data.hex(' ').upper()}]")
+
+            elif protocol_type == 0b101:  #数字信号测量
+                # 协议结构: 频率(4字节) + 占空比(2字节)
+                if len(payload) < 6:
+                    return "<- [DIGITAL] | 数据不完整 (需要6字节有效负载)"
+
+                # 解析频率 (4字节大端序)
+                freq_bytes = payload[0:4]
+                frequency = int.from_bytes(freq_bytes, 'big')
+                
+                # 解析占空比 (2字节大端序)
+                duty_bytes = payload[4:6]
+                duty_value = int.from_bytes(duty_bytes, 'big')
+                duty_percent = duty_value / 10.0  # 转换为百分比格式
+                duty_time = duty_value / 1.0 / frequency
+                return (f"<- [DIGITAL] | Freq: {frequency} Hz, Duty: {duty_percent:.2f}%, time: {duty_time:.2f}ms")
+            
             else:
+                # 未知协议
                 return f"<- [未知协议] | Type: 0x{protocol_type:02X}, Data: {payload.hex(' ').upper()}"
+        
         except IndexError: 
-            return "帧数据不完整"
+            return "帧数据不完整（索引错误）"
         except Exception as e: 
             return f"解析错误: {str(e)}"
             
