@@ -133,7 +133,7 @@ class MplCanvas(FigureCanvas):
 class FPGAMasterControl(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("FPGA 集成上位机 v2.12（最终稳定版）")
+        self.setWindowTitle("FPGA 集成上位机")
         self.setGeometry(100, 100, 1200, 900)
         self.shared_memory = None
         self.serial_connection_dac = None
@@ -795,6 +795,16 @@ class FPGAMasterControl(QMainWindow):
         
         right_panel.addWidget(display_group)
         
+        # --- 新增: 数字信号测量结果显示模块 ---
+        digital_display_group = QGroupBox("数字信号测量结果")
+        digital_display_layout = QVBoxLayout(digital_display_group)
+        self.digital_signal_display = QTextEdit()
+        self.digital_signal_display.setReadOnly(True)
+        self.digital_signal_display.setFontFamily("Courier New")
+        digital_display_layout.addWidget(self.digital_signal_display)
+        right_panel.addWidget(digital_display_group)
+        # --- 新增结束 ---
+
         control_panel_layout.addLayout(left_panel, 2)
         control_panel_layout.addLayout(right_panel, 1)
         main_layout.addLayout(control_panel_layout)
@@ -816,6 +826,7 @@ class FPGAMasterControl(QMainWindow):
     def clear_logs(self):
         self.sent_data_display.clear()
         self.received_data_display.clear()
+        self.digital_signal_display.clear() # 新增: 清空数字信号显示区
 
     def init_protocol_pages(self):
         page_pwm = QWidget()
@@ -999,7 +1010,7 @@ class FPGAMasterControl(QMainWindow):
             frame = bytearray()
             frame.extend(b'\x20\x25')
             frame.extend(b'\xFF\xFF\xFF\xFF\xFF')
-            combined_byte = (7 << 4) | 0 # 波形=7 (直流零), 频率=0
+            combined_byte = (0 << 4) | 7 # 波形=7 (直流零), 频率=0
             frame.append(combined_byte)
             frame.extend((0).to_bytes(4, 'big')) # DDR3 容量 = 0
             frame.extend(b'\r\n')
@@ -1265,7 +1276,7 @@ class FPGAMasterControl(QMainWindow):
                 # 协议结构: 频率(4字节) + 占空比(2字节)
                 if len(payload) < 6:
                     return "<- [DIGITAL] | 数据不完整 (需要6字节有效负载)"
-
+                
                 # 解析频率 (4字节大端序)
                 freq_bytes = payload[0:4]
                 frequency = int.from_bytes(freq_bytes, 'big')
@@ -1274,8 +1285,15 @@ class FPGAMasterControl(QMainWindow):
                 duty_bytes = payload[4:6]
                 duty_value = int.from_bytes(duty_bytes, 'big')
                 duty_percent = duty_value / 10.0  # 转换为百分比格式
-                duty_time = duty_value / 1.0 / frequency
-                return (f"<- [DIGITAL] | Freq: {frequency} Hz, Duty: {duty_percent:.2f}%, time: {duty_time:.2f}ms")
+                _duty_percent = (1000 - duty_value) / 10.0
+                # 计算高电平时间
+                if frequency > 0:
+                    duty_time_us = (duty_percent / 100) * (1000 / frequency) * 1000
+                    _duty_time_us = (_duty_percent / 100) * (1000 / frequency) * 1000
+                else:
+                    duty_time_us = 0
+
+                return (f"<- [DIGITAL] | Freq: {frequency} Hz, Duty: {duty_percent:.1f}%, High Time: {duty_time_us:.3f} us, Low Time: {_duty_time_us:.3f} us")
             
             else:
                 # 未知协议
@@ -1304,7 +1322,17 @@ class FPGAMasterControl(QMainWindow):
             frame_data = bytes(self.control_serial_buffer[start_idx : end_idx + 2])
             timestamp = datetime.now().strftime("%H:%M:%S.%f")[:-3]
             parsed_info = self.parse_received_frame(frame_data)
-            self.received_data_display.append(f"[{timestamp}] {parsed_info}")
+            
+            # --- 修改: 根据协议类型，将数据显示到不同的窗口 ---
+            if parsed_info.startswith("<- [DIGITAL]"):
+                # 如果是数字信号测量结果，显示在专用窗口
+                # 清除协议头，只显示数据
+                display_text = parsed_info.replace("<- [DIGITAL] | ", "")
+                self.digital_signal_display.append(f"[{timestamp}] {display_text}")
+            else:
+                # 其他协议信息显示在通用接收历史窗口
+                self.received_data_display.append(f"[{timestamp}] {parsed_info}")
+            
             self.control_serial_buffer = self.control_serial_buffer[end_idx + 2:]
 
 if __name__ == '__main__':

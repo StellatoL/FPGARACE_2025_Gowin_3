@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-fpga_unified_control_v3.5_full.py (已修复和优化)
-对应cpp_v1
+fpga_master_control.py 对应 udp_receiver_v1.cpp
 
 功能:
 这是一个集成化的FPGA上位机工具，合并了高性能示波器、波形绘制发送和高级协议调试功能。
@@ -9,13 +8,6 @@ fpga_unified_control_v3.5_full.py (已修复和优化)
 2. [波形绘制] 允许用户手绘波形，量化后通过串口发送。
 3. [控制调试] 集成了DAC函数发生器和支持多种协议(4路PWM/I2C/SPI等)的高级协议调试器。
 4. [协议解析] 添加了完整的协议帧接收和解析功能，支持UART、I2C、SPI、PWM和CAN协议。
-
-主要修改 (DAC协议重构):
-1. [重构-DAC协议] 根据新需求，修改了“控制与高级调试”选项卡中“DAC函数发生器”的发送逻辑。
-2. [修改-发送帧] “开始输出”按钮现在发送符合新协议 `[0x20 0x25 FF*5 波形+频率 DDR3(4B) \r\n]` 的单个二进制命令帧。
-3. [新增-DDR3容量] 在DAC函数发生器UI中，用“DDR3 容量”输入框替换了原有的“幅值”输入框。
-4. [修改-UI标签] 将“频率(Hz)”标签改为“频率选择 (0-15)”，以反映新协议的要求。
-5. [重构-停止命令] “停止输出”按钮现在会发送一个符合新协议的“直流零电平”命令，以实现一致的控制。
 """
 import sys
 import mmap
@@ -65,7 +57,7 @@ except Exception as e:
     print(f"警告: 无法设置中文字体。错误: {e}")
 
 # =============================================================================
-# 辅助类 (WaveformDrawer, MplCanvas) - 无变化
+# 辅助类 (WaveformDrawer, MplCanvas) 
 # =============================================================================
 class WaveformDrawer(QWidget):
     """用于绘制波形的自定义控件"""
@@ -133,7 +125,7 @@ class MplCanvas(FigureCanvas):
 class FPGAMasterControl(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("FPGA 集成上位机 v2.12（最终稳定版）")
+        self.setWindowTitle("FPGA 集成上位机")
         self.setGeometry(100, 100, 1200, 900)
         self.shared_memory = None
         self.serial_connection_dac = None
@@ -210,7 +202,7 @@ class FPGAMasterControl(QMainWindow):
         self.statusBar().showMessage("串口列表已刷新", 2000)
 
     # =============================================================================
-    # 选项卡 1: 高速数字示波器 - 无变化
+    # 选项卡 1: 高速数字示波器 
     # =============================================================================
     def init_scope_tab(self):
         layout = QHBoxLayout(self.scope_tab)
@@ -501,7 +493,7 @@ class FPGAMasterControl(QMainWindow):
                 print(f"读取串口数据出错: {e}")
                 self.stop_scope()
         
-        # [核心修复-滚动缓冲]
+        # [滚动缓冲]
         if new_data is not None:
             # 将新数据附加到现有数据后面
             self.scope_data = np.concatenate((self.scope_data, new_data))
@@ -553,7 +545,7 @@ class FPGAMasterControl(QMainWindow):
         self.curve_freq.setData(x=xf, y=y_magnitude)
 
     # =============================================================================
-    # 选项卡 2: 波形绘制与发送 - 无变化
+    # 选项卡 2: 波形绘制与发送
     # =============================================================================
     def init_waveform_sender_tab(self):
         main_layout = QVBoxLayout(self.waveform_sender_tab)
@@ -566,17 +558,29 @@ class FPGAMasterControl(QMainWindow):
         self.plot_canvas_sender = MplCanvas(self, width=8, height=3, dpi=100)
         sender_layout.addWidget(self.plot_canvas_sender, alignment=Qt.AlignmentFlag.AlignCenter)
         self.plot_sender_data(None)
+        
+        # --- 修改 controls_layout ---
         controls_layout = QHBoxLayout()
         controls_layout.addWidget(QLabel("发送串口:"))
         self.ports_combo_wf = QComboBox()
         self.refresh_button_wf = QPushButton("刷新")
-        self.clear_button = QPushButton("清除画布")
-        self.analyze_button = QPushButton("分析并发送")
+        
         controls_layout.addWidget(self.ports_combo_wf, 1)
         controls_layout.addWidget(self.refresh_button_wf)
         controls_layout.addStretch()
+        
+        # --- 新增频率控制 ---
+        controls_layout.addWidget(QLabel("频率选择 (0-15):"))
+        self.wf_freq_input = QLineEdit("1") # 新增: 波形频率输入框
+        self.wf_freq_input.setFixedWidth(50) 
+        controls_layout.addWidget(self.wf_freq_input)
+        # --- 结束新增 ---
+        
+        self.clear_button = QPushButton("清除画布")
+        self.analyze_button = QPushButton("分析并发送")
         controls_layout.addWidget(self.clear_button)
         controls_layout.addWidget(self.analyze_button)
+        
         sender_layout.addLayout(controls_layout)
         main_layout.addWidget(sender_group)
         main_layout.addStretch()
@@ -615,6 +619,17 @@ class FPGAMasterControl(QMainWindow):
 
             self.plot_sender_data(quantized_waveform)
             
+            # --- 新增: 1.5. 获取并验证频率 ---
+            try:
+                freq_code = int(self.wf_freq_input.text())
+                if not (0 <= freq_code <= 15):
+                    self.show_error("频率选择值必须在 0 到 15 之间！")
+                    return
+            except ValueError:
+                self.show_error("频率选择值必须是一个有效的整数 (0-15)！")
+                return
+            # --- 结束新增 ---
+
             # 2. 获取串口信息
             port_name = self.ports_combo_wf.currentData()
             if not port_name: 
@@ -623,47 +638,41 @@ class FPGAMasterControl(QMainWindow):
             
             # 3. 循环512次，为每个数据点构建并发送一个数据帧
             with serial.Serial(port_name, 1000000, timeout=2, write_timeout=2) as ser: #注意：这边波特率不是默认的，而是固定1000000
+                
+                # --- 新增: 组合波形和频率 ---
+                # 波形选择(低4位) = 5 (自定义波形)
+                # 频率选择(高4位) = freq_code
+                combined_byte = (freq_code << 4) | 0x05
+                # --- 结束新增 ---
+                
                 for address in range(NUM_SAMPLES_SEND):
-                    data_point = quantized_waveform[address]
-
-                    # 创建帧的字节数组
-                    frame = bytearray()
-                    
-                    # 帧头: 0x20 0x25
-                    frame.extend(b'\x20\x25')
-                    
-                    # 静态字节: 0xFF 0xFF
-                    frame.extend(b'\xFF\xFF')
-
+                    data_point = quantized_waveform[address]                    
+                    frame = bytearray() # 创建帧的字节数组                                      
+                    frame.extend(b'\x20\x25') # 帧头: 0x20 0x25                                        
+                    frame.extend(b'\xFF\xFF') # 静态字节: 0xFF 0xFF
                     # 命令+地址最高位: F0或F1 (地址0-255用F0, 256-511用F1)
                     addr_high_bit = (address >> 8) & 0x01
                     command_word = 0xF0 + addr_high_bit
                     frame.extend(command_word.to_bytes(1, 'big'))
-
                     # 写入地址后8位
                     addr_low_byte = address & 0xFF
-                    frame.append(addr_low_byte)
-
-                    # 写入的8位波形数据
-                    frame.append(data_point)
-                    
-                    # 波形选择(低4位)+频率选择(高4位)，若无可用数据则置0，自定义波形是5
-                    frame.append(0x05)
-                    
-                    # DDR3容量(4字节)，若无可用数据则置0
-                    frame.extend(b'\x00\x0F\xFF\xFF')
-
-                    # 帧尾: \r\n
-                    frame.extend(b'\r\n')
+                    frame.append(addr_low_byte)                    
+                    frame.append(data_point) # 写入的8位波形数据       
+                                     
+                    # --- 修改: 使用组合字节 ---
+                    frame.append(combined_byte) # 波形选择(5) + 频率选择(用户输入)
+                    # --- 结束修改 ---
+                                                    
+                    frame.extend(b'\x00\x0F\xFF\xFF') # DDR3容量(4字节)                    
+                    frame.extend(b'\r\n') # 帧尾: \r\n
                     #hex_frame = ' '.join(f'{b:02X}' for b in frame) #test
-                    #print(f"发送帧（地址{address}）: {hex_frame}") #test
-                    # 通过串口发送当前帧
-                    ser.write(frame)
+                    #print(f"发送帧（地址{address}）: {hex_frame}") #test                   
+                    ser.write(frame) # 通过串口发送当前帧
 
             self.statusBar().showMessage(f"512个波形数据点已通过 {port_name} 发送！")
         except Exception as e:
             self.show_error(f"分析或发送波形时出错: {e}\n{traceback.format_exc()}")
-
+            
     def plot_sender_data(self, data):
         self.plot_canvas_sender.axes.clear()
         if data is not None:
@@ -680,7 +689,7 @@ class FPGAMasterControl(QMainWindow):
         self.plot_canvas_sender.draw()
 
     # =============================================================================
-    # 选项卡 3: 控制与高级调试 - 此部分已按要求修改
+    # 选项卡 3: 控制与高级调试
     # =============================================================================
     def init_control_tab(self):
         main_layout = QVBoxLayout(self.control_tab)
@@ -733,7 +742,7 @@ class FPGAMasterControl(QMainWindow):
         self.wave_sine.setChecked(True)
         self.wave_square = QRadioButton("方波")
         self.wave_triangle = QRadioButton("三角")
-        self.wave_sawtooth = QRadioButton("锯齿波") # 注意: 此波形在新协议中未定义
+        self.wave_sawtooth = QRadioButton("锯齿波")
         self.wave_zero = QRadioButton("直流(零)")
         wave_layout = QHBoxLayout()
         wave_layout.addWidget(self.wave_sine)
@@ -795,6 +804,15 @@ class FPGAMasterControl(QMainWindow):
         
         right_panel.addWidget(display_group)
         
+        # --- 数字信号测量结果显示模块 ---
+        digital_display_group = QGroupBox("数字信号测量结果")
+        digital_display_layout = QVBoxLayout(digital_display_group)
+        self.digital_signal_display = QTextEdit()
+        self.digital_signal_display.setReadOnly(True)
+        self.digital_signal_display.setFontFamily("Courier New")
+        digital_display_layout.addWidget(self.digital_signal_display)
+        right_panel.addWidget(digital_display_group)
+
         control_panel_layout.addLayout(left_panel, 2)
         control_panel_layout.addLayout(right_panel, 1)
         main_layout.addLayout(control_panel_layout)
@@ -816,6 +834,7 @@ class FPGAMasterControl(QMainWindow):
     def clear_logs(self):
         self.sent_data_display.clear()
         self.received_data_display.clear()
+        self.digital_signal_display.clear() #清空数字信号显示区
 
     def init_protocol_pages(self):
         page_pwm = QWidget()
@@ -934,11 +953,11 @@ class FPGAMasterControl(QMainWindow):
         self.disconnect_protocol_button.setEnabled(False)
         self.statusBar().showMessage("协议调试串口已关闭", 2000)
 
-    # --- DAC 命令发送逻辑重构 ---
+    # --- DAC 命令发送 ---
     def send_dac_command(self):
         """
         根据新的协议构建并发送ADC波形控制命令。
-        帧结构: [0x20 0x25 FF*5 波形+频率 DDR3(4B) \r\n]
+        帧结构: [0x20 0x25 时间 序列 频率*4 FF*3 波形+频率(7) DDR3(4B) \r\n]
         """
         try:
             # 1. 获取波形选择
@@ -999,7 +1018,7 @@ class FPGAMasterControl(QMainWindow):
             frame = bytearray()
             frame.extend(b'\x20\x25')
             frame.extend(b'\xFF\xFF\xFF\xFF\xFF')
-            combined_byte = (7 << 4) | 0 # 波形=7 (直流零), 频率=0
+            combined_byte = (0 << 4) | 7 # 波形=7 (直流零), 频率=0
             frame.append(combined_byte)
             frame.extend((0).to_bytes(4, 'big')) # DDR3 容量 = 0
             frame.extend(b'\r\n')
@@ -1024,7 +1043,6 @@ class FPGAMasterControl(QMainWindow):
         except serial.SerialException as e:
             self.show_error(f"DAC串口通信错误: {e}")
             self.disconnect_serial_dac()
-    # --- 逻辑重构结束 ---
             
     def construct_and_send_frame(self):
         try:
@@ -1099,7 +1117,8 @@ class FPGAMasterControl(QMainWindow):
             else: 
                 payload.append(reg_addr)
             payload.extend(write_data)
-            payload.extend(read_len.to_bytes(1, 'big'))
+            if read_len != 0:
+                payload.extend(read_len.to_bytes(1, 'big'))
             frame.append(combined_byte)
             frame.extend(payload)
             frame.extend(b'\r\n')
@@ -1167,17 +1186,25 @@ class FPGAMasterControl(QMainWindow):
             return None
             
     # =============================================================================
-    # 协议帧解析功能 - (逻辑已修改)
+    # 协议帧解析功能
     # =============================================================================
     def parse_received_frame(self, frame_data):
+        """
+        解析接收到的数据帧。
+        新帧结构: [数据部分(Payload), 协议选择字节(1B), 帧尾(b'\r\n')]
+        """
         try:
-            if len(frame_data) < 4 or frame_data[0:2] != b'\x20\x25' or frame_data[-2:] != b'\r\n':
-                return "无效或不完整帧"
+            # 新的检查：帧至少需要包含 [协议字节, 帧尾] (3字节)
+            if len(frame_data) < 3 or frame_data[-2:] != b'\r\n':
+                return "无效或不完整帧 (结构错误或无帧尾)"
             
-            protocol_byte = frame_data[2]
+            # 协议字节现在位于帧尾 b'\r\n' 之前
+            protocol_byte = frame_data[-3]
             protocol_type = protocol_byte & 0b111
             extended_flags = protocol_byte >> 3
-            payload = frame_data[3:-2]
+            
+            # 有效数据(Payload)是帧开头到协议字节(不含)的所有内容
+            payload = frame_data[0:-3]
 
             if protocol_type == 0b000:
                 # UART: 有效数据为整个负载
@@ -1240,32 +1267,21 @@ class FPGAMasterControl(QMainWindow):
                 return f"<- [PWM] | Status: {' | '.join(channels)}"
 
             elif protocol_type == 0b100:  # CAN协议
-                # CAN: 有效数据为 CAN ID、帧类型和数据负载
-                is_extended_frame = extended_flags & 0x01
-                is_remote_frame = extended_flags & 0x02
-                
-                if is_remote_frame:
-                    return "<- [CAN] | Remote Frame (RTR)"
-                
-                elif is_extended_frame:
-                    if len(payload) < 4: return "CAN扩展帧不完整"
-                    can_id = int.from_bytes(payload[0:4], 'big') & 0x1FFFFFFF
-                    can_data = payload[4:12] # 8 bytes data
-                    return (f"<- [CAN-Rx] | ID: 0x{can_id:08X} [Ext], "
-                            f"Data: [{can_data.hex(' ').upper()}]")
-                
-                else:
-                    if len(payload) < 2: return "CAN标准帧不完整"
-                    can_id = int.from_bytes(payload[0:2], 'big') & 0x7FF
-                    can_data = payload[2:10] # 8 bytes data
-                    return (f"<- [CAN-Rx] | ID: 0x{can_id:03X} [Std], "
-                            f"Data: [{can_data.hex(' ').upper()}]")
+                # CAN: 有效数据为 CAN ID、帧类型和数据负载             
+                can_id = int.from_bytes(payload[0:5], 'big')
+                can_data = payload[5:] # 8 bytes data
+                # 将 can_id 格式化为 10 位十六进制数 ---
+                return (f"<- [CAN-Rx] | ID: 0x{can_id:010X}, "
+                        f"Data: [{can_data.hex(' ').upper()}]")
 
             elif protocol_type == 0b101:  #数字信号测量
                 # 协议结构: 频率(4字节) + 占空比(2字节)
-                if len(payload) < 6:
-                    return "<- [DIGITAL] | 数据不完整 (需要6字节有效负载)"
-
+                
+                # [修改点 1: 修复数据不完整报错]
+                # 检查负载是否*正好*为6字节
+                if len(payload) != 6:
+                    return f"<- [DIGITAL] | 数据不完整 (需要 6 字节有效负载, 实际 {len(payload)} 字节)"
+                
                 # 解析频率 (4字节大端序)
                 freq_bytes = payload[0:4]
                 frequency = int.from_bytes(freq_bytes, 'big')
@@ -1274,11 +1290,17 @@ class FPGAMasterControl(QMainWindow):
                 duty_bytes = payload[4:6]
                 duty_value = int.from_bytes(duty_bytes, 'big')
                 duty_percent = duty_value / 10.0  # 转换为百分比格式
-                duty_time = duty_value / 1.0 / frequency
-                return (f"<- [DIGITAL] | Freq: {frequency} Hz, Duty: {duty_percent:.2f}%, time: {duty_time:.2f}ms")
+                _duty_percent = (1000 - duty_value) / 10.0
+                # 计算高电平时间
+                if frequency > 0:
+                    duty_time_us = (duty_percent / 100) * (1000 / frequency) * 1000
+                    _duty_time_us = (_duty_percent / 100) * (1000 / frequency) * 1000
+                else:
+                    duty_time_us = 0
+
+                return (f"<- [DIGITAL] | Freq: {frequency} Hz, Duty: {duty_percent:.1f}%, High Time: {duty_time_us:.3f} us, Low Time: {_duty_time_us:.3f} us")
             
-            else:
-                # 未知协议
+            else: # 未知协议
                 return f"<- [未知协议] | Type: 0x{protocol_type:02X}, Data: {payload.hex(' ').upper()}"
         
         except IndexError: 
@@ -1287,6 +1309,10 @@ class FPGAMasterControl(QMainWindow):
             return f"解析错误: {str(e)}"
             
     def check_control_serial_data(self):
+        """
+        检查协议串口数据，按新结构 [Payload, Proto, Tail] 查找帧。
+        [修改点 2] 新增: 支持 0x01 0x0D 0x0A 作为 '命令成功' 反馈。
+        """
         if not (self.serial_connection_protocol and self.serial_connection_protocol.is_open): return
         try:
             data = self.serial_connection_protocol.read(self.serial_connection_protocol.in_waiting)
@@ -1294,17 +1320,46 @@ class FPGAMasterControl(QMainWindow):
             self.show_error(f"协议串口读取错误: {e}")
             self.disconnect_serial_protocol()
             return
+            
         if not data: return
+        
         self.control_serial_buffer.extend(data)
+        
         while True:
-            start_idx = self.control_serial_buffer.find(b'\x20\x25')
-            if start_idx == -1: break
-            end_idx = self.control_serial_buffer.find(b'\r\n', start_idx)
-            if end_idx == -1: break
-            frame_data = bytes(self.control_serial_buffer[start_idx : end_idx + 2])
+            # 帧头(b'\x20\x25')已取消，我们现在只通过帧尾(b'\r\n')来切分数据包
+            # 查找第一个出现的帧尾
+            end_idx = self.control_serial_buffer.find(b'\r\n')
+            
+            # 如果没有找到帧尾，说明数据包不完整，退出循环等待更多数据
+            if end_idx == -1: 
+                break
+            
+            # 提取从缓冲区开始到第一个帧尾的完整帧
+            # 'end_idx' 指向 '\r'，所以我们需要 +2 来包含 '\r\n'
+            frame_data = bytes(self.control_serial_buffer[0 : end_idx + 2])
+            
             timestamp = datetime.now().strftime("%H:%M:%S.%f")[:-3]
-            parsed_info = self.parse_received_frame(frame_data)
-            self.received_data_display.append(f"[{timestamp}] {parsed_info}")
+
+            # [修改点 2: 新增下位机反馈功能]
+            # 检查是否为 '命令发送成功' 的特殊反馈帧 (0x01 + 帧尾)
+            if frame_data == b'\x01\r\n':
+                self.received_data_display.append(f"[{timestamp}] <- [SYSTEM] | 命令发送成功")
+            
+            else:
+                # [原逻辑]
+                parsed_info = self.parse_received_frame(frame_data)
+                
+                # --- 修改: 根据协议类型，将数据显示到不同的窗口 ---
+                if parsed_info.startswith("<- [DIGITAL]"):
+                    # 如果是数字信号测量结果，显示在专用窗口
+                    # 清除协议头，只显示数据
+                    display_text = parsed_info.replace("<- [DIGITAL] | ", "")
+                    self.digital_signal_display.append(f"[{timestamp}] {display_text}")
+                else:
+                    # 其他协议信息显示在通用接收历史窗口
+                    self.received_data_display.append(f"[{timestamp}] {parsed_info}")
+            
+            # 从缓冲区移除已经处理过的帧
             self.control_serial_buffer = self.control_serial_buffer[end_idx + 2:]
 
 if __name__ == '__main__':

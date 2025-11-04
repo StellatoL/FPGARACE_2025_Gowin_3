@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-fpga_unified_control_v3.5_full.py (带降采样优化)
+fpga_master_control.py 对应 udp_receiver_v1.cpp
+
 功能:
-这是一个集成化的FPGA上位机工具，添加了针对25Msps ADC数据的降采样可视化优化
-1. [示波器] 通过共享内存从C++ UDP接收器高速读取ADC数据，使用pyqtgraph实时显示时域波形和频域(FFT)频谱
-2. [波形绘制] 允许用户手绘波形，量化后通过串口发送
-3. [控制调试] 集成了DAC函数发生器和支持多种协议(4路PWM/I2C/SPI等)的高级协议调试器
-4. [协议解析] 添加了完整的协议帧接收和解析功能，支持UART、I2C、SPI、PWM和CAN协议
-主要优化:
-1. [降采样算法] 添加三种降采样算法: 简单抽取、自适应包络、峰值保留
-2. [性能优化] 针对25Msps高速数据流优化处理流程
-3. [UI增强] 添加降采样控制面板
-4. [渲染优化] 使用OpenGL加速渲染选项
+这是一个集成化的FPGA上位机工具，合并了高性能示波器、波形绘制发送和高级协议调试功能。
+1. [示波器] 通过共享内存从C++ UDP接收器高速读取ADC数据，使用pyqtgraph实时显示时域波形和频域(FFT)频谱。
+2. [波形绘制] 允许用户手绘波形，量化后通过串口发送。
+3. [控制调试] 集成了DAC函数发生器和支持多种协议(4路PWM/I2C/SPI等)的高级协议调试器。
+4. [协议解析] 添加了完整的协议帧接收和解析功能，支持UART、I2C、SPI、PWM和CAN协议。
 """
 import sys
 import mmap
@@ -27,7 +23,7 @@ from PyQt6.QtGui import QPainter, QPen, QPixmap
 from PyQt6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFileDialog,
                              QFormLayout, QGroupBox, QGridLayout, QHBoxLayout,
                              QLabel, QLineEdit, QMainWindow, QMessageBox,
-                             QPushButton, QRadioButton, QSizePolicy,
+                             QPushButton, QRadioButton, QSizePolicy, QSlider,
                              QStackedWidget, QTabWidget, QTextEdit,
                              QVBoxLayout, QWidget)
 from matplotlib.backends.backend_qt5agg import \
@@ -38,12 +34,19 @@ from scipy.signal import savgol_filter
 
 # --- 配置参数 ---
 SHARED_MEM_NAME = "FPGA_ADC_DATA"
-SHARED_MEM_SIZE = 2048
-SCOPE_UPDATE_INTERVAL_MS = 30  # 调整刷新率以平衡UI响应和FFT计算
+SHARED_MEM_SIZE = 25 * 1024
+SCOPE_UPDATE_INTERVAL_MS = 30
 CANVAS_WIDTH = 800
 CANVAS_HEIGHT = 400
 NUM_SAMPLES_SEND = 512
 DEFAULT_BAUD_RATE = 115200
+TRIGGER_LEVEL_RANGE = (0, 255)
+TRIGGER_POSITION_RANGE = (0, 100)
+DEFAULT_TRIGGER_LEVEL = 128
+DEFAULT_TRIGGER_POSITION = 50
+SCOPE_DISPLAY_POINTS = 2048
+# 新增: 滚动缓冲区大小，用于处理低频信号。应足够大以容纳几个最低频率波形的周期。
+SCOPE_ROLLING_BUFFER_SIZE = 50000
 
 # 设置Matplotlib中文字体
 try:
@@ -54,7 +57,7 @@ except Exception as e:
     print(f"警告: 无法设置中文字体。错误: {e}")
 
 # =============================================================================
-# 辅助类 (WaveformDrawer, MplCanvas) - 无变化
+# 辅助类 (WaveformDrawer, MplCanvas) 
 # =============================================================================
 class WaveformDrawer(QWidget):
     """用于绘制波形的自定义控件"""
@@ -65,13 +68,13 @@ class WaveformDrawer(QWidget):
         self.canvas.fill(Qt.GlobalColor.white)
         self.points = []
         self.drawing = False
-        
+
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             self.drawing = True
             self.last_point = event.pos()
             self.points.append(self.last_point)
-            
+
     def mouseMoveEvent(self, event):
         if self.drawing:
             painter = QPainter(self.canvas)
@@ -81,28 +84,30 @@ class WaveformDrawer(QWidget):
             self.last_point = event.pos()
             self.points.append(self.last_point)
             self.update()
-            
+
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             self.drawing = False
-            
+
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.drawPixmap(QPoint(), self.canvas)
-        
+
     def clear_canvas(self):
         self.canvas.fill(Qt.GlobalColor.white)
         self.points = []
         self.update()
-        
+
     def get_waveform_data(self):
         if not self.points or len(self.points) < 2: return None
         sorted_points = sorted(self.points, key=lambda p: p.x())
         x_coords = [p.x() for p in sorted_points]
         y_coords = [p.y() for p in sorted_points]
+        
         f = interp1d(x_coords, y_coords, kind='linear', bounds_error=False, fill_value=(y_coords[0], y_coords[-1]))
         x_new = np.linspace(min(x_coords), max(x_coords), num=NUM_SAMPLES_SEND)
         y_new = f(x_new)
+        
         return (CANVAS_HEIGHT - y_new - CANVAS_HEIGHT / 2) / (CANVAS_HEIGHT / 2)
 
 class MplCanvas(FigureCanvas):
@@ -115,18 +120,19 @@ class MplCanvas(FigureCanvas):
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
 # =============================================================================
-# 主应用窗口 (添加降采样功能)
+# 主应用窗口
 # =============================================================================
 class FPGAMasterControl(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("FPGA 集成上位机 v3.5 (降采样优化版)")
+        self.setWindowTitle("FPGA 集成上位机")
         self.setGeometry(100, 100, 1200, 900)
         self.shared_memory = None
         self.serial_connection_dac = None
         self.serial_connection_protocol = None
         self.serial_connection_scope = None
-        self.scope_data = np.array([])
+        # self.scope_data 现在是滚动缓冲区
+        self.scope_data = np.array([], dtype=np.uint8)
         self.tabs = QTabWidget()
         self.setCentralWidget(self.tabs)
         self.scope_tab = QWidget()
@@ -135,6 +141,12 @@ class FPGAMasterControl(QMainWindow):
         self.tabs.addTab(self.scope_tab, "高速数字示波器")
         self.tabs.addTab(self.waveform_sender_tab, "波形绘制与发送")
         self.tabs.addTab(self.control_tab, "控制与高级调试")
+        
+        self.trigger_enabled = False
+        self.trigger_level = DEFAULT_TRIGGER_LEVEL
+        self.trigger_position = DEFAULT_TRIGGER_POSITION
+        self.trigger_type = "上升沿"
+        self.trigger_line = None
         
         self.control_serial_buffer = bytearray()
         
@@ -150,10 +162,10 @@ class FPGAMasterControl(QMainWindow):
         self.serial_check_timer.timeout.connect(self.check_control_serial_data)
         
         self.connect_shared_memory()
-        
+
     def show_error(self, message):
         QMessageBox.critical(self, "错误", message)
-        
+
     def closeEvent(self, event):
         print("正在关闭应用程序并释放资源...")
         self.stop_scope()
@@ -165,7 +177,7 @@ class FPGAMasterControl(QMainWindow):
             self.serial_connection_scope.close()
         self.serial_check_timer.stop()
         event.accept()
-        
+
     def refresh_all_ports(self):
         ports = serial.tools.list_ports.comports()
         combo_boxes = [
@@ -188,22 +200,21 @@ class FPGAMasterControl(QMainWindow):
                 index = combo.findData(current_data)
                 if index != -1: combo.setCurrentIndex(index)
         self.statusBar().showMessage("串口列表已刷新", 2000)
-        
+
     # =============================================================================
-    # 选项卡 1: 高速数字示波器 (添加降采样控制)
+    # 选项卡 1: 高速数字示波器 
     # =============================================================================
     def init_scope_tab(self):
         layout = QHBoxLayout(self.scope_tab)
         controls_group = QGroupBox("ADC 采样控制")
         controls_layout = QGridLayout(controls_group)
-        controls_group.setFixedWidth(300)  # 增加宽度以容纳更多控件
-        
-        # --- 基本采样控制 ---
+        controls_group.setFixedWidth(300)
+
         controls_layout.addWidget(QLabel("采样率 (SPS):"), 0, 0)
-        self.sampling_rate_input = QLineEdit("25000000")  # 默认25Msps
+        self.sampling_rate_input = QLineEdit("10000000")
         controls_layout.addWidget(self.sampling_rate_input, 0, 1)
         
-        controls_layout.addWidget(QLabel("数据点数:"), 1, 0)
+        controls_layout.addWidget(QLabel("缓冲区点数:"), 1, 0)
         self.data_points_input = QLineEdit("N/A")
         self.data_points_input.setReadOnly(True)
         controls_layout.addWidget(self.data_points_input, 1, 1)
@@ -224,7 +235,7 @@ class FPGAMasterControl(QMainWindow):
         serial_layout_scope.addWidget(self.scope_serial_combo, 0, 1)
         serial_layout_scope.addWidget(QLabel("波特率:"), 1, 0)
         self.scope_baud_combo = QComboBox()
-        self.scope_baud_combo.addItems(["9600", "57600", "115200", "1000000", "2000000"])
+        self.scope_baud_combo.addItems(["9600", "57600", "115200", "1000000"])
         self.scope_baud_combo.setCurrentText("1000000")
         serial_layout_scope.addWidget(self.scope_baud_combo, 1, 1)
         self.connect_serial_button_scope = QPushButton("连接")
@@ -235,37 +246,38 @@ class FPGAMasterControl(QMainWindow):
         controls_layout.addWidget(self.serial_group_scope, 4, 0, 1, 2)
         self.serial_group_scope.setVisible(False)
         
-        # --- 新增: 降采样控制面板 ---
-        downsample_group = QGroupBox("降采样设置")
-        downsample_layout = QGridLayout(downsample_group)
+        self.trigger_group = QGroupBox("触发设置")
+        trigger_layout = QGridLayout(self.trigger_group)
         
-        downsample_layout.addWidget(QLabel("方法:"), 0, 0)
-        self.downsample_method = QComboBox()
-        self.downsample_method.addItems(["简单抽取", "自适应包络", "峰值保留"])
-        downsample_layout.addWidget(self.downsample_method, 0, 1)
+        self.trigger_enable_checkbox = QCheckBox("稳定波形")
+        self.trigger_enable_checkbox.setChecked(False)
+        trigger_layout.addWidget(self.trigger_enable_checkbox, 0, 0, 1, 2)
         
-        downsample_layout.addWidget(QLabel("最大点数:"), 1, 0)
-        self.max_points_input = QLineEdit("5000")
-        self.max_points_input.setToolTip("最大显示点数，值越小性能越高")
-        downsample_layout.addWidget(self.max_points_input, 1, 1)
+        trigger_layout.addWidget(QLabel("触发类型:"), 1, 0)
+        self.trigger_type_combo = QComboBox()
+        self.trigger_type_combo.addItems(["上升沿", "下降沿"])
+        trigger_layout.addWidget(self.trigger_type_combo, 1, 1)
         
-        downsample_layout.addWidget(QLabel("抽取因子:"), 2, 0)
-        self.decimation_factor = QLineEdit("1000")
-        self.decimation_factor.setToolTip("简单抽取方法使用的降采样因子")
-        downsample_layout.addWidget(self.decimation_factor, 2, 1)
+        trigger_layout.addWidget(QLabel("触发电平:"), 2, 0)
+        self.trigger_level_slider = QSlider(Qt.Orientation.Horizontal)
+        self.trigger_level_slider.setRange(TRIGGER_LEVEL_RANGE[0], TRIGGER_LEVEL_RANGE[1])
+        self.trigger_level_slider.setValue(DEFAULT_TRIGGER_LEVEL)
+        trigger_layout.addWidget(self.trigger_level_slider, 2, 1)
         
-        downsample_layout.addWidget(QLabel("窗口大小:"), 3, 0)
-        self.window_size = QLineEdit("100")
-        self.window_size.setToolTip("自适应包络方法使用的窗口大小")
-        downsample_layout.addWidget(self.window_size, 3, 1)
+        self.trigger_level_label = QLabel(f"{DEFAULT_TRIGGER_LEVEL}")
+        trigger_layout.addWidget(self.trigger_level_label, 2, 2)
         
-        self.use_opengl = QCheckBox("使用OpenGL加速")
-        self.use_opengl.setChecked(False)
-        downsample_layout.addWidget(self.use_opengl, 4, 0, 1, 2)
+        trigger_layout.addWidget(QLabel("触发位置:"), 3, 0)
+        self.trigger_position_slider = QSlider(Qt.Orientation.Horizontal)
+        self.trigger_position_slider.setRange(TRIGGER_POSITION_RANGE[0], TRIGGER_POSITION_RANGE[1])
+        self.trigger_position_slider.setValue(DEFAULT_TRIGGER_POSITION)
+        trigger_layout.addWidget(self.trigger_position_slider, 3, 1)
         
-        controls_layout.addWidget(downsample_group, 5, 0, 1, 2)
+        self.trigger_position_label = QLabel(f"{DEFAULT_TRIGGER_POSITION}%")
+        trigger_layout.addWidget(self.trigger_position_label, 3, 2)
         
-        # --- 控制按钮 ---
+        controls_layout.addWidget(self.trigger_group, 5, 0, 1, 2)
+        
         self.start_button = QPushButton("开始采样")
         self.stop_button = QPushButton("停止采样")
         self.save_button = QPushButton("保存数据")
@@ -280,8 +292,8 @@ class FPGAMasterControl(QMainWindow):
         
         controls_layout.setRowStretch(10, 1)
         
-        # --- 绘图区域 ---
         plot_area_layout = QVBoxLayout()
+        
         time_plot_group = QGroupBox("实时波形 (时域)")
         time_plot_layout = QVBoxLayout(time_plot_group)
         self.plot_widget_time = pg.PlotWidget()
@@ -303,7 +315,6 @@ class FPGAMasterControl(QMainWindow):
         layout.addWidget(controls_group)
         layout.addLayout(plot_area_layout)
         
-        # 连接信号
         self.start_button.clicked.connect(self.start_scope)
         self.stop_button.clicked.connect(self.stop_scope)
         self.save_button.clicked.connect(self.save_scope_data)
@@ -312,6 +323,15 @@ class FPGAMasterControl(QMainWindow):
         self.connect_serial_button_scope.clicked.connect(self.connect_serial_scope)
         self.disconnect_serial_button_scope.clicked.connect(self.disconnect_serial_scope)
         
+        self.trigger_enable_checkbox.stateChanged.connect(self.toggle_trigger_settings)
+        self.trigger_level_slider.valueChanged.connect(self.update_trigger_level)
+        self.trigger_position_slider.valueChanged.connect(self.update_trigger_position)
+        self.trigger_type_combo.currentIndexChanged.connect(self.update_trigger_type)
+        
+        self.trigger_level = DEFAULT_TRIGGER_LEVEL
+        self.trigger_position = DEFAULT_TRIGGER_POSITION
+        self.trigger_type = "上升沿"
+
     def setup_plot_style(self, plot_widget, title, xlabel, ylabel, yrange=None):
         plot_widget.setBackground('k')
         plot_widget.showGrid(x=True, y=True, alpha=0.3)
@@ -321,10 +341,24 @@ class FPGAMasterControl(QMainWindow):
         plot_widget.getAxis('bottom').setPen(pg.mkPen(color='w'))
         plot_widget.getAxis('left').setPen(pg.mkPen(color='w'))
         if yrange: plot_widget.setYRange(*yrange)
-        
+
+    def toggle_trigger_settings(self, state):
+        self.trigger_enabled = state == Qt.CheckState.Checked.value
+
+    def update_trigger_level(self, value):
+        self.trigger_level = value
+        self.trigger_level_label.setText(f"{value}")
+
+    def update_trigger_position(self, value):
+        self.trigger_position = value
+        self.trigger_position_label.setText(f"{value}%")
+
+    def update_trigger_type(self, index):
+        self.trigger_type = self.trigger_type_combo.itemText(index)
+
     def toggle_serial_config(self, source_text):
         self.serial_group_scope.setVisible(source_text == "串口")
-        
+
     def connect_shared_memory(self):
         try:
             self.shared_memory = mmap.mmap(-1, SHARED_MEM_SIZE, tagname=SHARED_MEM_NAME)
@@ -333,7 +367,7 @@ class FPGAMasterControl(QMainWindow):
             self.show_error(f"未找到共享内存 '{SHARED_MEM_NAME}'。\n请确保 C++ 接收程序已运行！")
         except Exception as e: 
             self.show_error(f"访问共享内存时出错: {e}")
-            
+
     def connect_serial_scope(self):
         port = self.scope_serial_combo.currentData()
         if not port: 
@@ -347,7 +381,7 @@ class FPGAMasterControl(QMainWindow):
             self.statusBar().showMessage(f"示波器串口已连接: {port}", 5000)
         except serial.SerialException as e: 
             self.show_error(f"无法打开串口: {e}")
-            
+
     def disconnect_serial_scope(self):
         if hasattr(self, 'serial_connection_scope') and self.serial_connection_scope and self.serial_connection_scope.is_open:
             self.serial_connection_scope.close()
@@ -355,7 +389,7 @@ class FPGAMasterControl(QMainWindow):
         self.connect_serial_button_scope.setEnabled(True)
         self.disconnect_serial_button_scope.setEnabled(False)
         self.statusBar().showMessage("示波器串口已断开", 2000)
-        
+
     def start_scope(self):
         source = self.data_source_combo.currentText()
         if source == "共享内存 (UDP)":
@@ -368,32 +402,13 @@ class FPGAMasterControl(QMainWindow):
                 self.connect_serial_scope()
                 if not hasattr(self, 'serial_connection_scope') or not self.serial_connection_scope: 
                     return
-                    
-        # 初始化OpenGL渲染
-        if self.use_opengl.isChecked():
-            self.init_opengl_plotting()
-            
+        # 清空旧的缓冲区数据
+        self.scope_data = np.array([], dtype=np.uint8)
         self.scope_timer.start()
         self.start_button.setEnabled(False)
         self.stop_button.setEnabled(True)
         self.status_label.setText("状态: 正在采样...")
-        
-    def init_opengl_plotting(self):
-        """初始化OpenGL加速绘图"""
-        try:
-            import pyqtgraph.opengl as gl
-            if not hasattr(self, 'gl_plot_widget'):
-                self.gl_plot_widget = gl.GLViewWidget()
-                self.gl_plot_item = gl.GLLinePlotItem(width=1, antialias=True)
-                self.gl_plot_widget.addItem(self.gl_plot_item)
-                self.plot_widget_time.parent().layout().replaceWidget(self.plot_widget_time, self.gl_plot_widget)
-                self.plot_widget_time = None
-                self.statusBar().showMessage("已启用OpenGL加速渲染", 3000)
-        except ImportError:
-            self.statusBar().showMessage("无法导入OpenGL模块，使用标准绘图", 3000)
-        except Exception as e:
-            self.statusBar().showMessage(f"OpenGL初始化失败: {str(e)}", 3000)
-            
+
     def stop_scope(self):
         self.scope_timer.stop()
         self.start_button.setEnabled(True)
@@ -407,91 +422,53 @@ class FPGAMasterControl(QMainWindow):
         path, _ = QFileDialog.getSaveFileName(self, "保存波形数据", "", "CSV Files (*.csv)")
         if path:
             try:
+                # 保存当前滚动缓冲区中的数据
                 np.savetxt(path, self.scope_data, fmt='%d', delimiter=',', header='ADC_Value', comments='')
                 self.statusBar().showMessage(f"数据成功保存到 {path}", 5000)
             except Exception as e: 
                 self.show_error(f"保存文件失败: {e}")
                 
-    # =============================================================================
-    # 降采样核心算法
-    # =============================================================================
-    def downsample_simple(self, data):
-        """简单抽取降采样"""
-        try:
-            factor = int(self.decimation_factor.text())
-            max_points = int(self.max_points_input.text())
-            factor = max(1, factor)
-            
-            # 确保抽取因子不会导致数据点过少
-            if len(data) / factor > max_points * 2:
-                factor = max(1, len(data) // max_points)
-                
-            return data[::factor]
-        except:
-            return data[::1000]  # 默认1000:1降采样
+    def find_trigger_point(self, data):
+        if self.trigger_type == "上升沿":
+            condition = lambda i: (data[i-1] < self.trigger_level and 
+                                   data[i] >= self.trigger_level)
+        else:
+            condition = lambda i: (data[i-1] > self.trigger_level and 
+                                   data[i] <= self.trigger_level)
         
-    def downsample_adaptive(self, data):
-        """自适应包络降采样"""
-        try:
-            window_size = int(self.window_size.text())
-            max_points = int(self.max_points_input.text())
-            
-            # 确保窗口大小合理
-            window_size = max(10, min(window_size, len(data)//10))
-            
-            downsampled = []
-            for i in range(0, len(data), window_size):
-                chunk = data[i:i+window_size]
-                if len(chunk) > 0:
-                    # 保留最大值和最小值以显示波形包络
-                    downsampled.append(np.min(chunk))
-                    downsampled.append(np.max(chunk))
-            
-            # 如果数据还是太多，进行二次降采样
-            if len(downsampled) > max_points:
-                factor = len(downsampled) // max_points
-                downsampled = downsampled[::factor]
+        for i in range(len(data) - 1, 0, -1):
+            if condition(i):
+                return i
                 
-            return np.array(downsampled)
-        except:
-            # 降采样失败时返回原始数据
-            return data[:5000]
+        return -1
+
+    def apply_trigger(self, data):
+        if not self.trigger_enabled or len(data) < SCOPE_DISPLAY_POINTS:
+            return data[-SCOPE_DISPLAY_POINTS:], None
         
-    def downsample_peak(self, data):
-        """峰值保留降采样"""
-        try:
-            max_points = int(self.max_points_input.text())
+        trigger_idx = self.find_trigger_point(data)
+        
+        if trigger_idx == -1:
+            return data[-SCOPE_DISPLAY_POINTS:], None
             
-            # 找出所有峰值点
-            peaks = []
-            threshold = np.std(data) * 0.5  # 使用标准差设置阈值
+        offset = int(SCOPE_DISPLAY_POINTS * (self.trigger_position / 100.0))
+        start_idx = trigger_idx - offset
+        
+        if start_idx < 0:
+            start_idx = 0
+        
+        end_idx = start_idx + SCOPE_DISPLAY_POINTS
+        if end_idx > len(data):
+            end_idx = len(data)
+            start_idx = max(0, end_idx - SCOPE_DISPLAY_POINTS)
             
-            for i in range(1, len(data)-1):
-                diff_prev = data[i] - data[i-1]
-                diff_next = data[i] - data[i+1]
-                
-                # 检测局部极大值
-                if diff_prev > threshold and diff_next > threshold:
-                    peaks.append(i)
-                
-                # 检测局部极小值
-                elif diff_prev < -threshold and diff_next < -threshold:
-                    peaks.append(i)
-            
-            # 如果峰值点不够，添加间隔点
-            if len(peaks) < max_points // 2:
-                step = max(1, len(data) // (max_points - len(peaks)))
-                for i in range(0, len(data), step):
-                    if i not in peaks:
-                        peaks.append(i)
-            
-            # 排序并截取点
-            peaks.sort()
-            return data[sorted(peaks)[:max_points]]
-        except:
-            return data[:5000]
-            
+        display_data = data[start_idx:end_idx]
+        trigger_pos_in_display = trigger_idx - start_idx
+        
+        return display_data, trigger_pos_in_display
+
     def update_scope_plot(self):
+        new_data = None
         source = self.data_source_combo.currentText()
         if source == "共享内存 (UDP)":
             if not self.shared_memory: return
@@ -502,77 +479,73 @@ class FPGAMasterControl(QMainWindow):
                 sample_count = struct.unpack('>H', count_bytes)[0]
                 if 0 < sample_count <= (SHARED_MEM_SIZE - 2):
                     adc_data_bytes = self.shared_memory.read(sample_count)
-                    self.scope_data = np.frombuffer(adc_data_bytes, dtype=np.uint8)
+                    new_data = np.frombuffer(adc_data_bytes, dtype=np.uint8)
             except Exception as e:
                 print(f"读取共享内存出错: {e}")
                 self.stop_scope()
         elif source == "串口":
-            if not hasattr(self, 'serial_connection_scope') or not self.serial_connection_scope or not self.serial_connection_scope.is_open: 
-                return
+            if not hasattr(self, 'serial_connection_scope') or not self.serial_connection_scope or not self.serial_connection_scope.is_open: return
             try:
                 data_bytes = self.serial_connection_scope.read(self.serial_connection_scope.in_waiting or 1)
                 if data_bytes: 
-                    self.scope_data = np.frombuffer(data_bytes, dtype=np.uint8)
+                    new_data = np.frombuffer(data_bytes, dtype=np.uint8)
             except Exception as e:
                 print(f"读取串口数据出错: {e}")
                 self.stop_scope()
-                
-        if self.scope_data.size > 0:
-            # 应用降采样
-            method = self.downsample_method.currentText()
-            if method == "简单抽取":
-                display_data = self.downsample_simple(self.scope_data)
-            elif method == "自适应包络":
-                display_data = self.downsample_adaptive(self.scope_data)
-            elif method == "峰值保留":
-                display_data = self.downsample_peak(self.scope_data)
-            else:
-                # 默认处理
-                max_points = min(len(self.scope_data), int(self.max_points_input.text()))
-                display_data = self.scope_data[:max_points]
-                
-            # 更新显示数据点数
-            self.data_points_input.setText(f"{len(display_data)}/{len(self.scope_data)}")
+        
+        # [滚动缓冲]
+        if new_data is not None:
+            # 将新数据附加到现有数据后面
+            self.scope_data = np.concatenate((self.scope_data, new_data))
             
-            # 使用OpenGL或标准绘图
-            if hasattr(self, 'gl_plot_item') and self.use_opengl.isChecked():
-                # 转换为3D点用于OpenGL渲染
-                points = np.column_stack([np.arange(len(display_data)), display_data, np.zeros(len(display_data))])
-                self.gl_plot_item.setData(pos=points)
-            else:
+            # 如果缓冲区超过最大尺寸，则从开头丢弃旧数据，保持其滚动
+            if self.scope_data.size > SCOPE_ROLLING_BUFFER_SIZE:
+                self.scope_data = self.scope_data[-SCOPE_ROLLING_BUFFER_SIZE:]
+
+        if self.scope_data.size > 0:
+            # apply_trigger现在作用于更大的滚动缓冲区上
+            display_data, trigger_pos = self.apply_trigger(self.scope_data)
+            
+            if display_data is not None and len(display_data) > 0:
                 self.curve_time.setData(display_data)
             
-            # FFT处理
+            # 显示的是滚动缓冲区的总点数
+            self.data_points_input.setText(str(self.scope_data.size))
+            
+            if self.trigger_line:
+                self.plot_widget_time.removeItem(self.trigger_line)
+                self.trigger_line = None
+            
+            if self.trigger_enabled and trigger_pos is not None:
+                if 0 <= trigger_pos < len(display_data):
+                    self.trigger_line = pg.InfiniteLine(
+                        pos=trigger_pos, 
+                        angle=90, 
+                        pen=pg.mkPen(color='r', width=1.5),
+                        movable=False
+                    )
+                    self.plot_widget_time.addItem(self.trigger_line)
+            
             if self.fft_checkbox.isChecked() and self.scope_data.size > 1:
                 self.update_fft_plot()
-                
+
     def update_fft_plot(self):
         try:
             fs = float(self.sampling_rate_input.text())
             if fs <= 0: return
-        except ValueError: 
-            return
-            
+        except ValueError: return
+        
+        # FFT现在也作用于更大的滚动缓冲区，结果更精确
         N = self.scope_data.size
         T = 1.0 / fs
         data_no_dc = self.scope_data - np.mean(self.scope_data)
-        
-        # 使用FFT计算频谱
         yf = np.fft.fft(data_no_dc)
         xf = np.fft.fftfreq(N, T)[:N//2]
         y_magnitude = 2.0/N * np.abs(yf[0:N//2])
-        
-        # 对频谱进行降采样以提高性能
-        max_fft_points = 2000
-        if len(xf) > max_fft_points:
-            factor = len(xf) // max_fft_points
-            xf = xf[::factor]
-            y_magnitude = y_magnitude[::factor]
-            
         self.curve_freq.setData(x=xf, y=y_magnitude)
 
     # =============================================================================
-    # 选项卡 2: 波形绘制与发送 - 无变化
+    # 选项卡 2: 波形绘制与发送
     # =============================================================================
     def init_waveform_sender_tab(self):
         main_layout = QVBoxLayout(self.waveform_sender_tab)
@@ -585,48 +558,118 @@ class FPGAMasterControl(QMainWindow):
         self.plot_canvas_sender = MplCanvas(self, width=8, height=3, dpi=100)
         sender_layout.addWidget(self.plot_canvas_sender, alignment=Qt.AlignmentFlag.AlignCenter)
         self.plot_sender_data(None)
+        
+        # --- 修改 controls_layout ---
         controls_layout = QHBoxLayout()
         controls_layout.addWidget(QLabel("发送串口:"))
         self.ports_combo_wf = QComboBox()
         self.refresh_button_wf = QPushButton("刷新")
+        
+        controls_layout.addWidget(self.ports_combo_wf, 1)
+        controls_layout.addWidget(self.refresh_button_wf)
+        controls_layout.addStretch()
+        
+        # --- 新增频率控制 ---
+        controls_layout.addWidget(QLabel("频率选择 (0-15):"))
+        self.wf_freq_input = QLineEdit("1") # 新增: 波形频率输入框
+        self.wf_freq_input.setFixedWidth(50) 
+        controls_layout.addWidget(self.wf_freq_input)
+        # --- 结束新增 ---
+        
         self.clear_button = QPushButton("清除画布")
         self.analyze_button = QPushButton("分析并发送")
-        controls_layout.addWidget(self.ports_combo_wf, 1)
-        controls_layout.addWidget(self.refresh_button_wf); controls_layout.addStretch()
-        controls_layout.addWidget(self.clear_button); controls_layout.addWidget(self.analyze_button)
+        controls_layout.addWidget(self.clear_button)
+        controls_layout.addWidget(self.analyze_button)
+        
         sender_layout.addLayout(controls_layout)
-        main_layout.addWidget(sender_group); main_layout.addStretch()
+        main_layout.addWidget(sender_group)
+        main_layout.addStretch()
+        
         self.refresh_button_wf.clicked.connect(self.refresh_all_ports)
         self.clear_button.clicked.connect(self.clear_waveform_canvas)
         self.analyze_button.clicked.connect(self.analyze_and_send_waveform)
-        
+
     def clear_waveform_canvas(self):
         self.drawer.clear_canvas()
         self.plot_sender_data(None)
         self.statusBar().showMessage("画布已清除")
-        
+
     def analyze_and_send_waveform(self):
         try:
+            # 1. 获取并处理波形数据
             waveform = self.drawer.get_waveform_data()
             if waveform is None: 
                 self.show_error("画布为空或数据不足。")
                 return
+
+            # 平滑滤波
             if len(waveform) > 10:
                 ws = min(21, len(waveform)//4)
                 ws += 1 if ws % 2 == 0 else 0
                 if ws > 3: 
                     waveform = savgol_filter(waveform, ws, 3)
-            quantized = ((waveform - np.min(waveform)) / (np.max(waveform) - np.min(waveform))) * 255
-            quantized_waveform = np.clip(quantized, 0, 255).astype(np.uint8)
+            
+            # 量化为8位数据
+            min_val, max_val = np.min(waveform), np.max(waveform)
+            if min_val == max_val: # 避免除以零
+                quantized_waveform = np.full(NUM_SAMPLES_SEND, 128, dtype=np.uint8)
+            else:
+                quantized = ((waveform - min_val) / (max_val - min_val)) * 255
+                quantized_waveform = np.clip(quantized, 0, 255).astype(np.uint8)
+
             self.plot_sender_data(quantized_waveform)
-            data_to_send = "S," + ",".join(map(str, quantized_waveform)) + "\n"
+            
+            # --- 新增: 1.5. 获取并验证频率 ---
+            try:
+                freq_code = int(self.wf_freq_input.text())
+                if not (0 <= freq_code <= 15):
+                    self.show_error("频率选择值必须在 0 到 15 之间！")
+                    return
+            except ValueError:
+                self.show_error("频率选择值必须是一个有效的整数 (0-15)！")
+                return
+            # --- 结束新增 ---
+
+            # 2. 获取串口信息
             port_name = self.ports_combo_wf.currentData()
             if not port_name: 
                 self.show_error("请选择发送串口！")
                 return
-            with serial.Serial(port_name, DEFAULT_BAUD_RATE, timeout=2, write_timeout=2) as ser:
-                ser.write(data_to_send.encode('ascii'))
-            self.statusBar().showMessage(f"波形数据已通过 {port_name} 发送！")
+            
+            # 3. 循环512次，为每个数据点构建并发送一个数据帧
+            with serial.Serial(port_name, 1000000, timeout=2, write_timeout=2) as ser: #注意：这边波特率不是默认的，而是固定1000000
+                
+                # --- 新增: 组合波形和频率 ---
+                # 波形选择(低4位) = 5 (自定义波形)
+                # 频率选择(高4位) = freq_code
+                combined_byte = (freq_code << 4) | 0x05
+                # --- 结束新增 ---
+                
+                for address in range(NUM_SAMPLES_SEND):
+                    data_point = quantized_waveform[address]                    
+                    frame = bytearray() # 创建帧的字节数组                                      
+                    frame.extend(b'\x20\x25') # 帧头: 0x20 0x25                                        
+                    frame.extend(b'\xFF\xFF') # 静态字节: 0xFF 0xFF
+                    # 命令+地址最高位: F0或F1 (地址0-255用F0, 256-511用F1)
+                    addr_high_bit = (address >> 8) & 0x01
+                    command_word = 0xF0 + addr_high_bit
+                    frame.extend(command_word.to_bytes(1, 'big'))
+                    # 写入地址后8位
+                    addr_low_byte = address & 0xFF
+                    frame.append(addr_low_byte)                    
+                    frame.append(data_point) # 写入的8位波形数据       
+                                     
+                    # --- 修改: 使用组合字节 ---
+                    frame.append(combined_byte) # 波形选择(5) + 频率选择(用户输入)
+                    # --- 结束修改 ---
+                                                    
+                    frame.extend(b'\x00\x0F\xFF\xFF') # DDR3容量(4字节)                    
+                    frame.extend(b'\r\n') # 帧尾: \r\n
+                    #hex_frame = ' '.join(f'{b:02X}' for b in frame) #test
+                    #print(f"发送帧（地址{address}）: {hex_frame}") #test                   
+                    ser.write(frame) # 通过串口发送当前帧
+
+            self.statusBar().showMessage(f"512个波形数据点已通过 {port_name} 发送！")
         except Exception as e:
             self.show_error(f"分析或发送波形时出错: {e}\n{traceback.format_exc()}")
             
@@ -635,19 +678,23 @@ class FPGAMasterControl(QMainWindow):
         if data is not None:
             self.plot_canvas_sender.axes.plot(data)
             self.plot_canvas_sender.axes.set_title("发送波形预览 (量化后)")
-            self.plot_canvas_sender.axes.set_xlabel("采样点"); self.plot_canvas_sender.axes.set_ylabel("数值 (0-255)")
+            self.plot_canvas_sender.axes.set_xlabel("采样点")
+            self.plot_canvas_sender.axes.set_ylabel("数值 (0-255)")
             self.plot_canvas_sender.axes.grid(True)
         else:
             self.plot_canvas_sender.axes.set_title("等待绘制...")
-            self.plot_canvas_sender.axes.text(0.5, 0.5, '此处显示预览', ha='center', va='center', transform=self.plot_canvas_sender.axes.transAxes)
+            self.plot_canvas_sender.axes.text(0.5, 0.5, '此处显示预览', 
+                                             ha='center', va='center', 
+                                             transform=self.plot_canvas_sender.axes.transAxes)
         self.plot_canvas_sender.draw()
-        
+
     # =============================================================================
-    # 选项卡 3: 控制与高级调试 - (无变化)
+    # 选项卡 3: 控制与高级调试
     # =============================================================================
     def init_control_tab(self):
         main_layout = QVBoxLayout(self.control_tab)
         serial_layout = QHBoxLayout()
+        
         dac_serial_group = QGroupBox("DAC 串口配置")
         dac_serial_layout = QGridLayout(dac_serial_group)
         dac_serial_layout.addWidget(QLabel("端口:"), 0, 0)
@@ -655,7 +702,7 @@ class FPGAMasterControl(QMainWindow):
         dac_serial_layout.addWidget(self.dac_ports_combo, 0, 1)
         dac_serial_layout.addWidget(QLabel("波特率:"), 1, 0)
         self.dac_baud_combo = QComboBox()
-        self.dac_baud_combo.addItems(["9600", "57600", "115200"])
+        self.dac_baud_combo.addItems(["9600", "57600", "115200", "1000000"])
         self.dac_baud_combo.setCurrentText(str(DEFAULT_BAUD_RATE))
         dac_serial_layout.addWidget(self.dac_baud_combo, 1, 1)
         self.connect_dac_button = QPushButton("打开")
@@ -663,6 +710,7 @@ class FPGAMasterControl(QMainWindow):
         self.disconnect_dac_button.setEnabled(False)
         dac_serial_layout.addWidget(self.connect_dac_button, 2, 0)
         dac_serial_layout.addWidget(self.disconnect_dac_button, 2, 1)
+        
         protocol_serial_group = QGroupBox("协议调试串口配置")
         protocol_serial_layout = QGridLayout(protocol_serial_group)
         protocol_serial_layout.addWidget(QLabel("端口:"), 0, 0)
@@ -678,47 +726,96 @@ class FPGAMasterControl(QMainWindow):
         self.disconnect_protocol_button.setEnabled(False)
         protocol_serial_layout.addWidget(self.connect_protocol_button, 2, 0)
         protocol_serial_layout.addWidget(self.disconnect_protocol_button, 2, 1)
+        
         serial_layout.addWidget(dac_serial_group)
         serial_layout.addWidget(protocol_serial_group)
         main_layout.addLayout(serial_layout)
+        
         control_panel_layout = QHBoxLayout()
         left_panel = QVBoxLayout()
+        
+        # --- DAC 函数发生器 UI (已修改) ---
         dac_group = QGroupBox("DAC 函数发生器")
         dac_layout = QGridLayout(dac_group)
-        dac_layout.addWidget(QLabel("波形:"), 0, 0)
-        self.wave_sine = QRadioButton("正弦"); self.wave_sine.setChecked(True)
+        dac_layout.addWidget(QLabel("默认波形(Fallback):"), 0, 0)
+        self.wave_sine = QRadioButton("正弦")
+        self.wave_sine.setChecked(True)
         self.wave_square = QRadioButton("方波")
         self.wave_triangle = QRadioButton("三角")
         self.wave_sawtooth = QRadioButton("锯齿波")
         self.wave_zero = QRadioButton("直流(零)")
         wave_layout = QHBoxLayout()
-        wave_layout.addWidget(self.wave_sine); wave_layout.addWidget(self.wave_square)
-        wave_layout.addWidget(self.wave_triangle); wave_layout.addWidget(self.wave_sawtooth)
+        wave_layout.addWidget(self.wave_sine)
+        wave_layout.addWidget(self.wave_square)
+        wave_layout.addWidget(self.wave_triangle)
+        wave_layout.addWidget(self.wave_sawtooth)
         wave_layout.addWidget(self.wave_zero)
         dac_layout.addLayout(wave_layout, 0, 1, 1, 3)
-        dac_layout.addWidget(QLabel("频率(Hz):"), 1, 0)
-        self.freq_input = QLineEdit("1000")
+        
+        # 频率输入框
+        dac_layout.addWidget(QLabel("默认频率(Fallback):"), 1, 0)
+        self.freq_input = QLineEdit("1") # 对应旧的 波形+频率(7) 字节
         dac_layout.addWidget(self.freq_input, 1, 1, 1, 3)
-        dac_layout.addWidget(QLabel("幅值(V):"), 2, 0)
-        self.amp_input = QLineEdit("2.50")
-        dac_layout.addWidget(self.amp_input, 2, 1, 1, 3)
+        
+        # --- 新增: 多序列循环配置 ---
+        sequence_group = QGroupBox("多序列循环配置 (Multi-Sequence)")
+        sequence_layout = QGridLayout(sequence_group)
+        sequence_layout.addWidget(QLabel("序列"), 0, 0)
+        sequence_layout.addWidget(QLabel("波形 (0-3)"), 0, 1)
+        sequence_layout.addWidget(QLabel("目标频率 (Hz)"), 0, 2)
+        sequence_layout.addWidget(QLabel("持续时间 (s, 0-255)"), 0, 3)
+        
+        self.dac_sequence_inputs = []
+        for i in range(4):
+            sequence_label = QLabel(f"序列 {i+1}")
+            wave_combo = QComboBox()
+            wave_combo.addItems(["0: 正弦 (sine)", "1: 方波 (square)", "2: 三角 (triangular)", "3: 锯齿 (sawtooth)"])
+            freq_line = QLineEdit("1000000") # 默认1MHz
+            time_line = QLineEdit("1") # 默认1秒
+            
+            sequence_layout.addWidget(sequence_label, i+1, 0)
+            sequence_layout.addWidget(wave_combo, i+1, 1)
+            sequence_layout.addWidget(freq_line, i+1, 2)
+            sequence_layout.addWidget(time_line, i+1, 3)
+            
+            self.dac_sequence_inputs.append({
+                'wave': wave_combo,
+                'freq': freq_line,
+                'time': time_line
+            })
+        
+        dac_layout.addWidget(sequence_group, 2, 0, 1, 4)
+        # --- 结束新增 ---
+
+        # 幅值输入框改为DDR3容量输入框
+        dac_layout.addWidget(QLabel("DDR3 容量:"), 3, 0) # 行号从 2 -> 3
+        self.ddr_capacity_input = QLineEdit("268435455") # 0x0FFFFFFF
+        dac_layout.addWidget(self.ddr_capacity_input, 3, 1, 1, 3)
+        
         self.start_dac_button = QPushButton("开始输出")
         self.stop_dac_button = QPushButton("停止输出")
-        dac_layout.addWidget(self.start_dac_button, 3, 0, 1, 2)
-        dac_layout.addWidget(self.stop_dac_button, 3, 2, 1, 2)
+        dac_layout.addWidget(self.start_dac_button, 4, 0, 1, 2) # 行号从 3 -> 4
+        dac_layout.addWidget(self.stop_dac_button, 4, 2, 1, 2) # 行号从 3 -> 4
+        # --- 结束 DAC 修改 ---
+
         protocol_group = QGroupBox("高级协议调试器")
         protocol_layout = QVBoxLayout(protocol_group)
         self.protocol_combo = QComboBox()
         self.protocol_combo.addItems(["PWM", "I2C", "SPI", "UART", "CAN"])
         protocol_layout.addWidget(self.protocol_combo)
+        
         self.stacked_widget = QStackedWidget()
         self.init_protocol_pages()
         protocol_layout.addWidget(self.stacked_widget)
+        
         self.send_protocol_button = QPushButton("构建并发送协议命令")
         protocol_layout.addWidget(self.send_protocol_button)
+        
         left_panel.addWidget(dac_group)
         left_panel.addWidget(protocol_group)
+        
         right_panel = QVBoxLayout()
+        
         display_group = QGroupBox("数据监视")
         display_layout = QVBoxLayout(display_group)
         display_layout.addWidget(QLabel("发送历史:"))
@@ -726,32 +823,50 @@ class FPGAMasterControl(QMainWindow):
         self.sent_data_display.setReadOnly(True)
         self.sent_data_display.setFontFamily("Courier New")
         display_layout.addWidget(self.sent_data_display)
+        
         display_layout.addWidget(QLabel("接收历史:"))
         self.received_data_display = QTextEdit()
         self.received_data_display.setReadOnly(True)
         self.received_data_display.setFontFamily("Courier New")
         display_layout.addWidget(self.received_data_display)
+        
         self.clear_logs_button = QPushButton("清空日志")
         display_layout.addWidget(self.clear_logs_button)
+        
         right_panel.addWidget(display_group)
+        
+        # --- 数字信号测量结果显示模块 ---
+        digital_display_group = QGroupBox("数字信号测量结果")
+        digital_display_layout = QVBoxLayout(digital_display_group)
+        self.digital_signal_display = QTextEdit()
+        self.digital_signal_display.setReadOnly(True)
+        self.digital_signal_display.setFontFamily("Courier New")
+        digital_display_layout.addWidget(self.digital_signal_display)
+        right_panel.addWidget(digital_display_group)
+
         control_panel_layout.addLayout(left_panel, 2)
         control_panel_layout.addLayout(right_panel, 1)
         main_layout.addLayout(control_panel_layout)
+        
         self.refresh_all_ports()
+        
         self.connect_dac_button.clicked.connect(self.connect_serial_dac)
         self.disconnect_dac_button.clicked.connect(self.disconnect_serial_dac)
         self.connect_protocol_button.clicked.connect(self.connect_serial_protocol)
         self.disconnect_protocol_button.clicked.connect(self.disconnect_serial_protocol)
+        
         self.start_dac_button.clicked.connect(self.send_dac_command)
-        self.stop_dac_button.clicked.connect(lambda: self.send_serial_command_dac("DAC,STOP\n"))
+        self.stop_dac_button.clicked.connect(self.send_dac_stop_command)
+        
         self.protocol_combo.currentIndexChanged.connect(self.stacked_widget.setCurrentIndex)
         self.send_protocol_button.clicked.connect(self.construct_and_send_frame)
         self.clear_logs_button.clicked.connect(self.clear_logs)
-        
+
     def clear_logs(self):
         self.sent_data_display.clear()
         self.received_data_display.clear()
-        
+        self.digital_signal_display.clear() #清空数字信号显示区
+
     def init_protocol_pages(self):
         page_pwm = QWidget()
         main_layout = QVBoxLayout(page_pwm)
@@ -765,33 +880,62 @@ class FPGAMasterControl(QMainWindow):
         self.pwm_inputs = []
         for i in range(1, 5):
             layout.addWidget(QLabel(f"通道 {i}"), i, 0)
-            enable_check = QCheckBox("启用"); enable_check.setChecked(True)
+            enable_check = QCheckBox("启用")
+            enable_check.setChecked(True)
             layout.addWidget(enable_check, i, 1)
-            psc = QLineEdit("1000"); arr = QLineEdit("255"); duty = QLineEdit("128")
-            layout.addWidget(psc, i, 2); layout.addWidget(arr, i, 3); layout.addWidget(duty, i, 4)
+            psc = QLineEdit("1000")
+            arr = QLineEdit("255")
+            duty = QLineEdit("128")
+            layout.addWidget(psc, i, 2)
+            layout.addWidget(arr, i, 3)
+            layout.addWidget(duty, i, 4)
             self.pwm_inputs.append({'enable': enable_check, 'psc': psc, 'arr': arr, 'duty': duty})
         layout.setRowStretch(5, 1)
         main_layout.addWidget(pwm_group)
         main_layout.addStretch(1)
         self.stacked_widget.addWidget(page_pwm)
-        page_i2c = QWidget(); layout = QFormLayout(page_i2c)
-        self.i2c_addr_width = QComboBox(); self.i2c_addr_width.addItems(["8-bit", "16-bit"]); self.i2c_device_addr = QLineEdit("68")
-        self.i2c_reg_addr = QLineEdit("01"); self.i2c_data_to_write = QLineEdit("AA BB"); self.i2c_read_len = QLineEdit("4")
-        layout.addRow("寄存器地址宽度:", self.i2c_addr_width); layout.addRow("设备地址(Hex):", self.i2c_device_addr)
-        layout.addRow("寄存器地址(Hex):", self.i2c_reg_addr); layout.addRow("写入数据(Hex):", self.i2c_data_to_write); layout.addRow("读取长度(Bytes):", self.i2c_read_len)
+        
+        page_i2c = QWidget()
+        layout = QFormLayout(page_i2c)
+        self.i2c_addr_width = QComboBox()
+        self.i2c_addr_width.addItems(["8-bit", "16-bit"])
+        self.i2c_device_addr = QLineEdit("68")
+        self.i2c_reg_addr = QLineEdit("01")
+        self.i2c_data_to_write = QLineEdit("AA BB")
+        self.i2c_read_len = QLineEdit("4")
+        layout.addRow("寄存器地址宽度:", self.i2c_addr_width)
+        layout.addRow("设备地址(Hex):", self.i2c_device_addr)
+        layout.addRow("寄存器地址(Hex):", self.i2c_reg_addr)
+        layout.addRow("写入数据(Hex):", self.i2c_data_to_write)
+        layout.addRow("读取长度(Bytes):", self.i2c_read_len)
         self.stacked_widget.addWidget(page_i2c)
-        page_spi = QWidget(); layout = QFormLayout(page_spi)
-        self.spi_tx_only = QCheckBox("仅发送数据"); self.spi_data_to_write = QLineEdit("9F"); self.spi_read_len = QLineEdit("5")
-        layout.addRow(self.spi_tx_only); layout.addRow("写入数据(Hex):", self.spi_data_to_write); layout.addRow("读取长度(Bytes):", self.spi_read_len)
+        
+        page_spi = QWidget()
+        layout = QFormLayout(page_spi)
+        self.spi_tx_only = QCheckBox("仅发送数据")
+        self.spi_data_to_write = QLineEdit("9F")
+        self.spi_read_len = QLineEdit("5")
+        layout.addRow(self.spi_tx_only)
+        layout.addRow("写入数据(Hex):", self.spi_data_to_write)
+        layout.addRow("读取长度(Bytes):", self.spi_read_len)
         self.stacked_widget.addWidget(page_spi)
-        page_uart = QWidget(); layout = QFormLayout(page_uart)
-        self.uart_data_to_write = QLineEdit("DE AD BE EF"); layout.addRow("发送数据(Hex):", self.uart_data_to_write)
+        
+        page_uart = QWidget()
+        layout = QFormLayout(page_uart)
+        self.uart_data_to_write = QLineEdit("DE AD BE EF")
+        layout.addRow("发送数据(Hex):", self.uart_data_to_write)
         self.stacked_widget.addWidget(page_uart)
-        page_can = QWidget(); layout = QFormLayout(page_can)
-        self.can_id = QLineEdit("123"); layout.addRow("CAN ID(Hex):", self.can_id)
-        self.can_data = QLineEdit("AA BB CC DD"); layout.addRow("数据(Hex):", self.can_data)
-        self.can_extended = QCheckBox("扩展帧"); layout.addRow(self.can_extended)
-        self.can_remote = QCheckBox("远程帧"); layout.addRow(self.can_remote)
+        
+        page_can = QWidget()
+        layout = QFormLayout(page_can)
+        self.can_id = QLineEdit("123")
+        layout.addRow("CAN ID(Hex):", self.can_id)
+        self.can_data = QLineEdit("AA BB CC DD")
+        layout.addRow("数据(Hex):", self.can_data)
+        self.can_extended = QCheckBox("扩展帧")
+        layout.addRow(self.can_extended)
+        self.can_read = QCheckBox("只读")
+        layout.addRow(self.can_read)
         self.stacked_widget.addWidget(page_can)
     
     def connect_serial_dac(self):
@@ -839,25 +983,138 @@ class FPGAMasterControl(QMainWindow):
         self.connect_protocol_button.setEnabled(True)
         self.disconnect_protocol_button.setEnabled(False)
         self.statusBar().showMessage("协议调试串口已关闭", 2000)
-        
+
+    # --- DAC 命令发送 (已修改) ---
     def send_dac_command(self):
-        wave = "SINE"
-        if self.wave_square.isChecked(): wave = "SQUARE"
-        if self.wave_triangle.isChecked(): wave = "TRIANGLE"
-        if self.wave_sawtooth.isChecked(): wave = "SAWTOOTH"
-        if self.wave_zero.isChecked(): wave = "ZERO"
+        """
+        根据新的多序列协议构建并发送ADC波形控制命令。
+        新帧结构: [0x20 0x25 时间(4B) 序列(1B) 频率(16B) FF(3B) 波形+频率(1B) DDR3(4B) \r\n]
+        """
         try:
-            if wave == "ZERO":
-                self.send_serial_command_dac("DAC,ZERO,0,0\n")
-            else:
-                freq = float(self.freq_input.text())
-                amp = float(self.amp_input.text())
-                self.send_serial_command_dac(f"DAC,{wave},{freq},{amp}\n")
-        except ValueError: 
-            self.show_error("频率和幅值必须是有效数字！")
+            # 1. 构建帧头
+            frame = bytearray()
+            frame.extend(b'\x20\x25') # 帧头 (2 bytes)
+            
+            # 2. 构建新的多序列部分
+            time_bytes = bytearray(4)
+            sequence_byte = 0
+            freq_bytes = bytearray(16)
+
+            # 遍历4个序列的GUI输入
+            for i in range(4):
+                inputs = self.dac_sequence_inputs[i]
+                
+                # A. 获取并打包时间 (4 bytes)
+                time_val = int(inputs['time'].text())
+                if not (0 <= time_val <= 255):
+                    self.show_error(f"序列 {i+1} 的时间必须在 0 到 255 之间！")
+                    return
+                time_bytes[i] = time_val
+                
+                # B. 获取并打包序列 (1 byte)
+                # (0:sine, 1:square, 2:triangular, 3:sawtooth)
+                seq_val = inputs['wave'].currentIndex() 
+                sequence_byte |= (seq_val & 0x03) << (i * 2)
+                
+                # C. 获取并打包频率 (16 bytes)
+                f_target = float(inputs['freq'].text())
+                if f_target < 0:
+                    self.show_error(f"序列 {i+1} 的频率必须为正数！")
+                    return
+                
+                # 频率计算: 目标值 * (2^32) / 125000000
+                freq_calc = int(f_target * (2**32) / 125000000)
+                if not (0 <= freq_calc <= 0xFFFFFFFF):
+                    self.show_error(f"序列 {i+1} 的频率计算值 {freq_calc} 超出 32-bit 范围！")
+                    return
+                
+                # 添加4字节大端序频率
+                freq_bytes.extend(freq_calc.to_bytes(4, 'big'))
+
+            frame.extend(time_bytes)       # 添加时间 (4 bytes)
+            frame.append(sequence_byte)    # 添加序列 (1 byte)
+            frame.extend(freq_bytes)       # 添加频率 (16 bytes)
+
+            # 3. 添加静态 FF*3
+            frame.extend(b'\xFF\xFF\xFF') # 静态字节 (3 bytes)
+            
+            # 4. 构建旧的 "波形+频率(7)" 字节 (作为默认/Fallback值)
+            waveform_map = {
+                self.wave_sine: 0,      # sine
+                self.wave_square: 1,    # square
+                self.wave_triangle: 2,  # triangular
+                self.wave_sawtooth: 3,  # sawtooth
+                self.wave_zero: 7       # DC zero
+            }
+            waveform_code = -1
+            for radio_button, code in waveform_map.items():
+                if radio_button.isChecked():
+                    waveform_code = code
+                    break
+            
+            if waveform_code == -1:
+                self.show_error("请选择一个默认波形类型。")
+                return
+
+            # 获取默认频率 (0-15)
+            freq_code = int(self.freq_input.text())
+            if not (0 <= freq_code <= 15):
+                self.show_error("默认频率选择值必须在 0 到 15 之间！")
+                return
+            
+            combined_byte = (freq_code << 4) | (waveform_code & 0x0F)
+            frame.append(combined_byte) # 波形+频率 (1 byte)
+
+            # 5. 获取并验证DDR3容量
+            ddr_capacity = int(self.ddr_capacity_input.text())
+            if not (0 <= ddr_capacity <= 0xFFFFFFFF):
+                self.show_error("DDR3 容量值必须在 0 到 4294967295 (0xFFFFFFFF) 之间！")
+                return
+            
+            frame.extend(ddr_capacity.to_bytes(4, 'big')) # DDR3容量 (4 bytes)
+
+            # 6. 构建帧尾
+            frame.extend(b'\r\n') # 帧尾 (2 bytes)
+
+            # 7. 发送 (总长度应为 2+4+1+16+3+1+4+2 = 33 bytes)
+            self.send_serial_command_dac(frame, is_binary=True)
+
+        except ValueError as e:
+            self.show_error(f"输入格式错误: {e}\n请确保所有频率、时间和DDR3容量为有效整数。")
+
+        except Exception as e:
+            self.show_error(f"发送DAC命令时出错: {e}\n{traceback.format_exc()}")
+
+    def send_dac_stop_command(self):
+        """
+        专门用于发送停止（直流零电平）命令的函数。
+        发送一个所有新旧参数均为0的帧。
+        """
+        try:
+            # 停止命令等效于发送一个所有参数都为0的帧
+            frame = bytearray()
+            frame.extend(b'\x20\x25')      # 帧头 (2B)
+            
+            # 新的多序列参数 (全部清零)
+            frame.extend(b'\x00' * 4)      # 时间(4B) = 0
+            frame.append(0)                # 序列(1B) = 0
+            frame.extend(b'\x00' * 16)     # 频率(16B) = 0
+            
+            frame.extend(b'\xFF\xFF\xFF')  # 静态 FF*3 (3B)
+            
+            # 旧的参数 (全部清零)
+            combined_byte = (0 << 4) | 7   # 波形=7 (直流零), 频率=0
+            frame.append(combined_byte)    # 波形+频率 (1B)
+            frame.extend((0).to_bytes(4, 'big')) # DDR3 容量 (4B) = 0
+            
+            frame.extend(b'\r\n')          # 帧尾 (2B)
+            
+            # 发送
+            self.send_serial_command_dac(frame, is_binary=True)
+        except Exception as e:
+            self.show_error(f"发送停止命令时出错: {e}\n{traceback.format_exc()}")
             
     def send_serial_command_dac(self, data, is_binary=False):
-        """通过DAC串口发送数据 (已修改，增加协议类型和时间戳)"""
         if not (self.serial_connection_dac and self.serial_connection_dac.is_open):
             self.show_error("DAC串口未连接！")
             return
@@ -876,7 +1133,6 @@ class FPGAMasterControl(QMainWindow):
             self.disconnect_serial_dac()
             
     def construct_and_send_frame(self):
-        """通过协议调试串口发送协议帧 (已修改，传递协议名称)"""
         try:
             protocol = self.protocol_combo.currentText()
             frame = self.build_protocol_frame(protocol)
@@ -888,7 +1144,6 @@ class FPGAMasterControl(QMainWindow):
             self.show_error(f"构建协议帧时出错: {e}\n{traceback.format_exc()}")
             
     def send_serial_command_protocol(self, data, protocol_name, is_binary=False):
-        """通过协议调试串口发送数据 (已修改，增加协议类型和时间戳)"""
         if not (self.serial_connection_protocol and self.serial_connection_protocol.is_open):
             self.show_error("协议调试串口未连接！")
             return
@@ -908,7 +1163,6 @@ class FPGAMasterControl(QMainWindow):
             self.disconnect_serial_protocol()
             
     def build_protocol_frame(self, protocol):
-        """构建各类协议帧 (逻辑无变化)"""
         frame = bytearray([0x20, 0x25])
         payload = bytearray()
         selection_byte = 0
@@ -928,9 +1182,13 @@ class FPGAMasterControl(QMainWindow):
                 psc_bytes.extend(psc_val.to_bytes(2, 'big'))
                 arr_bytes.extend(arr_val.to_bytes(2, 'big'))
                 duty_bytes.extend(duty_val.to_bytes(1, 'big'))
-            payload.extend(psc_bytes); payload.extend(arr_bytes); payload.extend(duty_bytes)
+            payload.extend(psc_bytes)
+            payload.extend(arr_bytes)
+            payload.extend(duty_bytes)
             combined_byte = (enable_byte << 4) | (selection_byte & 0x0F)
-            frame.append(combined_byte); frame.extend(payload); frame.extend(b'\r\n')
+            frame.append(combined_byte)
+            frame.extend(payload)
+            frame.extend(b'\r\n')
             return frame
         
         elif protocol == "I2C":
@@ -942,27 +1200,40 @@ class FPGAMasterControl(QMainWindow):
             read_len = int(self.i2c_read_len.text())
             combined_byte = (addr_width << 3) | (selection_byte & 0x07)
             payload.append(device_addr)
-            if addr_width: payload.extend(reg_addr.to_bytes(2, 'big'))
-            else: payload.append(reg_addr)
-            payload.extend(write_data); payload.extend(read_len.to_bytes(1, 'big'))
-            frame.append(combined_byte); frame.extend(payload); frame.extend(b'\r\n')
+            if addr_width: 
+                payload.extend(reg_addr.to_bytes(2, 'big'))
+            else: 
+                payload.append(reg_addr)
+            payload.extend(write_data)
+            if read_len != 0:
+                payload.extend(read_len.to_bytes(1, 'big'))
+            frame.append(combined_byte)
+            frame.extend(payload)
+            frame.extend(b'\r\n')
             return frame
+            
         elif protocol == "SPI":
             selection_byte = 0b010
             tx_only = 1 if self.spi_tx_only.isChecked() else 0
             write_data = bytes.fromhex(self.spi_data_to_write.text().replace(' ', ''))
             read_len = int(self.spi_read_len.text())
             read_bytes = b'\x00' * read_len
-            payload.extend(write_data); payload.extend(read_bytes)
+            payload.extend(write_data)
+            payload.extend(read_bytes)
             combined_byte = (tx_only << 3) | (selection_byte & 0x07)
-            frame.append(combined_byte); frame.extend(payload); frame.extend(b'\r\n')
+            frame.append(combined_byte)
+            frame.extend(payload)
+            frame.extend(b'\r\n')
             return frame
         
         elif protocol == "UART":
             selection_byte = 0b000
             data_str = self.uart_data_to_write.text().strip()
-            if data_str: payload.extend(bytes.fromhex(data_str.replace(' ', '')))
-            frame.append(selection_byte); frame.extend(payload); frame.extend(b'\r\n')
+            if data_str: 
+                payload.extend(bytes.fromhex(data_str.replace(' ', '')))
+            frame.append(selection_byte)
+            frame.extend(payload)
+            frame.extend(b'\r\n')
             return frame
             
         elif protocol == "CAN":
@@ -970,95 +1241,213 @@ class FPGAMasterControl(QMainWindow):
             can_id = int(self.can_id.text(), 16)
             can_data = bytes.fromhex(self.can_data.text().replace(' ', ''))
             flags = 0
-            if self.can_extended.isChecked(): flags |= 0x01
-            if self.can_remote.isChecked(): flags |= 0x02
+            if self.can_read.isChecked(): 
+                flags |= 0x00
+                combined_byte = (flags << 3) | (selection_byte & 0x07)
+                frame.append(combined_byte)
+                frame.extend(b'\r\n')
+                return frame
+            if self.can_extended.isChecked():
+                flags |= 0x01
+                combined_byte = (flags << 3) | (selection_byte & 0x07)
+                frame.append(combined_byte)
+                can_id &= 0x1FFFFFFF
+                payload.extend(can_id.to_bytes(4, 'big'))
+                payload.extend(b'\x00' * (8-len(can_data)))
+                payload.extend(can_data)
+                frame.extend(payload)
+                frame.extend(b'\r\n')
+                return frame
+            flags |= 0x02
             combined_byte = (flags << 3) | (selection_byte & 0x07)
-            payload.extend(can_id.to_bytes(4, 'big'))
-            payload.append(len(can_data))
+            frame.append(combined_byte)
+            can_id &= 0x7FF
+            payload.extend(can_id.to_bytes(2, 'big'))
+            payload.extend(b'\x00' * (8-len(can_data)))
             payload.extend(can_data)
-            frame.append(combined_byte); frame.extend(payload); frame.extend(b'\r\n')
+            frame.extend(payload)
+            frame.extend(b'\r\n')
             return frame
             
         else:
             self.show_error(f"协议 {protocol} 未定义！")
             return None
             
+    # =============================================================================
+    # 协议帧解析功能
+    # =============================================================================
     def parse_received_frame(self, frame_data):
-        """解析接收到的数据帧"""
+        """
+        解析接收到的数据帧。
+        新帧结构: [数据部分(Payload), 协议选择字节(1B), 帧尾(b'\r\n')]
+        """
         try:
-            if frame_data[0:2] != b'\x20\x25': return "无效帧头"
-            protocol_byte = frame_data[2]
+            # 新的检查：帧至少需要包含 [协议字节, 帧尾] (3字节)
+            if len(frame_data) < 3 or frame_data[-2:] != b'\r\n':
+                return "无效或不完整帧 (结构错误或无帧尾)"
+            
+            # 协议字节现在位于帧尾 b'\r\n' 之前
+            protocol_byte = frame_data[-3]
             protocol_type = protocol_byte & 0b111
             extended_flags = protocol_byte >> 3
-            payload = frame_data[3:-2]
-            if protocol_type == 0b000:   # UART
+            
+            # 有效数据(Payload)是帧开头到协议字节(不含)的所有内容
+            payload = frame_data[0:-3]
+
+            if protocol_type == 0b000:
+                # UART: 有效数据为整个负载
                 return f"<- [UART] | Data: {payload.hex(' ').upper()}"
-            elif protocol_type == 0b001:  # I2C
+            
+            elif protocol_type == 0b001:
+                # I2C: 有效数据为寄存器地址、写入数据和请求读回的数据
                 addr_width = extended_flags & 0b1
                 device_addr = payload[0]
-                if addr_width: reg_addr, data_start = int.from_bytes(payload[1:3], 'big'), 3
-                else: reg_addr, data_start = payload[1], 2
-                write_data = payload[data_start:-1]
-                read_len = payload[-1]
-                return (f"<- [I2C] | Dev: 0x{device_addr:02X}, Reg: 0x{reg_addr:0{4 if addr_width else 2}X}, "
-                        f"Write: [{write_data.hex(' ').upper()}], ReadLen: {read_len}B")
-            elif protocol_type == 0b010:  # SPI
-                tx_only = extended_flags & 0b1
-                read_len = payload[-1] if payload else 0
-                write_data = payload[:-read_len] if read_len > 0 else payload
-                return (f"<- [SPI] | Mode: {'TX Only' if tx_only else 'TX/RX'}, "
-                        f"Write: [{write_data.hex(' ').upper()}], ReadLen: {read_len}B")
-            elif protocol_type == 0b011:  # PWM
+                if addr_width: 
+                    reg_addr, data_start = int.from_bytes(payload[1:3], 'big'), 3
+                    reg_addr_str = f"0x{reg_addr:04X}"
+                else: 
+                    reg_addr, data_start = payload[1], 2
+                    reg_addr_str = f"0x{reg_addr:02X}"
+                
+                # 读取长度在帧的最后一个有效字节
+                read_len = payload[-1] if len(payload) > 0 else 0
+                
+                # 假设返回帧的有效负载就是I2C读回的数据（如果有的话）
+                # 注意：实际接收的I2C帧结构需要根据FPGA实际实现来确定
+                # 此处假定 payload 就是I2C读回的字节
+                if len(payload) > 0 and read_len > 0:
+                    read_data = payload[:read_len] # 假设读回的数据是负载的前 read_len 字节
+                    return (f"<- [I2C-Rx] | Dev: 0x{device_addr:02X}, Reg: {reg_addr_str}, "
+                            f"Read Data: [{read_data.hex(' ').upper()}]")
+                else:
+                    return (f"<- [I2C-Tx] | Dev: 0x{device_addr:02X}, Reg: {reg_addr_str}, "
+                            f"No read data in response frame.")
+
+            elif protocol_type == 0b010:
+                # SPI: 有效数据为读回的数据。
+                # 假设发送帧结构中 read_len 是负载的最后一个字节。
+                # 在接收帧中，有效数据应为MISO读回的字节。
+                # 简化处理：假设接收帧的 payload 就是读回的 SPI 数据。
+                if payload:
+                    return f"<- [SPI-Rx] | Data: [{payload.hex(' ').upper()}]"
+                else:
+                    return "<- [SPI-Rx] | No read data received."
+
+            elif protocol_type == 0b011:
+                # PWM: 有效数据为各通道的配置参数
                 enable_byte = extended_flags & 0b1111
                 channels = []
                 for i in range(4):
                     offset = i * 5
-                    if offset + 5 > len(payload): break
+                    # 假设返回帧负载包含了4个通道的 (PSC, ARR, Duty) 共20字节
+                    if len(payload) < 20:
+                        channels.append("数据不完整")
+                        break
+                        
                     psc = int.from_bytes(payload[offset:offset+2], 'big')
                     arr = int.from_bytes(payload[offset+2:offset+4], 'big')
                     duty = payload[offset+4]
                     enabled = (enable_byte >> i) & 0b1
-                    if enabled: channels.append(f"CH{i+1}: ON (PSC={psc}, ARR={arr}, Duty={duty})")
-                    else: channels.append(f"CH{i+1}: OFF")
+                    
+                    status = "ON" if enabled else "OFF"
+                    channels.append(f"CH{i+1}: {status} (PSC={psc}, ARR={arr}, Duty={duty})")
+                    
                 return f"<- [PWM] | Status: {' | '.join(channels)}"
-            elif protocol_type == 0b100:  # CAN
-                if len(payload) < 5: return "CAN帧不完整"
-                can_id = int.from_bytes(payload[0:4], 'big')
-                data_len = payload[4]
-                data = payload[5:5+data_len] if data_len > 0 else b''
-                is_extended = "Ext" if extended_flags & 0x01 else "Std"
-                is_remote = "RTR" if extended_flags & 0x02 else "Data"
-                return (f"<- [CAN] | ID: 0x{can_id:08X} [{is_extended}, {is_remote}], "
-                        f"DLC: {data_len}, Data: [{data.hex(' ').upper()}]")
-            else:
+
+            elif protocol_type == 0b100:  # CAN协议
+                # CAN: 有效数据为 CAN ID、帧类型和数据负载             
+                can_id = int.from_bytes(payload[0:5], 'big')
+                can_data = payload[5:] # 8 bytes data
+                # 将 can_id 格式化为 10 位十六进制数 ---
+                return (f"<- [CAN-Rx] | ID: 0x{can_id:010X}, "
+                        f"Data: [{can_data.hex(' ').upper()}]")
+
+            elif protocol_type == 0b101:  #数字信号测量
+                # 协议结构: 频率(4字节) + 占空比(2字节)
+                
+                # [修改点 1: 修复数据不完整报错]
+                # 检查负载是否*正好*为6字节
+                if len(payload) != 6:
+                    return f"<- [DIGITAL] | 数据不完整 (需要 6 字节有效负载, 实际 {len(payload)} 字节)"
+                
+                # 解析频率 (4字节大端序)
+                freq_bytes = payload[0:4]
+                frequency = int.from_bytes(freq_bytes, 'big')
+                
+                # 解析占空比 (2字节大端序)
+                duty_bytes = payload[4:6]
+                duty_value = int.from_bytes(duty_bytes, 'big')
+                duty_percent = duty_value / 10.0  # 转换为百分比格式
+                _duty_percent = (1000 - duty_value) / 10.0
+                # 计算高电平时间
+                if frequency > 0:
+                    duty_time_us = (duty_percent / 100) * (1000 / frequency) * 1000
+                    _duty_time_us = (_duty_percent / 100) * (1000 / frequency) * 1000
+                else:
+                    duty_time_us = 0
+
+                return (f"<- [DIGITAL] | Freq: {frequency} Hz, Duty: {duty_percent:.1f}%, High Time: {duty_time_us:.3f} us, Low Time: {_duty_time_us:.3f} us")
+            
+            else: # 未知协议
                 return f"<- [未知协议] | Type: 0x{protocol_type:02X}, Data: {payload.hex(' ').upper()}"
-        except IndexError: return "帧数据不完整"
-        except Exception as e: return f"解析错误: {str(e)}"
         
+        except IndexError: 
+            return "帧数据不完整（索引错误）"
+        except Exception as e: 
+            return f"解析错误: {str(e)}"
+            
     def check_control_serial_data(self):
-        """检查协议调试串口接收的数据并解析帧"""
-        if not (self.serial_connection_protocol and self.serial_connection_protocol.is_open): 
-            return
+        """
+        检查协议串口数据，按新结构 [Payload, Proto, Tail] 查找帧。
+        [修改点 2] 新增: 支持 0x01 0x0D 0x0A 作为 '命令成功' 反馈。
+        """
+        if not (self.serial_connection_protocol and self.serial_connection_protocol.is_open): return
         try:
             data = self.serial_connection_protocol.read(self.serial_connection_protocol.in_waiting)
         except serial.SerialException as e:
             self.show_error(f"协议串口读取错误: {e}")
             self.disconnect_serial_protocol()
             return
-        if not data: 
-            return
+            
+        if not data: return
+        
         self.control_serial_buffer.extend(data)
+        
         while True:
-            start_idx = self.control_serial_buffer.find(b'\x20\x25')
-            if start_idx == -1: 
-                break
-            end_idx = self.control_serial_buffer.find(b'\r\n', start_idx)
+            # 帧头(b'\x20\x25')已取消，我们现在只通过帧尾(b'\r\n')来切分数据包
+            # 查找第一个出现的帧尾
+            end_idx = self.control_serial_buffer.find(b'\r\n')
+            
+            # 如果没有找到帧尾，说明数据包不完整，退出循环等待更多数据
             if end_idx == -1: 
                 break
-            frame_data = bytes(self.control_serial_buffer[start_idx : end_idx + 2])
+            
+            # 提取从缓冲区开始到第一个帧尾的完整帧
+            # 'end_idx' 指向 '\r'，所以我们需要 +2 来包含 '\r\n'
+            frame_data = bytes(self.control_serial_buffer[0 : end_idx + 2])
+            
             timestamp = datetime.now().strftime("%H:%M:%S.%f")[:-3]
-            parsed_info = self.parse_received_frame(frame_data)
-            self.received_data_display.append(f"[{timestamp}] {parsed_info}")
+
+            # [修改点 2: 新增下位机反馈功能]
+            # 检查是否为 '命令发送成功' 的特殊反馈帧 (0x01 + 帧尾)
+            if frame_data == b'\x01\r\n':
+                self.received_data_display.append(f"[{timestamp}] <- [SYSTEM] | 命令发送成功")
+            
+            else:
+                # [原逻辑]
+                parsed_info = self.parse_received_frame(frame_data)
+                
+                # --- 修改: 根据协议类型，将数据显示到不同的窗口 ---
+                if parsed_info.startswith("<- [DIGITAL]"):
+                    # 如果是数字信号测量结果，显示在专用窗口
+                    # 清除协议头，只显示数据
+                    display_text = parsed_info.replace("<- [DIGITAL] | ", "")
+                    self.digital_signal_display.append(f"[{timestamp}] {display_text}")
+                else:
+                    # 其他协议信息显示在通用接收历史窗口
+                    self.received_data_display.append(f"[{timestamp}] {parsed_info}")
+            
+            # 从缓冲区移除已经处理过的帧
             self.control_serial_buffer = self.control_serial_buffer[end_idx + 2:]
 
 if __name__ == '__main__':
