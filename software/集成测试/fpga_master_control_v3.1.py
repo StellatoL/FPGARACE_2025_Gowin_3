@@ -743,16 +743,16 @@ class FPGAMasterControl(QMainWindow):
         self.wave_square = QRadioButton("方波")
         self.wave_triangle = QRadioButton("三角")
         self.wave_sawtooth = QRadioButton("锯齿波")
-        self.wave_sequence = QRadioButton("序列波")
         self.wave_zero = QRadioButton("直流(零)")
+        self.wave_sequence = QRadioButton("序列波")
+        self.wave_sequence.setProperty("value", 4)  # 设置值为4
         wave_layout = QHBoxLayout()
         wave_layout.addWidget(self.wave_sine)
         wave_layout.addWidget(self.wave_square)
         wave_layout.addWidget(self.wave_triangle)
         wave_layout.addWidget(self.wave_sawtooth)
-        wave_layout.addWidget(self.wave_sequence)  # 将其添加到 wave_layout 中
         wave_layout.addWidget(self.wave_zero)
-        
+        wave_layout.addWidget(self.wave_sequence)
         dac_layout.addLayout(wave_layout, 0, 1, 1, 3)
         
         # 频率输入框
@@ -930,11 +930,58 @@ class FPGAMasterControl(QMainWindow):
         layout.addRow("读取长度(Bytes):", self.spi_read_len)
         self.stacked_widget.addWidget(page_spi)
         
+        # 修改UART页面，添加串口接收原始数据功能
         page_uart = QWidget()
-        layout = QFormLayout(page_uart)
+        layout = QVBoxLayout(page_uart)
+        
+        # 原有的UART发送部分
+        uart_send_group = QGroupBox("UART 发送")
+        uart_send_layout = QFormLayout(uart_send_group)
         self.uart_data_to_write = QLineEdit("DE AD BE EF")
-        layout.addRow("发送数据(Hex):", self.uart_data_to_write)
+        uart_send_layout.addRow("发送数据(Hex):", self.uart_data_to_write)
+        layout.addWidget(uart_send_group)
+        
+        # 新增UART接收部分
+        uart_receive_group = QGroupBox("UART 原始数据接收")
+        uart_receive_layout = QGridLayout(uart_receive_group)
+        
+        # 串口配置
+        uart_receive_layout.addWidget(QLabel("接收串口:"), 0, 0)
+        self.uart_receive_port_combo = QComboBox()
+        uart_receive_layout.addWidget(self.uart_receive_port_combo, 0, 1)
+        
+        uart_receive_layout.addWidget(QLabel("波特率:"), 1, 0)
+        self.uart_receive_baud_combo = QComboBox()
+        self.uart_receive_baud_combo.addItems(["9600", "57600", "115200", "1000000"])
+        self.uart_receive_baud_combo.setCurrentText("115200")
+        uart_receive_layout.addWidget(self.uart_receive_baud_combo, 1, 1)
+        
+        self.connect_uart_receive_button = QPushButton("连接")
+        self.disconnect_uart_receive_button = QPushButton("断开")
+        self.disconnect_uart_receive_button.setEnabled(False)
+        uart_receive_layout.addWidget(self.connect_uart_receive_button, 2, 0)
+        uart_receive_layout.addWidget(self.disconnect_uart_receive_button, 2, 1)
+        
+        # 数据显示区域
+        uart_receive_layout.addWidget(QLabel("接收到的原始数据:"), 3, 0, 1, 2)
+        self.uart_receive_display = QTextEdit()
+        self.uart_receive_display.setReadOnly(True)
+        self.uart_receive_display.setFontFamily("Courier New")
+        uart_receive_layout.addWidget(self.uart_receive_display, 4, 0, 1, 2)
+        
+        # 控制按钮
+        self.clear_uart_receive_button = QPushButton("清空接收区")
+        uart_receive_layout.addWidget(self.clear_uart_receive_button, 5, 0, 1, 2)
+        
+        layout.addWidget(uart_receive_group)
+        layout.addStretch(1)
+        
         self.stacked_widget.addWidget(page_uart)
+        
+        # 连接UART接收串口的信号和槽
+        self.connect_uart_receive_button.clicked.connect(self.connect_uart_receive)
+        self.disconnect_uart_receive_button.clicked.connect(self.disconnect_uart_receive)
+        self.clear_uart_receive_button.clicked.connect(self.uart_receive_display.clear)
         
         page_can = QWidget()
         layout = QFormLayout(page_can)
@@ -961,7 +1008,45 @@ class FPGAMasterControl(QMainWindow):
             self.statusBar().showMessage(f"DAC串口已连接: {port}", 5000)
         except serial.SerialException as e: 
             self.show_error(f"无法打开DAC串口: {e}")
+    
+    # 新增UART接收串口相关方法
+    def connect_uart_receive(self):
+        """连接UART接收串口"""
+        port = self.uart_receive_port_combo.currentData()
+        if not port: 
+            self.show_error("请选择UART接收串口！")
+            return
+        baud = int(self.uart_receive_baud_combo.currentText())
+        try:
+            self.serial_connection_uart_receive = serial.Serial(port, baud, timeout=0.1)
+            self.connect_uart_receive_button.setEnabled(False)
+            self.disconnect_uart_receive_button.setEnabled(True)
+            self.statusBar().showMessage(f"UART接收串口已连接: {port}", 5000)
             
+            # 启动定时器检查数据
+            if not hasattr(self, 'uart_receive_timer'):
+                self.uart_receive_timer = QTimer(self)
+                self.uart_receive_timer.timeout.connect(self.check_uart_receive_data)
+            self.uart_receive_timer.start(50)  # 每50ms检查一次
+            
+        except serial.SerialException as e: 
+            self.show_error(f"无法打开UART接收串口: {e}")
+
+    def disconnect_uart_receive(self):
+        """断开UART接收串口"""
+        if hasattr(self, 'serial_connection_uart_receive') and self.serial_connection_uart_receive and self.serial_connection_uart_receive.is_open:
+            self.serial_connection_uart_receive.close()
+        self.serial_connection_uart_receive = None
+        self.connect_uart_receive_button.setEnabled(True)
+        self.disconnect_uart_receive_button.setEnabled(False)
+        
+        # 停止定时器
+        if hasattr(self, 'uart_receive_timer'):
+            self.uart_receive_timer.stop()
+            
+        self.statusBar().showMessage("UART接收串口已断开", 2000)
+
+
     def disconnect_serial_dac(self):
         if self.serial_connection_dac and self.serial_connection_dac.is_open:
             self.serial_connection_dac.close()
@@ -1056,8 +1141,8 @@ class FPGAMasterControl(QMainWindow):
                 self.wave_square: 1,    # square
                 self.wave_triangle: 2,  # triangular
                 self.wave_sawtooth: 3,  # sawtooth
-                self.wave_zero: 7,       # DC zero
-                self.wave_sequence: 4   # 序列波
+                self.wave_sequence: 4,  # 序列波
+                self.wave_zero: 7       # DC zero
             }
             waveform_code = -1
             for radio_button, code in waveform_map.items():
@@ -1323,18 +1408,12 @@ class FPGAMasterControl(QMainWindow):
                     reg_addr_str = f"0x{reg_addr:02X}"
                 
                 # 读取长度在帧的最后一个有效字节
-                read_len = payload[-1] if len(payload) > 0 else 0
+                #read_len = payload[-1] if len(payload) > 0 else 0
                 
                 # 假设返回帧的有效负载就是I2C读回的数据（如果有的话）
                 # 注意：实际接收的I2C帧结构需要根据FPGA实际实现来确定
                 # 此处假定 payload 就是I2C读回的字节
-                if len(payload) > 0 and read_len > 0:
-                    read_data = payload[:read_len] # 假设读回的数据是负载的前 read_len 字节
-                    return (f"<- [I2C-Rx] | Dev: 0x{device_addr:02X}, Reg: {reg_addr_str}, "
-                            f"Read Data: [{read_data.hex(' ').upper()}]")
-                else:
-                    return (f"<- [I2C-Tx] | Dev: 0x{device_addr:02X}, Reg: {reg_addr_str}, "
-                            f"No read data in response frame.")
+                return (f"<- [I2C-Tx] | {payload.hex(' ').upper()}")
 
             elif protocol_type == 0b010:
                 # SPI: 有效数据为读回的数据。
