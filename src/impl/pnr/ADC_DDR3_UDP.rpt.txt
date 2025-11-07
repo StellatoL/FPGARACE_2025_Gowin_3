@@ -1,0 +1,494 @@
+//Copyright (C)2014-2025 Gowin Semiconductor Corporation.
+//All rights reserved.
+
+
+1. PnR Messages
+
+  <Report Title>: PnR Report
+  <Design File>: C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\impl\gwsynthesis\ADC_DDR3_UDP.vg
+  <Physical Constraints File>: C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DDR3_UDP.cst
+  <Timing Constraints File>: C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DDR3_UDP.sdc
+  <Tool Version>: V1.9.12 (64-bit)
+  <Part Number>: GW5A-LV25UG324C2/I1
+  <Device>: GW5A-25
+  <Device Version>: A
+  <Created Time>:Fri Nov  7 15:02:03 2025
+
+
+2. PnR Details
+
+  Running placement:
+    Placement Phase 0: CPU time = 0h 0m 6s, Elapsed time = 0h 0m 6s
+    Placement Phase 1: CPU time = 0h 0m 0.641s, Elapsed time = 0h 0m 0.641s
+    Placement Phase 2: CPU time = 0h 0m 15s, Elapsed time = 0h 0m 15s
+    Placement Phase 3: CPU time = 0h 0m 7s, Elapsed time = 0h 0m 7s
+    Total Placement: CPU time = 0h 0m 29s, Elapsed time = 0h 0m 29s
+ Running routing:
+    Routing Phase 0: CPU time = 0h 0m 0.007s, Elapsed time = 0h 0m 0.007s
+    Routing Phase 1: CPU time = 0h 0m 15s, Elapsed time = 0h 0m 15s
+    Routing Phase 2: CPU time = 0h 0m 0.213s, Elapsed time = 0h 0m 0.213s
+    Routing Phase 3: CPU time = 0h 0m 0s, Elapsed time = 0h 0m 0s
+    Total Routing: CPU time = 0h 0m 15s, Elapsed time = 0h 0m 15s
+ Generate output files:
+    CPU time = 0h 0m 4s, Elapsed time = 0h 0m 4s
+
+ Total Time and Memory Usage: CPU time = 0h 0m 48s, Elapsed time = 0h 0m 48s, Peak memory usage = 909MB
+
+
+3. Resource Usage Summary
+
+  --------------------------------------------------------------------------------
+  Resources                   | Usage                               | Utilization
+  --------------------------------------------------------------------------------
+  Logic                       | 11328/23040                         |  50%
+    --LUT,ALU,ROM16           | 11328(10300 LUT, 1028 ALU, 0 ROM16) | -
+    --SSRAM(RAM16)            | 0                                   | -
+  Register                    | 9037/23685                          |  39%
+    --Logic Register as Latch | 0/23040                             |  0%
+    --Logic Register as FF    | 9014/23040                          |  40%
+    --I/O Register as Latch   | 0/645                               |  0%
+    --I/O Register as FF      | 23/645                              |  4%
+  CLS                         | 8757/11520                          |  77%
+  I/O Port                    | 109/222                             |  50%
+  I/O Buf                     | 105                                 | -
+    --Input Buf               | 17                                  | -
+    --Output Buf              | 61                                  | -
+    --Inout Buf               | 27                                  | -
+  IOLOGIC                     | 66/215                              | 31%
+    --ODDR                    | 6
+    --IDES8_MEM               | 16
+    --OSER8                   | 24
+    --OSER8_MEM               | 20
+    --IODELAY                 | 16
+  BSRAM                       | 52/56                               | 93%
+    --SDPB                    | 31
+    --SDPX9B                  | 14
+    --pROM                    | 7
+  DSP                         | 8/28                                | 29%
+    --MULT27X36               | 2
+    --MULTALU27X18            | 4
+  ================================================================================
+
+
+
+4. I/O Bank Usage Summary
+
+  --------------------------------------
+  I/O Bank  | Usage       | Utilization 
+  --------------------------------------
+  bank 0   | 26/30       | 87%         
+  bank 1   | 23/29       | 80%         
+  bank 2   | 18/27       | 67%         
+  bank 3   | 24/27       | 89%         
+  bank 4   | 10/35       | 29%         
+  bank 5   | 2/25        | 8%          
+  bank 6   | 0/17        | 0%          
+  bank 7   | 6/27        | 23%         
+  bank 10  | 0/4         | 0%          
+  bank 11  | 0/1         | 0%          
+  ======================================
+
+
+5. Clock Resource Usage Summary
+
+  ------------------------------------------
+  Clock Resource| Usage         | Utilization 
+  ------------------------------------------
+  PRIMARY       | 8/8           | 100%
+  LW            | 8/8           | 100%
+  GCLK_PIN      | 13/40         | 33%
+  CLKDIV        | 1/16          | 7%
+  DDRDLL        | 1/4           | 25%
+  DQS           | 2/8           | 25%
+  PLLA          | 3/6           | 50%
+  ==========================================
+
+
+6. Global Clock Signals
+
+  -------------------------------------------
+  Signal         | Global Clock   | Location
+  -------------------------------------------
+  clk_50M_d      | PRIMARY        |  TR TL BR BL
+  fx2_ifclk_d    | PRIMARY        |  TR TL BR BL
+  clk_12_5M      | PRIMARY        |  TR BR BL
+  clk_400M       | PRIMARY        |  TR
+  ADC_clk_d      | PRIMARY        |  TR BR
+  DAC_clk_d      | PRIMARY        |  TR TL BR BL
+  clk_200M       | PRIMARY        |  TR BR
+  ddr3_ctrl_2port/ui_clk| PRIMARY        |  TR TL BR BL
+  extern_clk_d   | LW             |  -
+  rEnable[1]     | LW             |  -
+  digital_top_inst/digital_measure_top_inst/digital_freq_measure_inst/divider_inst/startCalculation| LW             |  -
+  digital_top_inst/digital_measure_top_inst/digital_duty_measure_inst/divider_inst/startCalculation| LW             |  -
+  ddr3_ctrl_2port/fifo_ddr3_adapter/rd_data_fifo/fifo_inst/reset_r[1]| LW             |  -
+  ddr3_ctrl_2port/fifo_ddr3_adapter/wr_data_fifo/fifo_inst/reset_r[1]| LW             |  -
+  ddr3_ctrl_2port/DDR3_Memory_Interface_Top/gw3_top/ui_clk_sync_rst| LW             |  -
+  fifo_send/fifo_inst/reset_r[1]| LW             |  -
+  clk_400M       | HCLK           | BANK0_BANK1_HCLK0
+  ===========================================
+
+
+7. Pinout by Port Name
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Port Name        | Diff Pair | Loc./Bank     | Constraint | Dir.  | Site     | CFG             | IO Type    | Drive | Pull Mode | PCI Clamp | Hysteresis | Open Drain | Vref       | Single Resistor | Diff Resistor | BankVccio  | Pull Strength | Ctle         
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+clk_50M          | -         | T9/4          | Y          | in    | IOB29[A] | GCLKT_11A       | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+reset_n          | -         | B16/1         | Y          | in    | IOT91[A] | RPLL0_T_IN1     | SSTL15_I   | OFF   | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+ADC_data[0]      | -         | F17/2         | Y          | in    | IOR20[A] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+ADC_data[1]      | -         | H13/2         | Y          | in    | IOR18[A] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+ADC_data[2]      | -         | H14/2         | Y          | in    | IOR18[B] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+ADC_data[3]      | -         | K15/2         | Y          | in    | IOR33[A] | GCLKT_5/RPLL1_T_IN1 | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+ADC_data[4]      | -         | K16/2         | Y          | in    | IOR33[B] | GCLKC_5/RPLL1_C_FB0 | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+ADC_data[5]      | -         | J13/2         | Y          | in    | IOR26[A] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+ADC_data[6]      | -         | K14/2         | Y          | in    | IOR26[B] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+ADC_data[7]      | -         | K12/2         | Y          | in    | IOR29[A] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+uart_rx          | -         | L17/3         | Y          | in    | IOB83[A] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_flagb        | -         | N14/3         | Y          | in    | IOB69[B] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_flagc        | -         | M14/3         | Y          | in    | IOB69[A] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_ifclk        | -         | T11/4         | Y          | in    | IOB45[B] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+uart_rxd         | -         | U8/5          | Y          | in    | IOB22[A] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+spi_miso         | -         | V13/4         | Y          | in    | IOB50[B] | D12             | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+can_rxd          | -         | N18/3         | Y          | in    | IOB79[B] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+extern_clk       | -         | N17/3         | Y          | in    | IOB79[A] | -               | LVCMOS33   | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+ADC_clk          | -         | K13/2         | Y          | out   | IOR29[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+DAC_data[0]      | -         | F18/2         | Y          | out   | IOR20[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+DAC_data[1]      | -         | G16/2         | Y          | out   | IOR22[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+DAC_data[2]      | -         | G18/2         | Y          | out   | IOR22[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+DAC_data[3]      | -         | D17/2         | Y          | out   | IOR12[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+DAC_data[4]      | -         | D18/2         | Y          | out   | IOR12[B] | ADCINCLK        | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+DAC_data[5]      | -         | F14/2         | Y          | out   | IOR7[A]  | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+DAC_data[6]      | -         | G14/2         | Y          | out   | IOR7[B]  | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+DAC_data[7]      | -         | C17/2         | Y          | out   | IOR9[A]  | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+DAC_clk          | -         | C18/2         | Y          | out   | IOR9[B]  | MCKTEST         | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+uart_tx          | -         | L18/3         | Y          | out   | IOB83[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+rgmii_tx_clk     | -         | C1/7          | Y          | out   | IOT27[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+rgmii_txd[0]     | -         | D2/7          | Y          | out   | IOT19[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+rgmii_txd[1]     | -         | D1/7          | Y          | out   | IOT19[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+rgmii_txd[2]     | -         | F2/7          | Y          | out   | IOT11[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+rgmii_txd[3]     | -         | F1/7          | Y          | out   | IOT11[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+rgmii_txen       | -         | C2/7          | Y          | out   | IOT27[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+O_ddr_addr[0]    | -         | A3/0          | Y          | out   | IOT35[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[1]    | -         | A6/0          | Y          | out   | IOT43[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[2]    | -         | B3/0          | Y          | out   | IOT35[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[3]    | -         | C7/0          | Y          | out   | IOT48[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[4]    | -         | B4/0          | Y          | out   | IOT37[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[5]    | -         | C8/0          | Y          | out   | IOT50[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[6]    | -         | C4/0          | Y          | out   | IOT29[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[7]    | -         | C6/0          | Y          | out   | IOT33[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[8]    | -         | D4/0          | Y          | out   | IOT29[A] | PUDC_B          | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[9]    | -         | A2/0          | Y          | out   | IOT31[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[10]   | -         | E6/0          | Y          | out   | IOT41[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[11]   | -         | B6/0          | Y          | out   | IOT43[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[12]   | -         | A5/0          | Y          | out   | IOT39[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_addr[13]   | -         | B2/0          | Y          | out   | IOT31[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_ba[0]      | -         | D6/0          | Y          | out   | IOT33[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_ba[1]      | -         | A4/0          | Y          | out   | IOT37[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_ba[2]      | -         | D8/0          | Y          | out   | IOT50[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_cs_n       | -         | E7/0          | Y          | out   | IOT45[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_ras_n      | -         | G8/0          | Y          | out   | IOT52[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_cas_n      | -         | F8/0          | Y          | out   | IOT52[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_we_n       | -         | E8/0          | Y          | out   | IOT45[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_clk        | O_ddr_clk_n | D9/0          | Y          | out   | IOT56[A] | GCLKT_0/TPLL_T_IN1 | SSTL15D_I  | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_clk_n      | O_ddr_clk | C9/0          | Y          | out   | IOT56[B] | GCLKC_0/TPLL_C_FB1 | SSTL15D_I  | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_cke        | -         | C5/0          | Y          | out   | IOT39[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_odt        | -         | F7/0          | Y          | out   | IOT41[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_reset_n    | -         | A7/0          | Y          | out   | IOT48[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_dqm[0]     | -         | F9/1          | Y          | out   | IOT66[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+O_ddr_dqm[1]     | -         | F13/1         | Y          | out   | IOT85[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | NONE         
+fx2_faddr[0]     | -         | M18/3         | Y          | out   | IOB81[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_faddr[1]     | -         | N15/3         | Y          | out   | IOB75[A] | GCLKT_6B        | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_sloe         | -         | N16/3         | Y          | out   | IOB75[B] | GCLKC_6B        | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_slwr         | -         | R11/4         | Y          | out   | IOB45[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_slrd         | -         | L15/3         | Y          | out   | IOB91[A] | GCLKT_6A        | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_pkt_end      | -         | L16/3         | Y          | out   | IOB91[B] | GCLKC_6A        | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_slcs         | -         | M16/3         | Y          | out   | IOB81[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+uart_txd         | -         | V8/5          | Y          | out   | IOB22[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+scl              | -         | P18/3         | Y          | out   | IOB77[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+spi_cs           | -         | U13/4         | Y          | out   | IOB50[A] | D11             | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+spi_clk          | -         | P16/3         | Y          | out   | IOB65[B] | DOUT            | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+spi_mosi         | -         | U11/4         | Y          | out   | IOB39[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+PWM[0]           | -         | H18/3         | Y          | out   | IOB89[B] | GCLKC_7         | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+PWM[1]           | -         | H17/3         | Y          | out   | IOB89[A] | GCLKT_7/BPLL_T_IN0 | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+PWM[2]           | -         | K18/3         | Y          | out   | IOB85[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+PWM[3]           | -         | K17/3         | Y          | out   | IOB85[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+can_txd          | -         | P17/3         | Y          | out   | IOB77[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+IO_ddr_dq[0]     | -         | A12/1         | Y          | io    | IOT72[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[1]     | -         | B11/1         | Y          | io    | IOT68[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[2]     | -         | G9/1          | Y          | io    | IOT66[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[3]     | -         | G11/1         | Y          | io    | IOT70[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[4]     | -         | A11/1         | Y          | io    | IOT68[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[5]     | -         | C10/1         | Y          | io    | IOT63[A] | GCLKT_3/RPLL0_T_IN0 | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[6]     | -         | F10/1         | Y          | io    | IOT70[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[7]     | -         | A10/1         | Y          | io    | IOT63[B] | GCLKC_3         | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[8]     | -         | C13/1         | Y          | io    | IOT78[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[9]     | -         | A13/1         | Y          | io    | IOT78[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[10]    | -         | E11/1         | Y          | io    | IOT74[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[11]    | -         | F11/1         | Y          | io    | IOT74[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[12]    | -         | C12/1         | Y          | io    | IOT76[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[13]    | -         | D12/1         | Y          | io    | IOT76[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[14]    | -         | B14/1         | Y          | io    | IOT83[A] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dq[15]    | -         | A14/1         | Y          | io    | IOT83[B] | -               | SSTL15_I   | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dqs[0]    | IO_ddr_dqs_n[0] | D11/1         | Y          | io    | IOT61[A] | GCLKT_2/TPLL_T_IN0 | SSTL15D_I  | 8     | NONE      | OFF       | NONE       | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dqs[1]    | IO_ddr_dqs_n[1] | F12/1         | Y          | io    | IOT80[A] | -               | SSTL15D_I  | 8     | NONE      | OFF       | NONE       | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dqs_n[0]  | IO_ddr_dqs[0] | C11/1         | Y          | io    | IOT61[B] | GCLKC_2         | SSTL15D_I  | 8     | NONE      | OFF       | NONE       | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+IO_ddr_dqs_n[1]  | IO_ddr_dqs[1] | E12/1         | Y          | io    | IOT80[B] | -               | SSTL15D_I  | 8     | NONE      | OFF       | NONE       | OFF        | OFF        | OFF             | OFF           | 1.5        | MEDIUM        | OFF          
+fx2_fdata[0]     | -         | U15/4         | Y          | io    | IOB56[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_fdata[1]     | -         | V15/4         | Y          | io    | IOB56[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_fdata[2]     | -         | U16/4         | Y          | io    | IOB60[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_fdata[3]     | -         | V16/4         | Y          | io    | IOB60[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_fdata[4]     | -         | U17/3         | Y          | io    | IOB71[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_fdata[5]     | -         | U18/3         | Y          | io    | IOB71[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_fdata[6]     | -         | T17/3         | Y          | io    | IOB73[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+fx2_fdata[7]     | -         | T18/3         | Y          | io    | IOB73[B] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+sda              | -         | P15/3         | Y          | io    | IOB65[A] | -               | LVCMOS33   | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3        | MEDIUM        | NONE         
+========================================================================================================================================================================================================================
+
+
+
+
+8. All Package Pins
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Loc./Bank| Signal           | Dir.  | Site     | CFG             | IO Type  | Drive | Pull Mode | PCI Clamp | Hysteresis | Open Drain | Vref       | Single Resistor | Diff Resistor | Bank Vccio | Pull Strength | Ctle         
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+H4/7     | -                | in    | IOT1[A]  | GCLKT_15/LPLL0_T_IN0 | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+H3/7     | -                | in    | IOT1[B]  | GCLKC_15        | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L5/7     | -                | in    | IOT3[A]  | GCLKT_16        | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K5/7     | -                | in    | IOT3[B]  | GCLKC_16        | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+H5/7     | -                | in    | IOT5[B]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+G3/7     | -                | in    | IOT7[A]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+G1/7     | -                | in    | IOT7[B]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+H7/7     | -                | in    | IOT9[A]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+G6/7     | -                | in    | IOT9[B]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+F2/7     | rgmii_txd[2]     | out   | IOT11[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+F1/7     | rgmii_txd[3]     | out   | IOT11[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+J7/7     | -                | in    | IOT13[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+J6/7     | -                | in    | IOT13[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+E3/7     | -                | in    | IOT15[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+E1/7     | -                | in    | IOT15[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+F4/7     | -                | in    | IOT17[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+F3/7     | -                | in    | IOT17[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+D2/7     | rgmii_txd[0]     | out   | IOT19[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+D1/7     | rgmii_txd[1]     | out   | IOT19[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L7/7     | -                | in    | IOT21[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K6/7     | -                | in    | IOT21[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+E4/7     | -                | in    | IOT23[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+D3/7     | -                | in    | IOT23[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+F6/7     | -                | in    | IOT25[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+F5/7     | -                | in    | IOT25[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+C2/7     | rgmii_txen       | out   | IOT27[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+C1/7     | rgmii_tx_clk     | out   | IOT27[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+D4/0     | O_ddr_addr[8]    | out   | IOT29[A] | PUDC_B          | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+C4/0     | O_ddr_addr[6]    | out   | IOT29[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+B2/0     | O_ddr_addr[13]   | out   | IOT31[A] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+A2/0     | O_ddr_addr[9]    | out   | IOT31[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+D6/0     | O_ddr_ba[0]      | out   | IOT33[A] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+C6/0     | O_ddr_addr[7]    | out   | IOT33[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+B3/0     | O_ddr_addr[2]    | out   | IOT35[A] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+A3/0     | O_ddr_addr[0]    | out   | IOT35[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+B4/0     | O_ddr_addr[4]    | out   | IOT37[A] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+A4/0     | O_ddr_ba[1]      | out   | IOT37[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+C5/0     | O_ddr_cke        | out   | IOT39[A] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+A5/0     | O_ddr_addr[12]   | out   | IOT39[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+F7/0     | O_ddr_odt        | out   | IOT41[A] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+E6/0     | O_ddr_addr[10]   | out   | IOT41[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+B6/0     | O_ddr_addr[11]   | out   | IOT43[A] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+A6/0     | O_ddr_addr[1]    | out   | IOT43[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+E7/0     | O_ddr_cs_n       | out   | IOT45[A] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+E8/0     | O_ddr_we_n       | out   | IOT45[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+C7/0     | O_ddr_addr[3]    | out   | IOT48[A] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+A7/0     | O_ddr_reset_n    | out   | IOT48[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+D8/0     | O_ddr_ba[2]      | out   | IOT50[A] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+C8/0     | O_ddr_addr[5]    | out   | IOT50[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+G8/0     | O_ddr_ras_n      | out   | IOT52[A] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+F8/0     | O_ddr_cas_n      | out   | IOT52[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+B8/0     | -                | in    | IOT54[A] | -               | LVCMOS15 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+A8/0     | -                | in    | IOT54[B] | -               | LVCMOS15 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+D9/0     | O_ddr_clk        | out   | IOT56[A] | GCLKT_0/TPLL_T_IN1 | SSTL15D_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+C9/0     | O_ddr_clk_n      | out   | IOT56[B] | GCLKC_0/TPLL_C_FB1 | SSTL15D_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+B9/0     | -                | in    | IOT58[A] | GCLKT_1/TPLL_T_IN2 | LVCMOS15 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+A9/0     | -                | in    | IOT58[B] | GCLKC_1/TPLL_C_FB0 | LVCMOS15 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+D11/1    | IO_ddr_dqs[0]    | io    | IOT61[A] | GCLKT_2/TPLL_T_IN0 | SSTL15D_I | 8     | NONE      | OFF       | NONE       | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+C11/1    | IO_ddr_dqs_n[0]  | io    | IOT61[B] | GCLKC_2         | SSTL15D_I | 8     | NONE      | OFF       | NONE       | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+C10/1    | IO_ddr_dq[5]     | io    | IOT63[A] | GCLKT_3/RPLL0_T_IN0 | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+A10/1    | IO_ddr_dq[7]     | io    | IOT63[B] | GCLKC_3         | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+G9/1     | IO_ddr_dq[2]     | io    | IOT66[A] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+F9/1     | O_ddr_dqm[0]     | out   | IOT66[B] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+B11/1    | IO_ddr_dq[1]     | io    | IOT68[A] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+A11/1    | IO_ddr_dq[4]     | io    | IOT68[B] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+G11/1    | IO_ddr_dq[3]     | io    | IOT70[A] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+F10/1    | IO_ddr_dq[6]     | io    | IOT70[B] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+A12/1    | IO_ddr_dq[0]     | io    | IOT72[B] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+F11/1    | IO_ddr_dq[11]    | io    | IOT74[A] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+E11/1    | IO_ddr_dq[10]    | io    | IOT74[B] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+D12/1    | IO_ddr_dq[13]    | io    | IOT76[A] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+C12/1    | IO_ddr_dq[12]    | io    | IOT76[B] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+C13/1    | IO_ddr_dq[8]     | io    | IOT78[A] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+A13/1    | IO_ddr_dq[9]     | io    | IOT78[B] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+F12/1    | IO_ddr_dqs[1]    | io    | IOT80[A] | -               | SSTL15D_I | 8     | NONE      | OFF       | NONE       | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+E12/1    | IO_ddr_dqs_n[1]  | io    | IOT80[B] | -               | SSTL15D_I | 8     | NONE      | OFF       | NONE       | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+B14/1    | IO_ddr_dq[14]    | io    | IOT83[A] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+A14/1    | IO_ddr_dq[15]    | io    | IOT83[B] | -               | SSTL15_I | 8     | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+F13/1    | O_ddr_dqm[1]     | out   | IOT85[A] | -               | SSTL15_I | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+E13/1    | -                | in    | IOT85[B] | -               | LVCMOS15 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+C15/1    | -                | in    | IOT87[A] | -               | LVCMOS15 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+A15/1    | -                | in    | IOT87[B] | -               | LVCMOS15 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+D14/1    | -                | in    | IOT89[A] | RPLL0_T_FB1     | LVCMOS15 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+C14/1    | -                | in    | IOT89[B] | -               | LVCMOS15 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+B16/1    | reset_n          | in    | IOT91[A] | RPLL0_T_IN1     | SSTL15_I | OFF   | NONE      | OFF       | NONE       | OFF        | INTERNAL   | OFF             | OFF           | 1.5   | MEDIUM        | OFF          
+A16/1    | -                | in    | IOT91[B] | RPLL0_C_FB0     | LVCMOS15 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 1.5   | MEDIUM        | NONE         
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+V2/5     | -                | in    | IOB1[A]  | RECONFIG_N      | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T4/5     | -                | in    | IOB2[A]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N5/5     | -                | in    | IOB4[A]  | D08/SDA         | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+P6/5     | -                | in    | IOB4[B]  | D09/SCL/LPLL1_C_FB0 | LVCMOS33 | 8     | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+R7/5     | -                | in    | IOB6[A]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T7/5     | -                | in    | IOB6[B]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+R3/5     | -                | in    | IOB8[A]  | D05/SO/SSI1     | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T3/5     | -                | in    | IOB8[B]  | D06             | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+U5/5     | -                | in    | IOB10[A] | D03/SSPI_CS_N   | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V5/5     | -                | in    | IOB10[B] | D04/SI/SSI0     | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+R5/5     | -                | in    | IOB12[A] | GCLKT_10B/D07/SSPI_WPN/SSI2 | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T5/5     | -                | in    | IOB12[B] | GCLKC_10B/RDWR_B/LPLL1_C_IN1 | LVCMOS33 | 8     | DOWN      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N6/5     | -                | in    | IOB14[A] | SSPI_CLK        | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+P7/5     | -                | in    | IOB14[B] | CLKHOLD_N/SSI3  | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T6/5     | -                | in    | IOB16[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V6/5     | -                | in    | IOB16[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+P8/5     | -                | in    | IOB18[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+U7/5     | -                | in    | IOB20[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V7/5     | -                | in    | IOB20[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+U8/5     | uart_rxd         | in    | IOB22[A] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V8/5     | uart_txd         | out   | IOB22[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+M8/5     | -                | in    | IOB24[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N8/5     | -                | in    | IOB24[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+M10/5    | -                | in    | IOB26[A] | GCLKT_9B        | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N9/5     | -                | in    | IOB26[B] | GCLKC_9B        | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T9/4     | clk_50M          | in    | IOB29[A] | GCLKT_11A       | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V9/4     | -                | in    | IOB29[B] | GCLKC_11A       | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+R8/4     | -                | in    | IOB31[A] | GCLKT_10A/D14   | LVCMOS33 | 8     | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T8/4     | -                | in    | IOB31[B] | GCLKC_10A/D15/BPLL_C_FB0 | LVCMOS33 | 8     | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+U10/4    | -                | in    | IOB33[A] | GCLKT_9A/D13/BPLL_T_IN1 | LVCMOS33 | 8     | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V10/4    | -                | in    | IOB33[B] | GCLKC_9A/EMCCLK | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+R10/4    | -                | in    | IOB35[A] | GCLKT_8         | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T10/4    | -                | in    | IOB35[B] | GCLKC_8         | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+U3/4     | -                | in    | IOB37[A] | READY           | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V3/4     | -                | in    | IOB37[B] | MCS_N/CSO_B     | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+U11/4    | spi_mosi         | out   | IOB39[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V11/4    | -                | in    | IOB39[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N10/4    | -                | in    | IOB41[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+P11/4    | -                | in    | IOB41[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T12/4    | -                | in    | IOB43[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V12/4    | -                | in    | IOB43[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+R11/4    | fx2_slwr         | out   | IOB45[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T11/4    | fx2_ifclk        | in    | IOB45[B] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+M11/4    | -                | in    | IOB48[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N11/4    | -                | in    | IOB48[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+U13/4    | spi_cs           | out   | IOB50[A] | D11             | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V13/4    | spi_miso         | in    | IOB50[B] | D12             | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N12/4    | -                | in    | IOB52[A] | MODE1           | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+P12/4    | -                | in    | IOB52[B] | D10             | LVCMOS33 | 8     | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T14/4    | -                | in    | IOB54[A] | GCLKT_11B/D01/MI2 | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V14/4    | -                | in    | IOB54[B] | GCLKC_11B/D02/MI3/BPLL_C_FB1 | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+U15/4    | fx2_fdata[0]     | io    | IOB56[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V15/4    | fx2_fdata[1]     | io    | IOB56[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+R13/4    | -                | in    | IOB58[A] | D00/DIN/MISO/MI1 | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T13/4    | -                | in    | IOB58[B] | MOSI/MI0/CSI_B  | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+U16/4    | fx2_fdata[2]     | io    | IOB60[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V16/4    | fx2_fdata[3]     | io    | IOB60[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+R15/4    | -                | in    | IOB62[A] | CCLK            | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T15/4    | -                | in    | IOB62[B] | MODE0           | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+V17/4    | -                | in    | IOB64[A] | DONE            | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+P15/3    | sda              | io    | IOB65[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+P16/3    | spi_clk          | out   | IOB65[B] | DOUT            | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L14/3    | -                | in    | IOB67[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+M13/3    | -                | in    | IOB67[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+M14/3    | fx2_flagc        | in    | IOB69[A] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N14/3    | fx2_flagb        | in    | IOB69[B] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+U17/3    | fx2_fdata[4]     | io    | IOB71[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+U18/3    | fx2_fdata[5]     | io    | IOB71[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T17/3    | fx2_fdata[6]     | io    | IOB73[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+T18/3    | fx2_fdata[7]     | io    | IOB73[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N15/3    | fx2_faddr[1]     | out   | IOB75[A] | GCLKT_6B        | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N16/3    | fx2_sloe         | out   | IOB75[B] | GCLKC_6B        | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+P17/3    | can_txd          | out   | IOB77[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+P18/3    | scl              | out   | IOB77[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N17/3    | extern_clk       | in    | IOB79[A] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N18/3    | can_rxd          | in    | IOB79[B] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+M16/3    | fx2_slcs         | out   | IOB81[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+M18/3    | fx2_faddr[0]     | out   | IOB81[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L17/3    | uart_rx          | in    | IOB83[A] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L18/3    | uart_tx          | out   | IOB83[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K17/3    | PWM[3]           | out   | IOB85[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K18/3    | PWM[2]           | out   | IOB85[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+J16/3    | -                | in    | IOB87[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+H17/3    | PWM[1]           | out   | IOB89[A] | GCLKT_7/BPLL_T_IN0 | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+H18/3    | PWM[0]           | out   | IOB89[B] | GCLKC_7         | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L15/3    | fx2_slrd         | out   | IOB91[A] | GCLKT_6A        | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L16/3    | fx2_pkt_end      | out   | IOB91[B] | GCLKC_6A        | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+H2/6     | -                | in    | IOL3[A]  | GCLKT_14/LPLL0_T_IN2 | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+H1/6     | -                | in    | IOL3[B]  | GCLKC_14/LPLL0_C_FB0 | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K4/6     | -                | in    | IOL5[A]  | GCLKT_13/LPLL0_T_IN1 | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K3/6     | -                | in    | IOL5[B]  | GCLKC_13/LPLL0_C_FB1 | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+J1/6     | -                | in    | IOL7[B]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L4/6     | -                | in    | IOL9[A]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L3/6     | -                | in    | IOL9[B]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K2/6     | -                | in    | IOL12[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K1/6     | -                | in    | IOL12[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L2/6     | -                | in    | IOL14[A] | LPLL1_T_IN0     | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L1/6     | -                | in    | IOL14[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+M3/6     | -                | in    | IOL16[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+M1/6     | -                | in    | IOL16[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N2/6     | -                | in    | IOL18[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+N1/6     | -                | in    | IOL18[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+P2/6     | -                | in    | IOL21[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+P1/6     | -                | in    | IOL21[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+A17/10   | -                | in    | IOR1[A]  | TCK             | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+D15/10   | -                | in    | IOR1[B]  | TDI             | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+B18/10   | -                | in    | IOR3[A]  | TMS             | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+D16/10   | -                | out   | IOR3[B]  | TDO             | LVCMOS33 | 8     | UP        | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+H12/2    | -                | in    | IOR5[A]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+G13/2    | -                | in    | IOR5[B]  | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+F14/2    | DAC_data[5]      | out   | IOR7[A]  | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+G14/2    | DAC_data[6]      | out   | IOR7[B]  | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+C17/2    | DAC_data[7]      | out   | IOR9[A]  | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+C18/2    | DAC_clk          | out   | IOR9[B]  | MCKTEST         | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+D17/2    | DAC_data[3]      | out   | IOR12[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+D18/2    | DAC_data[4]      | out   | IOR12[B] | ADCINCLK        | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+F15/2    | -                | in    | IOR14[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+F16/2    | -                | in    | IOR14[B] | ADCOTEST        | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+E16/2    | -                | in    | IOR16[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+E18/2    | -                | in    | IOR16[B] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+H13/2    | ADC_data[1]      | in    | IOR18[A] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+H14/2    | ADC_data[2]      | in    | IOR18[B] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+F17/2    | ADC_data[0]      | in    | IOR20[A] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+F18/2    | DAC_data[0]      | out   | IOR20[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+G16/2    | DAC_data[1]      | out   | IOR22[A] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+G18/2    | DAC_data[2]      | out   | IOR22[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+H15/2    | -                | in    | IOR24[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+J13/2    | ADC_data[5]      | in    | IOR26[A] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K14/2    | ADC_data[6]      | in    | IOR26[B] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K12/2    | ADC_data[7]      | in    | IOR29[A] | -               | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K13/2    | ADC_clk          | out   | IOR29[B] | -               | LVCMOS33 | 8     | NONE      | OFF       | OFF        | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L12/2    | -                | in    | IOR31[A] | GCLKT_4/RPLL1_T_IN0 | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+L13/2    | -                | in    | IOR31[B] | GCLKC_4/RPLL1_C_FB1 | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K15/2    | ADC_data[3]      | in    | IOR33[A] | GCLKT_5/RPLL1_T_IN1 | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+K16/2    | ADC_data[4]      | in    | IOR33[B] | GCLKC_5/RPLL1_C_FB0 | LVCMOS33 | OFF   | NONE      | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+R16/11   | -                | in    | IOR35[A] | -               | LVCMOS33 | 8     | UP        | OFF       | ON         | OFF        | OFF        | OFF             | OFF           | 3.3   | MEDIUM        | NONE         
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+M5/MIPI  | -                | inout | M0_CKN  | -               | -          | -     | -         | -         | -          | -          | -          | -               | -             | -          | -             | -            
+L6/MIPI  | -                | inout | M0_CKP  | -               | -          | -     | -         | -         | -          | -          | -          | -               | -             | -          | -             | -            
+T1/MIPI  | -                | inout | M0_D0N  | -               | -          | -     | -         | -         | -          | -          | -          | -               | -             | -          | -             | -            
+T2/MIPI  | -                | inout | M0_D0P  | -               | -          | -     | -         | -         | -          | -          | -          | -               | -             | -          | -             | -            
+U1/MIPI  | -                | inout | M0_D1N  | -               | -          | -     | -         | -         | -          | -          | -          | -               | -             | -          | -             | -            
+U2/MIPI  | -                | inout | M0_D1P  | -               | -          | -     | -         | -         | -          | -          | -          | -               | -             | -          | -             | -            
+N3/MIPI  | -                | inout | M0_D2N  | -               | -          | -     | -         | -         | -          | -          | -          | -               | -             | -          | -             | -            
+N4/MIPI  | -                | inout | M0_D2P  | -               | -          | -     | -         | -         | -          | -          | -          | -               | -             | -          | -             | -            
+P3/MIPI  | -                | inout | M0_D3N  | -               | -          | -     | -         | -         | -          | -          | -          | -               | -             | -          | -             | -            
+P4/MIPI  | -                | inout | M0_D3P  | -               | -          | -     | -         | -         | -          | -          | -          | -               | -             | -          | -             | -            
+=============================================================================================================================================================================================
+
+

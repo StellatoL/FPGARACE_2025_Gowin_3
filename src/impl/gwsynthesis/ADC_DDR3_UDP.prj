@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gowin-synthesis-project>
+<Project>
+    <Version>beta</Version>
+    <Device id="GW5A-25A" package="UBGA324" speed="2" partNumber="GW5A-LV25UG324C2/I1"/>
+    <FileList>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\DDS.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\DoubleDabble.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\acm108_dac.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\adc_8bit_to_16bit.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\control.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\crc32_d8.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\eth_udp_tx_gmii.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\gmii_to_rgmii.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\ip_checksum.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\order_wave.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\speed_ctrl.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\state_ctrl.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\uart.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\uart_send.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\udp_stream.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DDR3_PLL\ADC_DDR3_PLL.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DDR3_PLL\ADC_DDR3_PLL_mod.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\ddr3_ctrl_2port.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_memory_interface\ddr3_memory_interface.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\CAN\can_bit.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\CAN\can_packet.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\CAN\can_top.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\I2C_drive.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\packet2IIC.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\PWM\PWM_drive.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\PWM\packet2PWM.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\SPI\spi_master.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\SPI\spi_top.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\uart_tx\uart_byte_tx.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\uart_tx\uart_data_tx.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\usb_cdc\FX2_CDC_BYTE.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\usb_cdc\FX2_CDC_TOP.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\usb_cdc\fifo_cdc.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_duty_measure.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_freq_measure.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_measure.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\divider.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\eth_pll\eth_pll.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\eth_pll\eth_pll_mod.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\fifo_send\fifo_send.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\fifo_uart\fifo_uart.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\gowin_pll\gowin_pll.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\gowin_pll\gowin_pll_mod.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\my_wave\sawtooth\sawtooth.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\my_wave\sine\sine.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\my_wave\square\square.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\my_wave\triangular\triangular.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\pll_init.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\rd_data_fifo\rd_data_fifo.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\uart_byte_rx.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\uart_packet_rx.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\wave_ram\wave_ram.v" type="verilog"/>
+        <File path="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\wr_data_fifo\wr_data_fifo.v" type="verilog"/>
+    </FileList>
+    <OptionList>
+        <Option type="disable_insert_pad" value="0"/>
+        <Option type="enable_dsrm" value="0"/>
+        <Option type="global_freq" value="100.000"/>
+        <Option type="looplimit" value="2000"/>
+        <Option type="output_file" value="C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\impl\gwsynthesis\ADC_DDR3_UDP.vg"/>
+        <Option type="print_all_synthesis_warning" value="0"/>
+        <Option type="ram_rw_check" value="0"/>
+        <Option type="top_module" value="acg525_udp"/>
+        <Option type="vcc" value="0.9"/>
+        <Option type="verilog_language" value="verilog-2001"/>
+        <Option type="vhdl_language" value="vhdl-1993"/>
+    </OptionList>
+</Project>

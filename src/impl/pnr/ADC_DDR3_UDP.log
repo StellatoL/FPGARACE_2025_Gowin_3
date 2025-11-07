@@ -1,0 +1,34 @@
+Reading netlist file: "C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\impl\gwsynthesis\ADC_DDR3_UDP.vg"
+Parsing netlist file "C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\impl\gwsynthesis\ADC_DDR3_UDP.vg" completed
+Processing netlist completed
+Reading constraint file: "C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DDR3_UDP.cst"
+Physical Constraint parsed completed
+Running placement......
+[10%] Placement Phase 0 completed
+[20%] Placement Phase 1 completed
+[30%] Placement Phase 2 completed
+WARN  (TA1123) : the clock "clk_400M"'s frequency does not match your_instance_name/u_pll/PLLA_inst/CLKOUT2's 
+WARN  (TA1132) :  'fx2_ifclk' was determined to be a clock but was not created.
+WARN  (TA1132) :  'extern_clk' was determined to be a clock but was not created.
+[50%] Placement Phase 3 completed
+Running routing......
+[60%] Routing Phase 0 completed
+[70%] Routing Phase 1 completed
+[80%] Routing Phase 2 completed
+WARN  (PR1014) : Generic routing resource will be used to clock signal 'extern_clk_d' by the specified constraint. And then it may lead to the excessive delay or skew
+WARN  (PR1014) : Generic routing resource will be used to clock signal 'fx2_ifclk_d' by the specified constraint. And then it may lead to the excessive delay or skew
+[90%] Routing Phase 3 completed
+Running timing analysis......
+[95%] Timing analysis completed
+Placement and routing completed
+Bitstream generation in progress......
+Bitstream generation completed
+Running power analysis......
+[100%] Power analysis completed
+Generate file "C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\impl\pnr\ADC_DDR3_UDP.power.html" completed
+Generate file "C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\impl\pnr\ADC_DDR3_UDP.pin.html" completed
+Generate file "C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\impl\pnr\ADC_DDR3_UDP.rpt.html" completed
+Generate file "C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\impl\pnr\ADC_DDR3_UDP.rpt.txt" completed
+Generate file "C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\impl\pnr\ADC_DDR3_UDP.tr.html" completed
+Fri Nov  7 15:02:04 2025
+

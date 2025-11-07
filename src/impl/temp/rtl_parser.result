@@ -1,0 +1,596 @@
+[
+ {
+  "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+  "InstLine" : 1,
+  "InstName" : "acg525_udp",
+  "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+  "ModuleLine" : 1,
+  "ModuleName" : "acg525_udp",
+  "SubInsts" : [
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 135,
+    "InstName" : "your_instance_name",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/gowin_pll/gowin_pll.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "Gowin_PLL",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/gowin_pll/gowin_pll.v",
+      "InstLine" : 26,
+      "InstName" : "u_pll",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/gowin_pll/gowin_pll_mod.v",
+      "ModuleLine" : 10,
+      "ModuleName" : "Gowin_PLL_MOD"
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/gowin_pll/gowin_pll.v",
+      "InstLine" : 40,
+      "InstName" : "u_pll_init",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/pll_init.v",
+      "ModuleLine" : 4,
+      "ModuleName" : "PLL_INIT"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 144,
+    "InstName" : "ADC_DDR3_PLL",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DDR3_PLL/ADC_DDR3_PLL.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "ADC_DDR3_PLL",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DDR3_PLL/ADC_DDR3_PLL.v",
+      "InstLine" : 26,
+      "InstName" : "u_pll",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DDR3_PLL/ADC_DDR3_PLL_mod.v",
+      "ModuleLine" : 10,
+      "ModuleName" : "ADC_DDR3_PLL_MOD"
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DDR3_PLL/ADC_DDR3_PLL.v",
+      "InstLine" : 40,
+      "InstName" : "u_pll_init",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/pll_init.v",
+      "ModuleLine" : 4,
+      "ModuleName" : "PLL_INIT"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 153,
+    "InstName" : "eth_pll",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/eth_pll/eth_pll.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "eth_pll",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/eth_pll/eth_pll.v",
+      "InstLine" : 26,
+      "InstName" : "u_pll",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/eth_pll/eth_pll_mod.v",
+      "ModuleLine" : 10,
+      "ModuleName" : "eth_pll_MOD"
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/eth_pll/eth_pll.v",
+      "InstLine" : 40,
+      "InstName" : "u_pll_init",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/pll_init.v",
+      "ModuleLine" : 4,
+      "ModuleName" : "PLL_INIT"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 174,
+    "InstName" : "digital_top_inst",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_top.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "digital_top",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_top.v",
+      "InstLine" : 66,
+      "InstName" : "FX2_CDC_TOP_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/usb_cdc/FX2_CDC_TOP.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "FX2_CDC_TOP",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/usb_cdc/FX2_CDC_TOP.v",
+        "InstLine" : 40,
+        "InstName" : "FX2_CDC_BYTE_inst",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/usb_cdc/FX2_CDC_BYTE.v",
+        "ModuleLine" : 9,
+        "ModuleName" : "FX2_CDC_BYTE",
+        "SubInsts" : [
+         {
+          "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/usb_cdc/FX2_CDC_BYTE.v",
+          "InstLine" : 166,
+          "InstName" : "tx_fifo_inst",
+          "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/usb_cdc/fifo_cdc.v",
+          "ModuleLine" : 14,
+          "ModuleName" : "fifo_1024x8"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_top.v",
+      "InstLine" : 191,
+      "InstName" : "uart_data_tx_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/uart_tx/uart_data_tx.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "uart_data_tx",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/uart_tx/uart_data_tx.v",
+        "InstLine" : 30,
+        "InstName" : "u_uart_byte_tx",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/uart_tx/uart_byte_tx.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "uart_byte_tx"
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_top.v",
+      "InstLine" : 213,
+      "InstName" : "packet2IIC_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/I2C/packet2IIC.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "packet2IIC",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/I2C/packet2IIC.v",
+        "InstLine" : 131,
+        "InstName" : "I2C_drive_inst",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/I2C/I2C_drive.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "I2C_drive"
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_top.v",
+      "InstLine" : 241,
+      "InstName" : "spi_top_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/SPI/spi_top.v",
+      "ModuleLine" : 2,
+      "ModuleName" : "spi_top",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/SPI/spi_top.v",
+        "InstLine" : 148,
+        "InstName" : "spi_modu_inst",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/SPI/spi_master.v",
+        "ModuleLine" : 16,
+        "ModuleName" : "spi_modu"
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_top.v",
+      "InstLine" : 262,
+      "InstName" : "packet2PWM_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/PWM/packet2PWM.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "packet2PWM",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/PWM/packet2PWM.v",
+        "InstLine" : 140,
+        "InstName" : "pwm_drive_inst_ch0",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/PWM/PWM_drive.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "pwm_drive"
+       },
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/PWM/packet2PWM.v",
+        "InstLine" : 152,
+        "InstName" : "pwm_drive_inst_ch1",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/PWM/PWM_drive.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "pwm_drive"
+       },
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/PWM/packet2PWM.v",
+        "InstLine" : 164,
+        "InstName" : "pwm_drive_inst_ch2",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/PWM/PWM_drive.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "pwm_drive"
+       },
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/PWM/packet2PWM.v",
+        "InstLine" : 176,
+        "InstName" : "pwm_drive_inst_ch3",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/PWM/PWM_drive.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "pwm_drive"
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_top.v",
+      "InstLine" : 298,
+      "InstName" : "can_top_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/CAN/can_top.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "can_top",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/CAN/can_top.v",
+        "InstLine" : 129,
+        "InstName" : "u_can_level_packet",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/CAN/can_packet.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "can_level_packet",
+        "SubInsts" : [
+         {
+          "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/CAN/can_packet.v",
+          "InstLine" : 54,
+          "InstName" : "u_can_level_bit",
+          "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/CAN/can_bit.v",
+          "ModuleLine" : 1,
+          "ModuleName" : "can_level_bit"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_top.v",
+      "InstLine" : 324,
+      "InstName" : "digital_measure_top_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/digital_measure.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "digital_measure",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/digital_measure.v",
+        "InstLine" : 49,
+        "InstName" : "digital_freq_measure_inst",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/digital_freq_measure.v",
+        "ModuleLine" : 2,
+        "ModuleName" : "digital_freq_measure",
+        "SubInsts" : [
+         {
+          "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/digital_freq_measure.v",
+          "InstLine" : 138,
+          "InstName" : "divider_inst",
+          "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/divider.v",
+          "ModuleLine" : 3,
+          "ModuleName" : "divider"
+         }
+        ]
+       },
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/digital_measure.v",
+        "InstLine" : 61,
+        "InstName" : "digital_duty_measure_inst",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/digital_duty_measure.v",
+        "ModuleLine" : 1,
+        "ModuleName" : "digital_duty_measure",
+        "SubInsts" : [
+         {
+          "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/digital_duty_measure.v",
+          "InstLine" : 141,
+          "InstName" : "divider_inst",
+          "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/divider.v",
+          "ModuleLine" : 3,
+          "ModuleName" : "divider"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 210,
+    "InstName" : "ACM108_DAC",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/acm108_dac.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "ACM108_DAC",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/acm108_dac.v",
+      "InstLine" : 27,
+      "InstName" : "DDS",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/DDS.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "DDS",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/DDS.v",
+        "InstLine" : 56,
+        "InstName" : "wave_ram",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/wave_ram/wave_ram.v",
+        "ModuleLine" : 10,
+        "ModuleName" : "wave_ram"
+       },
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/DDS.v",
+        "InstLine" : 69,
+        "InstName" : "sine_rom",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/my_wave/sine/sine.v",
+        "ModuleLine" : 10,
+        "ModuleName" : "sine"
+       },
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/DDS.v",
+        "InstLine" : 78,
+        "InstName" : "square_rom",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/my_wave/square/square.v",
+        "ModuleLine" : 10,
+        "ModuleName" : "square"
+       },
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/DDS.v",
+        "InstLine" : 87,
+        "InstName" : "triangular_rom",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/my_wave/triangular/triangular.v",
+        "ModuleLine" : 10,
+        "ModuleName" : "triangular"
+       },
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/DDS.v",
+        "InstLine" : 96,
+        "InstName" : "sawtooth_rom",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/my_wave/sawtooth/sawtooth.v",
+        "ModuleLine" : 10,
+        "ModuleName" : "sawtooth"
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/acm108_dac.v",
+      "InstLine" : 40,
+      "InstName" : "order_wave",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/order_wave.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "order_wave"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 229,
+    "InstName" : "usart_send",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/uart_send.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "usart_send",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/uart_send.v",
+      "InstLine" : 27,
+      "InstName" : "bin2bcd",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/DoubleDabble.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "bin2bcd"
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/uart_send.v",
+      "InstLine" : 43,
+      "InstName" : "uart_tx_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/uart.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "uart_tx"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 243,
+    "InstName" : "uart_packet_rx_inst",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/uart_packet_rx.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "uart_packet_rx",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/uart_packet_rx.v",
+      "InstLine" : 27,
+      "InstName" : "uart_byte_rx_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/uart_byte_rx.v",
+      "ModuleLine" : 1,
+      "ModuleName" : "uart_byte_rx"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 253,
+    "InstName" : "control",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/control.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "control",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/control.v",
+      "InstLine" : 21,
+      "InstName" : "fifo_uart",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/fifo_uart/fifo_uart.v",
+      "ModuleLine" : 293,
+      "ModuleName" : "fifo_uart",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/fifo_uart/fifo_uart.v",
+        "InstLine" : 314,
+        "InstName" : "fifo_inst",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/fifo_uart/fifo_uart.v",
+        "ModuleLine" : 13,
+        "ModuleName" : "~fifo.fifo_uart"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 270,
+    "InstName" : "data_8to16",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/adc_8bit_to_16bit.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "data_8to16"
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 278,
+    "InstName" : "speed_ctrl",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/speed_ctrl.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "speed_ctrl"
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 287,
+    "InstName" : "state_ctrl",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/state_ctrl.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "state_ctrl"
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 311,
+    "InstName" : "ddr3_ctrl_2port",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ddr3_ctrl_2port/ddr3_ctrl_2port.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "ddr3_ctrl_2port",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ddr3_ctrl_2port/ddr3_ctrl_2port.v",
+      "InstLine" : 57,
+      "InstName" : "fifo_ddr3_adapter",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ddr3_ctrl_2port/fifo_ddr3_adapter.v",
+      "ModuleLine" : 2,
+      "ModuleName" : "fifo_ddr3_adapter",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ddr3_ctrl_2port/fifo_ddr3_adapter.v",
+        "InstLine" : 345,
+        "InstName" : "rd_data_fifo",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/rd_data_fifo/rd_data_fifo.v",
+        "ModuleLine" : 1424,
+        "ModuleName" : "rd_data_fifo",
+        "SubInsts" : [
+         {
+          "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/rd_data_fifo/rd_data_fifo.v",
+          "InstLine" : 1455,
+          "InstName" : "fifo_inst",
+          "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/rd_data_fifo/rd_data_fifo.v",
+          "ModuleLine" : 13,
+          "ModuleName" : "~fifo.rd_data_fifo"
+         }
+        ]
+       },
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ddr3_ctrl_2port/fifo_ddr3_adapter.v",
+        "InstLine" : 361,
+        "InstName" : "wr_data_fifo",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/wr_data_fifo/wr_data_fifo.v",
+        "ModuleLine" : 791,
+        "ModuleName" : "wr_data_fifo",
+        "SubInsts" : [
+         {
+          "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/wr_data_fifo/wr_data_fifo.v",
+          "InstLine" : 822,
+          "InstName" : "fifo_inst",
+          "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/wr_data_fifo/wr_data_fifo.v",
+          "ModuleLine" : 13,
+          "ModuleName" : "~fifo.wr_data_fifo"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ddr3_ctrl_2port/ddr3_ctrl_2port.v",
+      "InstLine" : 92,
+      "InstName" : "DDR3_Memory_Interface_Top",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ddr3_memory_interface/ddr3_memory_interface.v",
+      "ModuleLine" : 19103,
+      "ModuleName" : "DDR3_Memory_Interface_Top",
+      "SubInsts" : [
+       {
+        "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ddr3_memory_interface/ddr3_memory_interface.v",
+        "InstLine" : 19188,
+        "InstName" : "gw3_top",
+        "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ddr3_memory_interface/ddr3_memory_interface.v",
+        "ModuleLine" : 10,
+        "ModuleName" : "~GW_DDR3_PHY_MC.DDR3_Memory_Interface_Top"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 357,
+    "InstName" : "fifo_send",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/fifo_send/fifo_send.v",
+    "ModuleLine" : 877,
+    "ModuleName" : "fifo_send",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/fifo_send/fifo_send.v",
+      "InstLine" : 908,
+      "InstName" : "fifo_inst",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/fifo_send/fifo_send.v",
+      "ModuleLine" : 13,
+      "ModuleName" : "~fifo.fifo_send"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 371,
+    "InstName" : "udp_stream",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/udp_stream.v",
+    "ModuleLine" : 1,
+    "ModuleName" : "udp_stream"
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 377,
+    "InstName" : "eth_udp_tx_gmii",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/eth_udp_tx_gmii.v",
+    "ModuleLine" : 21,
+    "ModuleName" : "eth_udp_tx_gmii",
+    "SubInsts" : [
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/eth_udp_tx_gmii.v",
+      "InstLine" : 139,
+      "InstName" : "ip_checksum",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/ip_checksum.v",
+      "ModuleLine" : 18,
+      "ModuleName" : "ip_checksum"
+     },
+     {
+      "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/eth_udp_tx_gmii.v",
+      "InstLine" : 478,
+      "InstName" : "crc32_d8",
+      "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/crc32_d8.v",
+      "ModuleLine" : 20,
+      "ModuleName" : "crc32_d8"
+     }
+    ]
+   },
+   {
+    "InstFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+    "InstLine" : 402,
+    "InstName" : "gmii_to_rgmii",
+    "ModuleFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/gmii_to_rgmii.v",
+    "ModuleLine" : 20,
+    "ModuleName" : "gmii_to_rgmii"
+   }
+  ]
+ }
+]

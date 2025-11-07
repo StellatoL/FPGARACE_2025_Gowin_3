@@ -1,0 +1,71 @@
+<?xml version="1" encoding="UTF-8"?>
+<!DOCTYPE gowin-fpga-project>
+<Project>
+    <Template>FPGA</Template>
+    <Version>5</Version>
+    <Device name="GW5A-25A" pn="GW5A-LV25UG324C2/I1">gw5a25a-008</Device>
+    <FileList>
+        <File path="src/ACG525_UDP.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/DDS.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/DoubleDabble.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/acm108_dac.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/adc_8bit_to_16bit.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/control.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/crc32_d8.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/eth_udp_tx_gmii.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/gmii_to_rgmii.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/ip_checksum.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/order_wave.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/speed_ctrl.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/state_ctrl.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/uart.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/uart_send.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DAC_src/udp_stream.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DDR3_PLL/ADC_DDR3_PLL.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DDR3_PLL/ADC_DDR3_PLL_mod.v" type="file.verilog" enable="1"/>
+        <File path="src/ddr3_ctrl_2port/ddr3_ctrl_2port.v" type="file.verilog" enable="1"/>
+        <File path="src/ddr3_ctrl_2port/fifo_ddr3_adapter.v" type="file.verilog" enable="1"/>
+        <File path="src/ddr3_memory_interface/ddr3_memory_interface.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/CAN/can_bit.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/CAN/can_packet.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/CAN/can_top.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/I2C/I2C_drive.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/I2C/packet2IIC.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/PWM/PWM_drive.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/PWM/packet2PWM.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/SPI/spi_master.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/SPI/spi_top.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/uart_tx/uart_byte_tx.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/uart_tx/uart_data_tx.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/usb_cdc/FX2_CDC_BYTE.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/usb_cdc/FX2_CDC_TOP.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/CDC2others/usb_cdc/fifo_cdc.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/digital_measure/digital_duty_measure.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/digital_measure/digital_freq_measure.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/digital_measure/digital_measure.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/digital_measure/divider.v" type="file.verilog" enable="1"/>
+        <File path="src/digital/digital_top.v" type="file.verilog" enable="1"/>
+        <File path="src/eth_pll/eth_pll.v" type="file.verilog" enable="1"/>
+        <File path="src/eth_pll/eth_pll_mod.v" type="file.verilog" enable="1"/>
+        <File path="src/fifo_send/fifo_send.v" type="file.verilog" enable="1"/>
+        <File path="src/fifo_uart/fifo_uart.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_pll/gowin_pll.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_pll/gowin_pll_mod.v" type="file.verilog" enable="1"/>
+        <File path="src/my_wave/sawtooth/sawtooth.v" type="file.verilog" enable="1"/>
+        <File path="src/my_wave/sine/sine.v" type="file.verilog" enable="1"/>
+        <File path="src/my_wave/square/square.v" type="file.verilog" enable="1"/>
+        <File path="src/my_wave/triangular/triangular.v" type="file.verilog" enable="1"/>
+        <File path="src/pll_init.v" type="file.verilog" enable="1"/>
+        <File path="src/rd_data_fifo/rd_data_fifo.v" type="file.verilog" enable="1"/>
+        <File path="src/uart_byte_rx.v" type="file.verilog" enable="1"/>
+        <File path="src/uart_packet_rx.v" type="file.verilog" enable="1"/>
+        <File path="src/wave_ram/wave_ram.v" type="file.verilog" enable="1"/>
+        <File path="src/wr_data_fifo/wr_data_fifo.v" type="file.verilog" enable="1"/>
+        <File path="src/ADC_DDR3_UDP.cst" type="file.cst" enable="1"/>
+        <File path="src/ADC_DDR3_UDP.sdc" type="file.sdc" enable="1"/>
+        <File path="src/wave_2048/sawtooth_2048.mi" type="file.other" enable="1"/>
+        <File path="src/wave_2048/sine_2048.mi" type="file.other" enable="1"/>
+        <File path="src/wave_2048/square_2048.mi" type="file.other" enable="1"/>
+        <File path="src/wave_2048/triangular_2048.mi" type="file.other" enable="1"/>
+    </FileList>
+</Project>

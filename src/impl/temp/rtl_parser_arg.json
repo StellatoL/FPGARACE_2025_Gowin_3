@@ -1,0 +1,237 @@
+{
+ "Device" : "GW5A-25A",
+ "Files" : [
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ACG525_UDP.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/DDS.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/DoubleDabble.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/acm108_dac.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/adc_8bit_to_16bit.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/control.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/crc32_d8.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/eth_udp_tx_gmii.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/gmii_to_rgmii.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/ip_checksum.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/order_wave.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/speed_ctrl.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/state_ctrl.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/uart.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/uart_send.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DAC_src/udp_stream.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DDR3_PLL/ADC_DDR3_PLL.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ADC_DDR3_PLL/ADC_DDR3_PLL_mod.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ddr3_ctrl_2port/ddr3_ctrl_2port.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ddr3_ctrl_2port/fifo_ddr3_adapter.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/ddr3_memory_interface/ddr3_memory_interface.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/CAN/can_bit.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/CAN/can_packet.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/CAN/can_top.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/I2C/I2C_drive.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/I2C/packet2IIC.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/PWM/PWM_drive.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/PWM/packet2PWM.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/SPI/spi_master.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/SPI/spi_top.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/uart_tx/uart_byte_tx.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/uart_tx/uart_data_tx.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/usb_cdc/FX2_CDC_BYTE.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/usb_cdc/FX2_CDC_TOP.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/CDC2others/usb_cdc/fifo_cdc.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/digital_duty_measure.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/digital_freq_measure.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/digital_measure.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_measure/divider.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/digital/digital_top.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/eth_pll/eth_pll.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/eth_pll/eth_pll_mod.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/fifo_send/fifo_send.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/fifo_uart/fifo_uart.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/gowin_pll/gowin_pll.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/gowin_pll/gowin_pll_mod.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/my_wave/sawtooth/sawtooth.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/my_wave/sine/sine.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/my_wave/square/square.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/my_wave/triangular/triangular.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/pll_init.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/rd_data_fifo/rd_data_fifo.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/uart_byte_rx.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/uart_packet_rx.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/wave_ram/wave_ram.v",
+   "Type" : "verilog"
+  },
+  {
+   "Path" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/src/wr_data_fifo/wr_data_fifo.v",
+   "Type" : "verilog"
+  }
+ ],
+ "IncludePath" : [
+
+ ],
+ "LoopLimit" : 2000,
+ "ResultFile" : "C:/Users/32875/Desktop/GoWin1.4/GoWin1.4/impl/temp/rtl_parser.result",
+ "Top" : "acg525_udp",
+ "VerilogStd" : "verilog_2001",
+ "VhdlStd" : "vhdl_93"
+}

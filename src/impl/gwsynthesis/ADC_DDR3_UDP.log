@@ -1,0 +1,273 @@
+GowinSynthesis start
+Running parser ...
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v'
+Undeclared symbol 'clk_12_5M', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":137)
+Undeclared symbol 'clk_400M', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":138)
+Undeclared symbol 'lock_ddr3', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":139)
+Undeclared symbol 'clk_25M', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":146)
+Undeclared symbol 'pll_lock', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":148)
+Undeclared symbol 'clk_125M', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":155)
+Undeclared symbol 'clk_200M', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":156)
+Undeclared symbol 'lock', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":157)
+Undeclared symbol 'tx_all_done', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":230)
+Undeclared symbol 'uart_en', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":235)
+Undeclared symbol 'uart_rx_done', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":247)
+Undeclared symbol 'adc_data_en', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":273)
+Undeclared symbol 'ad_out_valid', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":276)
+Undeclared symbol 'ad_sample_en', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":281)
+Undeclared symbol 'init_calib_complete', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":294)
+Undeclared symbol 'rdfifo_empty', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":296)
+Undeclared symbol 'wrfifo_full', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":298)
+Undeclared symbol 'wr_load', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":299)
+Undeclared symbol 'rd_load', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":304)
+Undeclared symbol 'rdfifo_rden', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":305)
+Undeclared symbol 'RdEn', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":363)
+Undeclared symbol 'Wnum', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":364)
+Undeclared symbol 'Empty', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":367)
+Undeclared symbol 'Full', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":368)
+Undeclared symbol 'udp_data_en', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":374)
+Undeclared symbol 'tx_done', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":382)
+Undeclared symbol 'gmii_tx_clk', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":396)
+Undeclared symbol 'gmii_txen', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":397)
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\DDS.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\DoubleDabble.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\acm108_dac.v'
+Undeclared symbol 'Reset_n', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\acm108_dac.v":23)
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\adc_8bit_to_16bit.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\control.v'
+Undeclared symbol 'Empty', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\control.v":28)
+Undeclared symbol 'Full', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\control.v":29)
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\crc32_d8.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\eth_udp_tx_gmii.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\gmii_to_rgmii.v'
+WARN  (EX3788) : Block identifier is required on this block("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\gmii_to_rgmii.v":58)
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\ip_checksum.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\order_wave.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\speed_ctrl.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\state_ctrl.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\uart.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\uart_send.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\udp_stream.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DDR3_PLL\ADC_DDR3_PLL.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DDR3_PLL\ADC_DDR3_PLL_mod.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\ddr3_ctrl_2port.v'
+Undeclared symbol 'app_rd_data_end', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\ddr3_ctrl_2port.v":108)
+Undeclared symbol 'app_sr_active', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\ddr3_ctrl_2port.v":111)
+Undeclared symbol 'app_ref_ack', assumed default net type 'wire'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\ddr3_ctrl_2port.v":112)
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v'
+WARN  (EX2830) : Data object 'wr_rst' is already declared("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v":50)
+Previous declaration of 'wr_rst' is from here("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v":47)
+WARN  (EX3671) : Second declaration of 'wr_rst' is ignored("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v":50)
+WARN  (EX3628) : Redeclaration of ANSI port 'app_addr' is not allowed("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v":56)
+WARN  (EX2830) : Data object 'rd_rst_h' is already declared("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v":85)
+Previous declaration of 'rd_rst_h' is from here("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v":52)
+WARN  (EX3671) : Second declaration of 'rd_rst_h' is ignored("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v":85)
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_memory_interface\ddr3_memory_interface.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\CAN\can_bit.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\CAN\can_packet.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\CAN\can_top.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\I2C_drive.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\packet2IIC.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\PWM\PWM_drive.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\PWM\packet2PWM.v'
+WARN  (EX3261) : Loop variable declaration is not allowed in this mode of Verilog("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\PWM\packet2PWM.v":120)
+WARN  (EX3261) : Loop variable declaration is not allowed in this mode of Verilog("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\PWM\packet2PWM.v":127)
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\SPI\spi_master.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\SPI\spi_top.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\uart_tx\uart_byte_tx.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\uart_tx\uart_data_tx.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\usb_cdc\FX2_CDC_BYTE.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\usb_cdc\FX2_CDC_TOP.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\usb_cdc\fifo_cdc.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_duty_measure.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_freq_measure.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_measure.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\divider.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\eth_pll\eth_pll.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\eth_pll\eth_pll_mod.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\fifo_send\fifo_send.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\fifo_uart\fifo_uart.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\gowin_pll\gowin_pll.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\gowin_pll\gowin_pll_mod.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\my_wave\sawtooth\sawtooth.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\my_wave\sine\sine.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\my_wave\square\square.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\my_wave\triangular\triangular.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\pll_init.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\rd_data_fifo\rd_data_fifo.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\uart_byte_rx.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\uart_packet_rx.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\wave_ram\wave_ram.v'
+Analyzing Verilog file 'C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\wr_data_fifo\wr_data_fifo.v'
+WARN  (EX3073) : Port 'Almost_Empty' remains unconnected for this instance("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":369)
+Compiling module 'acg525_udp'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":1)
+Extracting RAM for identifier 'uart_tx_packet_reg'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":130)
+WARN  (EX3791) : Expression size 30 truncated to fit in target size 8("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":76)
+Compiling module 'Gowin_PLL'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\gowin_pll\gowin_pll.v":1)
+Compiling module 'Gowin_PLL_MOD'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\gowin_pll\gowin_pll_mod.v":10)
+Compiling module 'PLL_INIT(MULTI_FAC=16)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\pll_init.v":4)
+Compiling module 'ADC_DDR3_PLL'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DDR3_PLL\ADC_DDR3_PLL.v":1)
+Compiling module 'ADC_DDR3_PLL_MOD'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DDR3_PLL\ADC_DDR3_PLL_mod.v":10)
+Compiling module 'PLL_INIT(MULTI_FAC=14)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\pll_init.v":4)
+Compiling module 'eth_pll'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\eth_pll\eth_pll.v":1)
+Compiling module 'eth_pll_MOD'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\eth_pll\eth_pll_mod.v":10)
+Compiling module 'PLL_INIT(MULTI_FAC=20)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\pll_init.v":4)
+WARN  (EX3073) : Port 'spi_done' remains unconnected for this instance("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v":254)
+Compiling module 'digital_top(CLK_FREQ=48000000)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v":1)
+Compiling module 'FX2_CDC_TOP'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\usb_cdc\FX2_CDC_TOP.v":1)
+Compiling module 'FX2_CDC_BYTE'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\usb_cdc\FX2_CDC_BYTE.v":9)
+Compiling module 'fifo_1024x8'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\usb_cdc\fifo_cdc.v":14)
+Extracting RAM for identifier 'data_array'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\usb_cdc\fifo_cdc.v":35)
+WARN  (EX3791) : Expression size 280 truncated to fit in target size 256("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v":110)
+WARN  (EX3791) : Expression size 9 truncated to fit in target size 8("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v":111)
+WARN  (EX3791) : Expression size 9 truncated to fit in target size 8("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v":122)
+WARN  (EX3791) : Expression size 256 truncated to fit in target size 128("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v":127)
+WARN  (EX3791) : Expression size 9 truncated to fit in target size 8("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v":136)
+WARN  (EX3791) : Expression size 280 truncated to fit in target size 256("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v":173)
+WARN  (EX3791) : Expression size 9 truncated to fit in target size 8("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v":174)
+Compiling module 'uart_data_tx(CLK_FREQ=48000000,MAX_DATA_WIDTH=280,MSB_FIRST=1'b1)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\uart_tx\uart_data_tx.v":1)
+Compiling module 'uart_byte_tx(CLK_FREQ=48000000)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\uart_tx\uart_byte_tx.v":1)
+WARN  (EX3670) : Actual bit length 256 differs from formal bit length 280 for port 'data'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v":194)
+Compiling module 'packet2IIC(CLK_FREQ=48000000,MAX_RX_DATA_SIZE=32)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\packet2IIC.v":1)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 8("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\packet2IIC.v":43)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 8("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\packet2IIC.v":44)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 8("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\packet2IIC.v":45)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 8("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\packet2IIC.v":46)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 8("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\packet2IIC.v":99)
+WARN  (EX3791) : Expression size 256 truncated to fit in target size 128("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\packet2IIC.v":104)
+Compiling module 'I2C_drive(CLK_FREQ=48000000,I2C_FREQ=100000,DATA_BYTE_NUM=16)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\I2C_drive.v":1)
+WARN  (EX3791) : Expression size 10 truncated to fit in target size 9("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\I2C_drive.v":227)
+WARN  (EX3791) : Expression size 5 truncated to fit in target size 4("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\I2C_drive.v":264)
+WARN  (EX3791) : Expression size 5 truncated to fit in target size 4("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\I2C_drive.v":298)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 4("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\I2C_drive.v":321)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 4("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\I2C\I2C_drive.v":324)
+Compiling module 'spi_top(CLK_FREQ=48000000,CPOL=0,CPHA=0)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\SPI\spi_top.v":2)
+WARN  (EX3791) : Expression size 9 truncated to fit in target size 8("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\SPI\spi_top.v":123)
+Compiling module 'spi_modu(CLK_FREQ=48000000,SPI_FREQ=400000,BIT_NUM=8,CPOL=0,CPHA=0)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\SPI\spi_master.v":16)
+WARN  (EX3791) : Expression size 3 truncated to fit in target size 2("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\SPI\spi_master.v":139)
+WARN  (EX3791) : Expression size 4 truncated to fit in target size 3("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\SPI\spi_master.v":140)
+WARN  (EX3791) : Expression size 5 truncated to fit in target size 4("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\SPI\spi_master.v":143)
+WARN  (EX3791) : Expression size 5 truncated to fit in target size 4("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\SPI\spi_master.v":155)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 8 for port 'tx_size'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_top.v":246)
+Compiling module 'packet2PWM(CLK_FREQ=48000000,MAX_RX_DATA_SIZE=32)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\PWM\packet2PWM.v":1)
+Compiling module 'pwm_drive(CLK_FREQ=48000000)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\PWM\PWM_drive.v":1)
+WARN  (EX3791) : Expression size 17 truncated to fit in target size 16("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\PWM\PWM_drive.v":27)
+Compiling module 'can_top(RX_ID_SHORT_FILTER=11'b00100100011,RX_ID_SHORT_MASK=11'b11111111111,RX_ID_LONG_FILTER=29'b10010001101000101011001111000,RX_ID_LONG_MASK=29'b11111111111111111111111111111,default_c_PTS=16'b0000000000100000,default_c_PBS1=16'b0000000000000101,default_c_PBS2=16'b0000000000001010)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\CAN\can_top.v":1)
+Extracting RAM for identifier 'buffer'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\CAN\can_top.v":75)
+Compiling module 'can_level_packet(default_c_PTS=16'b0000000000100000,default_c_PBS1=16'b0000000000000101,default_c_PBS2=16'b0000000000001010)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\CAN\can_packet.v":1)
+Compiling module 'can_level_bit(default_c_PTS=16'b0000000000100000,default_c_PBS1=16'b0000000000000101,default_c_PBS2=16'b0000000000001010)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\CDC2others\CAN\can_bit.v":1)
+Compiling module 'digital_measure(CLK_FS=50000000)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_measure.v":1)
+WARN  (EX3073) : Port 'remainder' remains unconnected for this instance("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_freq_measure.v":146)
+Compiling module 'digital_freq_measure(CLK_FS=50000000)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_freq_measure.v":2)
+Compiling module 'divider(WIDTH=48,INIT_VLD=1)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\divider.v":3)
+WARN  (EX3791) : Expression size 8 truncated to fit in target size 7("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\divider.v":37)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 7("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\divider.v":38)
+WARN  (EX3791) : Expression size 49 truncated to fit in target size 48("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\divider.v":89)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 48 for port 'dividend'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_freq_measure.v":142)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 48 for port 'divisor'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_freq_measure.v":143)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 48 for port 'quotient'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_freq_measure.v":144)
+WARN  (EX3073) : Port 'remainder' remains unconnected for this instance("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_duty_measure.v":149)
+Compiling module 'digital_duty_measure(CLK_FS=50000000)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_duty_measure.v":1)
+Compiling module 'divider(WIDTH=40,INIT_VLD=1)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\divider.v":3)
+WARN  (EX3791) : Expression size 8 truncated to fit in target size 7("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\divider.v":37)
+WARN  (EX3791) : Expression size 32 truncated to fit in target size 7("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\divider.v":38)
+WARN  (EX3791) : Expression size 41 truncated to fit in target size 40("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\divider.v":89)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 40 for port 'dividend'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_duty_measure.v":145)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 40 for port 'divisor'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_duty_measure.v":146)
+WARN  (EX3670) : Actual bit length 10 differs from formal bit length 40 for port 'quotient'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_duty_measure.v":147)
+WARN  (EX3791) : Expression size 11 truncated to fit in target size 10("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_measure.v":124)
+WARN  (EX3791) : Expression size 13 truncated to fit in target size 10("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\digital\digital_measure\digital_measure.v":128)
+Compiling module 'ACM108_DAC'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\acm108_dac.v":1)
+Compiling module 'DDS'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\DDS.v":1)
+Compiling module 'wave_ram'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\wave_ram\wave_ram.v":10)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'ceb'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\DDS.v":61)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'oce'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\DDS.v":62)
+Compiling module 'sine'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\my_wave\sine\sine.v":10)
+Compiling module 'square'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\my_wave\square\square.v":10)
+Compiling module 'triangular'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\my_wave\triangular\triangular.v":10)
+Compiling module 'sawtooth'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\my_wave\sawtooth\sawtooth.v":10)
+Compiling module 'order_wave'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\order_wave.v":1)
+WARN  (EX3670) : Actual bit length 9 differs from formal bit length 8 for port 'Data'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":226)
+Compiling module 'usart_send'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\uart_send.v":1)
+Compiling module 'bin2bcd'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\DoubleDabble.v":1)
+Compiling module 'uart_tx'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\uart.v":1)
+WARN  (EX3791) : Expression size 17 truncated to fit in target size 16("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\uart.v":53)
+WARN  (EX3791) : Expression size 4 truncated to fit in target size 3("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\uart.v":64)
+WARN  (EX3791) : Expression size 17 truncated to fit in target size 16("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\uart.v":67)
+WARN  (EX3791) : Expression size 17 truncated to fit in target size 16("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\uart.v":77)
+Compiling module 'uart_packet_rx(CLK_FREQ=200000000,UART_BAUD=1000000,MAX_DATA_SIZE=20)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\uart_packet_rx.v":1)
+Compiling module 'uart_byte_rx(CLK_FREQ=200000000,UART_BAUD=1000000)'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\uart_byte_rx.v":1)
+WARN  (EX3791) : Expression size 6 truncated to fit in target size 5("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\uart_packet_rx.v":74)
+WARN  (EX3791) : Expression size 6 truncated to fit in target size 5("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\uart_packet_rx.v":93)
+WARN  (EX3791) : Expression size 6 truncated to fit in target size 5("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\uart_packet_rx.v":98)
+WARN  (EX3670) : Actual bit length 4 differs from formal bit length 5 for port 'rx_data_size'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":249)
+Compiling module 'control'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\control.v":1)
+Compiling module 'fifo_uart'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\fifo_uart\fifo_uart.v":293)
+Compiling module '**'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\fifo_uart\fifo_uart.v":292)
+WARN  (EX3670) : Actual bit length 160 differs from formal bit length 200 for port 'Data'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\control.v":22)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'RdEn'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\control.v":26)
+WARN  (EX3670) : Actual bit length 160 differs from formal bit length 200 for port 'Q'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\control.v":27)
+WARN  (EX3670) : Actual bit length 3 differs from formal bit length 4 for port 'uart_wave'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":260)
+WARN  (EX3670) : Actual bit length 3 differs from formal bit length 4 for port 'uart_frequency'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":261)
+Compiling module 'data_8to16'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\adc_8bit_to_16bit.v":1)
+Compiling module 'speed_ctrl'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\speed_ctrl.v":1)
+Compiling module 'state_ctrl'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\state_ctrl.v":1)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'start_sample'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":291)
+WARN  (EX3073) : Port 'pll_stop' remains unconnected for this instance("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\ddr3_ctrl_2port.v":132)
+Compiling module 'ddr3_ctrl_2port'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\ddr3_ctrl_2port.v":1)
+Compiling module 'fifo_ddr3_adapter'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v":2)
+WARN  (EX3791) : Expression size 29 truncated to fit in target size 28("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v":262)
+WARN  (EX3791) : Expression size 29 truncated to fit in target size 28("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v":266)
+WARN  (EX3791) : Expression size 29 truncated to fit in target size 28("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v":276)
+WARN  (EX3791) : Expression size 29 truncated to fit in target size 28("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\fifo_ddr3_adapter.v":280)
+Compiling module 'rd_data_fifo'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\rd_data_fifo\rd_data_fifo.v":1424)
+Compiling module '**'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\rd_data_fifo\rd_data_fifo.v":1423)
+Compiling module 'wr_data_fifo'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\wr_data_fifo\wr_data_fifo.v":791)
+Compiling module '**'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\wr_data_fifo\wr_data_fifo.v":790)
+Compiling module 'DDR3_Memory_Interface_Top'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_memory_interface\ddr3_memory_interface.v":19103)
+Compiling module '**'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_memory_interface\ddr3_memory_interface.v":19102)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'burst'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ddr3_ctrl_2port\ddr3_ctrl_2port.v":116)
+Compiling module 'fifo_send'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\fifo_send\fifo_send.v":877)
+Compiling module '**'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\fifo_send\fifo_send.v":876)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'WrEn'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":362)
+WARN  (EX3670) : Actual bit length 1 differs from formal bit length 12 for port 'Wnum'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":364)
+Compiling module 'udp_stream'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\udp_stream.v":1)
+WARN  (EX3670) : Actual bit length 12 differs from formal bit length 16 for port 'Rnum'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":373)
+Compiling module 'eth_udp_tx_gmii'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\eth_udp_tx_gmii.v":21)
+Compiling module 'ip_checksum'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\ip_checksum.v":18)
+Compiling module 'crc32_d8'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\crc32_d8.v":20)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 16 for port 'data_length'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":391)
+Compiling module 'gmii_to_rgmii'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\gmii_to_rgmii.v":20)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'TX'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\gmii_to_rgmii.v":55)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'TX'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\gmii_to_rgmii.v":55)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'TX'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\gmii_to_rgmii.v":55)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'TX'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\gmii_to_rgmii.v":55)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'TX'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\gmii_to_rgmii.v":67)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'D0'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\gmii_to_rgmii.v":76)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'D1'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\gmii_to_rgmii.v":77)
+WARN  (EX3670) : Actual bit length 32 differs from formal bit length 1 for port 'TX'("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\gmii_to_rgmii.v":78)
+WARN  (EX2565) : Input 'ad_out_valid' on this instance is undriven. Assigning to 0, simulation mismatch possible. Please assign the input or remove the declaration("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":308)
+NOTE  (EX0101) : Current top module is "acg525_udp"
+[5%] Running netlist conversion ...
+WARN  (CV0016) : Input uart_rxd is unused("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ACG525_UDP.v":51)
+Running device independent optimization ...
+[10%] Optimizing Phase 0 completed
+[15%] Optimizing Phase 1 completed
+[25%] Optimizing Phase 2 completed
+Running inference ...
+[30%] Inferring Phase 0 completed
+[40%] Inferring Phase 1 completed
+[50%] Inferring Phase 2 completed
+[55%] Inferring Phase 3 completed
+Running technical mapping ...
+[60%] Tech-Mapping Phase 0 completed
+[65%] Tech-Mapping Phase 1 completed
+[75%] Tech-Mapping Phase 2 completed
+[80%] Tech-Mapping Phase 3 completed
+[90%] Tech-Mapping Phase 4 completed
+WARN  (NL0002) : The module "ip_checksum" instantiated to "ip_checksum" is swept in optimizing("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\eth_udp_tx_gmii.v":160)
+WARN  (NL0002) : The module "bin2bcd" instantiated to "bin2bcd" is swept in optimizing("C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\src\ADC_DAC_src\uart_send.v":33)
+[95%] Generate netlist file "C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\impl\gwsynthesis\ADC_DDR3_UDP.vg" completed
+[100%] Generate report file "C:\Users\32875\Desktop\GoWin1.4\GoWin1.4\impl\gwsynthesis\ADC_DDR3_UDP_syn.rpt.html" completed
+GowinSynthesis finish
